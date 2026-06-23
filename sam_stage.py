@@ -309,11 +309,6 @@ class SAMStage:
 
     def run(self, frame: np.ndarray, encoded_prompts: EncodedPrompts,) -> SegmentationOutput:
 
-        if self.cached_state is None:
-            self.cached_state = self.processor.set_image(frame)
-        else:
-            self.cached_state = self.processor.update_image(frame)
-
         if self.config.backend == "sam3":
             raw_results = _sam3_segment(
                 self,

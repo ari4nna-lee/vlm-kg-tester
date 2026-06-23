@@ -42,12 +42,21 @@ from structure import VLMSceneOutput, SegmentationOutput
 
 from visualization.render_frame import overlay_masks
 from visualization.render_graph import render_graph
-from visualization.video_writer import VideoWriter
+from visualization.video_writer import VideoWriter, stitch
 
 from heatmap import build_heatmap
 
 log = logging.getLogger(__name__)
 
+import queue
+import threading
+import time
+
+from pathlib import Path
+import cv2
+import networkx as nx
+
+out_w, out_h = 1280, 720
 
 # ---------------------------------------------------------------------------
 # Config
@@ -111,15 +120,104 @@ class Pipeline:
         self.kg      = KGStage(self.config.kg)
         self._prev_seg: Optional[SegmentationOutput] = None
         self._frame_counter = 0
+        self.threads = []
+
+        self.frame_q = queue.Queue(maxsize=2)
+        self.sam_q = queue.Queue(maxsize=2)
+        self.kg_q = queue.Queue(maxsize=2)
+
+        self.writer = cv2.VideoWriter(
+            "output.mp4",
+            cv2.VideoWriter_fourcc(*"mp4v"),
+            20,
+            (out_w, out_h)
+        )
 
     # ------------------------------------------------------------------
 
-    def run(
-        self,
-        frame: np.ndarray,
-        task_prompt: str,
-        timestamp: float = 0.0,
-    ) -> PipelineResult:
+    def frame_reader(self, frame_iterable, stop_event):
+        for frame in frame_iterable:
+            if stop_event.is_set():
+                break
+            frame_q.put(frame)
+
+    def sam_worker(self):
+        while True:
+            frame = self.frame_q.get()
+
+            seg_output = self.sam.run(
+                frame,
+                task_prompt="find traversable areas and cars"
+            )
+
+            self.sam_q.put((frame, seg_output))
+
+    def kg_worker(self):
+        while True:
+            frame, seg_output = sam_q.get()
+
+            heatmap = build_heatmap(seg_output.masks)
+
+            kg_result = self.kg.run(
+                seg_output,
+                prev_seg_output=self._prev_seg
+            )
+
+            self._prev_seg = seg_output
+
+            self.kg_q.put((frame, seg_output, kg_result))
+
+    def vlm_worker(self, interval=5):
+        i = 0
+        self.latest_output = None
+
+        while True:
+            frame, seg_output, kg_result = kg_q.get()
+
+            vlm_output = None
+            if i % interval == 0:
+                vlm_output = self.vlm.run(
+                    frame,
+                    task_prompt="describe scene and vehicles"
+                )
+
+            i += 1
+
+            self.latest_output = (frame, seg_output, kg_result, vlm_output)
+
+    def start_workers(self):
+
+        self.threads = [
+            threading.Thread(target=self.sam_worker, daemon=True),
+            threading.Thread(target=self.kg_worker, daemon=True),
+            threading.Thread(target=self.vlm_worker, daemon=True),
+            threading.Thread(target=self.render_loop, daemon=True),
+        ]
+
+        for t in self.threads:
+            t.start()
+
+    def render_loop(self):
+        import time
+
+        while True:
+            if not hasattr(self, "latest_output") or self.latest_output is None:
+                time.sleep(0.01)
+                continue
+
+            frame, seg, kg, vlm = self.latest_output
+
+            frame_viz = overlay_masks(frame, seg.masks)
+            graph_img = render_graph(kg.graph)
+
+            combined = stitch(frame_viz, graph_img)
+
+            cv2.imshow("pipeline", combined)
+
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
+
+    def run(self, frame: np.ndarray, task_prompt: str, timestamp: float = 0.0,) -> PipelineResult:
         """
         Run the full pipeline on a single frame.
 
@@ -228,9 +326,6 @@ class Pipeline:
         self._frame_counter = 0
         log.info("Pipeline state reset.")
 
-from pathlib import Path
-import cv2
-
 IMAGE_DIR = Path("/home/arianna/vlm-kg-tester/tests/neighborhood_subset")
 frames = sorted(IMAGE_DIR.glob("*.jpg"))
 
@@ -248,6 +343,8 @@ cfg = PipelineConfig(
     )
 )
 
+G = nx.DiGraph()
+writer = VideoWriter("output.mp4")
 pipeline = Pipeline(cfg)
 
 for i, frame_path in enumerate(frames):
@@ -258,6 +355,25 @@ for i, frame_path in enumerate(frames):
         task_prompt="find traversable areas and identify locations where you would find cars"
     )
 
+    frame_viz = overlay_masks(frame, result.seg_output.masks)
+
+    G = nx.compose(G, result.kg_result.graph)
+    graph_img = render_graph(G)
+
+    combined = stitch(frame_viz, graph_img)
+
+    combined = cv2.resize(combined, (out_w, out_h))
+    #cv2.imshow("pipeline", combined)
+
+    key = cv2.waitKey(1)
+    if key & 0xFF == ord('q'):
+        break
+
+    writer.write(combined)
+
     print(f"\nFrame {i}")
     print(result.vlm_output.scene_summary)
     print(len(result.seg_output.masks))
+
+cv2.destroyAllWindows()
+writer.close()

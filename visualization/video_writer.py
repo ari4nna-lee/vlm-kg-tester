@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 def stitch(frame, graph_img):
     h = max(frame.shape[0], graph_img.shape[0])
