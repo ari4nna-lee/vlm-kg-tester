@@ -23,11 +23,14 @@ from __future__ import annotations
 
 import json
 import time
-import uuid
 import logging
 from dataclasses import dataclass, field
 from typing import Literal, Optional
 import numpy as np
+
+from io import BytesIO
+from PIL import Image
+import requests
 
 from structure import (
     BBox, PriorityRegion, SemanticClass, VLMSceneOutput,
@@ -106,46 +109,80 @@ def _call_stub(frame: np.ndarray, task_prompt: str, cfg: VLMConfig) -> dict:
         ],
     }
 
-
-def _call_gemma(frame: np.ndarray, task_prompt: str, cfg: VLMConfig) -> dict:
+def _call_gemma(frame: np.ndarray,
+                task_prompt: str,
+                cfg: VLMConfig) -> dict:
     """
-    Calls Gemma 4 (or any model served via vLLM/HuggingFace generate).
-    Expects cfg.grpc_endpoint if off-device, otherwise uses local pipeline.
+    Calls Gemma running on a local vLLM server via raw HTTP.
     """
-    try:
-        from transformers import AutoProcessor, AutoModelForImageTextToText
-        import torch
-    except ImportError:
-        raise RuntimeError("transformers not installed. pip install transformers torch")
 
-    # Lazy-load to avoid import cost when using other backends.
-    processor = AutoProcessor.from_pretrained(cfg.model_name)
-    model = AutoModelForImageTextToText.from_pretrained(
-        cfg.model_name, torch_dtype=torch.bfloat16, device_map=cfg.device
+    if cfg.grpc_endpoint is None:
+        raise ValueError(
+            "Set cfg.grpc_endpoint to your vLLM URL "
+            "(e.g. http://localhost:8000/v1)"
+        )
+
+    # Convert image -> base64
+    pil_img = Image.fromarray(frame)
+
+    buffer = BytesIO()
+    pil_img.save(buffer, format="JPEG")
+
+    image_b64 = base64.b64encode(
+        buffer.getvalue()
+    ).decode("utf-8")
+
+    payload = {
+        "model": cfg.model_name,
+        "messages": [
+            {
+                "role": "system",
+                "content": _SYSTEM_PROMPT,
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"Task prompt: {task_prompt}"
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{image_b64}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": cfg.max_new_tokens,
+        "temperature": cfg.temperature,
+    }
+
+    response = requests.post(
+        f"{cfg.grpc_endpoint}/chat/completions",
+        json=payload,
+        timeout=300,
     )
 
-    from PIL import Image
-    pil_img = Image.fromarray(frame)
-    messages = [
-        {"role": "system", "content": _SYSTEM_PROMPT},
-        {"role": "user", "content": [
-            {"type": "image", "image": pil_img},
-            {"type": "text",  "text": f"Task prompt: {task_prompt}"},
-        ]},
-    ]
-    inputs = processor.apply_chat_template(
-        messages, add_generation_prompt=True, tokenize=True,
-        return_tensors="pt", return_dict=True,
-    ).to(cfg.device)
+    response.raise_for_status()
 
-    with torch.inference_mode():
-        output = model.generate(**inputs, max_new_tokens=cfg.max_new_tokens,
-                                temperature=cfg.temperature, do_sample=True)
-    text = processor.decode(output[0], skip_special_tokens=True)
-    # Strip anything before the first '{' in case the model prefixes text.
-    text = text[text.index("{"):]
+    result = response.json()
+
+    text = result["choices"][0]["message"]["content"].strip()
+
+    # Extract JSON from model output
+    start = text.find("{")
+    end = text.rfind("}") + 1
+
+    if start == -1:
+        raise ValueError(
+            f"Gemma returned invalid JSON:\n{text}"
+        )
+
+    text = text[start:end]
+
     return json.loads(text)
-
 
 _BACKENDS = {
     "gemma":    _call_gemma,

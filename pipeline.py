@@ -36,7 +36,7 @@ import numpy as np
 
 from vlm_reasoning import VLMReasoningPass, VLMConfig
 from prompt_encoder import PromptEncoder, EncoderConfig, EncodedPrompts
-from sam import SAMStage, SAMConfig
+from sam_stage import SAMStage, SAMConfig
 from kg import KGStage, KGConfig, KGRunResult
 from structure import VLMSceneOutput, SegmentationOutput
 
@@ -145,11 +145,41 @@ class Pipeline:
 
         # Stage 1b — Prompt encoding
         encoded = self.encoder.encode(vlm_output)
+
         log.info("Prompt encoding done: %d SAM prompts (%d skipped)",
                  len(encoded.prompts), len(encoded.skipped_regions))
+        
+        # -----------------------------
+        # VALIDATE ENCODER OUTPUT
+        # -----------------------------
+        assert hasattr(encoded, "prompts"), "EncodedPrompts missing .prompts"
+        assert hasattr(encoded, "image_hw"), "EncodedPrompts missing .image_hw"
+        assert encoded.image_hw is not None, "Encoder must set image_hw (H, W)"
+
+        from prompt_encoder import SAMPrompt
+
+        assert len(encoded.prompts) > 0, "No SAM prompts generated"
+        assert all(
+            isinstance(p, SAMPrompt) for p in encoded.prompts
+        ), "Encoder must output list[SAMPrompt]"
 
         # Stage 2 — SAM segmentation
         seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
+
+        if len(seg_output.masks) == 0:
+            log.warning("No masks returned from SAM — skipping KG stage for this frame")
+            return PipelineResult(
+                frame_id=fid,
+                task_prompt=task_prompt,
+                vlm_output=vlm_output,
+                encoded_prompts=encoded,
+                seg_output=seg_output,
+                kg_result = KGRunResult(
+                    graph=self.kg.empty_graph(),
+                    output=self.kg.empty_output(),
+                )
+            )
+
         log.info("Stage 2 done: %d masks", len(seg_output.masks))
 
         # Stage 3 — Knowledge graph construction
