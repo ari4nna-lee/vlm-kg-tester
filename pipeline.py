@@ -56,6 +56,19 @@ from pathlib import Path
 import cv2
 import networkx as nx
 
+import os
+import json
+from networkx.readwrite import json_graph
+
+OUTPUT_DIR = Path("./results")
+JSON_DIR = OUTPUT_DIR / "json"
+GRAPH_DIR = OUTPUT_DIR / "graph"
+HEATMAP_DIR = OUTPUT_DIR / "heatmaps"
+
+JSON_DIR.mkdir(parents=True, exist_ok=True)
+GRAPH_DIR.mkdir(parents=True, exist_ok=True)
+HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
+
 out_w, out_h = 1280, 720
 
 # ---------------------------------------------------------------------------
@@ -292,6 +305,14 @@ class Pipeline:
             image_hw=frame.shape[:2],
         )
 
+        heatmap_vis = (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min() + 1e-6)
+        heatmap_vis = (heatmap_vis * 255).astype(np.uint8)
+
+        cv2.imwrite(
+            str(HEATMAP_DIR / f"heatmap_{fid}.png"),
+            heatmap_vis
+        )
+
         encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)
 
         # Stage 3 — Knowledge graph construction
@@ -348,6 +369,7 @@ writer = VideoWriter("output.mp4")
 pipeline = Pipeline(cfg)
 
 for i, frame_path in enumerate(frames):
+
     frame = cv2.cvtColor(cv2.imread(str(frame_path)), cv2.COLOR_BGR2RGB)
 
     result = pipeline.run(
@@ -355,25 +377,71 @@ for i, frame_path in enumerate(frames):
         task_prompt="find traversable areas and identify locations where you would find cars"
     )
 
+    # -----------------------------
+    # 1. UPDATE GLOBAL GRAPH
+    # -----------------------------
+    G = nx.compose(G, result.kg_result.graph)
+
+    # -----------------------------
+    # 2. SAVE FRAME JSON
+    # -----------------------------
+    frame_data = {
+        "frame_id": i,
+        "task_prompt": "find traversable areas and identify locations where you would find cars",
+
+        "scene_summary": getattr(result.vlm_output, "scene_summary", None),
+
+        "num_objects": len(result.seg_output.masks),
+
+        "objects": [
+            {
+                "id": getattr(m, "id", None),
+                "priority": getattr(m, "priority", None)
+            }
+            for m in result.seg_output.masks
+        ],
+
+        "global_graph_nodes": G.number_of_nodes(),
+        "global_graph_edges": G.number_of_edges(),
+
+        "graph": json_graph.node_link_data(result.kg_result.graph)
+    }
+
+    with open(JSON_DIR / f"frame_{i:05d}.json", "w") as f:
+        json.dump(frame_data, f, indent=2)
+
+    # -----------------------------
+    # 3. VISUALIZATION (OUTSIDE IO BLOCK)
+    # -----------------------------
     frame_viz = overlay_masks(frame, result.seg_output.masks)
 
-    G = nx.compose(G, result.kg_result.graph)
     graph_img = render_graph(G)
 
     combined = stitch(frame_viz, graph_img)
 
     combined = cv2.resize(combined, (out_w, out_h))
-    #cv2.imshow("pipeline", combined)
 
+    # -----------------------------
+    # 4. DISPLAY (OPTIONAL)
+    # -----------------------------
+    # cv2.imshow("pipeline", combined)
+
+    # -----------------------------
+    # 5. WRITE VIDEO
+    # -----------------------------
+    writer.write(combined)
+
+    # -----------------------------
+    # 6. LOGGING
+    # -----------------------------
+    print(f"\nFrame {i}")
+    print(getattr(result.vlm_output, "scene_summary", None))
+    print(len(result.seg_output.masks))
+
+    # optional exit
     key = cv2.waitKey(1)
     if key & 0xFF == ord('q'):
         break
-
-    writer.write(combined)
-
-    print(f"\nFrame {i}")
-    print(result.vlm_output.scene_summary)
-    print(len(result.seg_output.masks))
 
 cv2.destroyAllWindows()
 writer.close()
