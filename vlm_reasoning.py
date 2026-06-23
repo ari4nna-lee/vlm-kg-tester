@@ -80,6 +80,11 @@ Return ONLY a single JSON object with two keys:
 
 Order regions by descending priority.
 Do not include markdown fences or any text outside the JSON object.
+
+Return ONLY valid JSON.
+No markdown.
+No explanation.
+No trailing commas.
 """
 
 

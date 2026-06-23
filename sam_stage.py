@@ -55,6 +55,39 @@ log = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 
+def extract_rois(frame, prompts, padding=40):
+    rois = []
+    H, W = frame.shape[:2]
+
+    for p in prompts:
+        x1, y1, x2, y2 = p.box.astype(int)
+
+        x1 = max(0, x1 - padding)
+        y1 = max(0, y1 - padding)
+        x2 = min(W, x2 + padding)
+        y2 = min(H, y2 + padding)
+
+        crop = frame[y1:y2, x1:x2]
+
+        rois.append({
+            "crop": crop,
+            "offset": (x1, y1),
+            "prompt": p
+        })
+
+    return rois
+
+def project_mask(mask, offset, full_shape):
+    H, W = full_shape
+    ox, oy = offset
+
+    full = np.zeros((H, W), dtype=bool)
+
+    h, w = mask.shape
+    full[oy:oy+h, ox:ox+w] = mask
+
+    return full
+
 @dataclass
 class SAMConfig:
     backend: Literal["sam3", "nanosam", "stub"] = "stub"
@@ -68,6 +101,16 @@ class SAMConfig:
     # IoU threshold for merging overlapping masks from different prompts.
     merge_iou_threshold: float = 0.8
 
+class PromptFilter:
+    def __init__(self, max_prompts=5):
+        self.max_prompts = max_prompts
+
+    def filter(self, prompts):
+        # sort by priority (highest first)
+        prompts = sorted(prompts, key=lambda p: p.priority, reverse=True)
+
+        # keep top-k only
+        return prompts[:self.max_prompts]
 
 # ---------------------------------------------------------------------------
 # Stub backend
@@ -106,139 +149,72 @@ def _stub_segment(
         })
     return results
 
-def _sam3_segment(processor, frame: np.ndarray, prompts: list[SAMPrompt], cfg: SAMConfig,) -> list[dict]:
+def _sam3_segment(self, processor, frame, prompts, cfg):
 
-    import torch
-    import numpy as np
-    from PIL import Image
+    # 1. filter prompts
+    prompts = self.prompt_filter.filter(prompts)
 
-    from sam3.model.box_ops import box_xywh_to_cxcywh
-    from sam3.model.sam3_image_processor import normalize_bbox
+    # 2. build ROIs
+    rois = extract_rois(frame, prompts)
 
-    # -------------------------------------------------------
-    # Convert image ONCE
-    # -------------------------------------------------------
-    image = Image.fromarray(frame)
+    results = []
     H, W = frame.shape[:2]
 
-    # -------------------------------------------------------
-    # Create ONE inference state
-    # -------------------------------------------------------
-    inference_state = processor.set_image(image)
-    processor.reset_all_prompts(inference_state)
+    # 3. per-ROI SAM inference
+    for roi in rois:
+        crop = roi["crop"]
+        prompt = roi["prompt"]
+        ox, oy = roi["offset"]
 
-    # -------------------------------------------------------
-    # BATCH PROMPT INJECTION (KEY OPTIMIZATION)
-    # -------------------------------------------------------
-    box_prompts = 0
-    point_prompts = 0
+        image = Image.fromarray(crop)
 
-    for prompt in prompts:
+        inference_state = processor.set_image(image)
+        processor.reset_all_prompts(inference_state)
 
-        # ---------------------------
-        # BOX PROMPTS
-        # ---------------------------
-        if prompt.box is not None:
+        # adjust box to crop coordinates
+        x1, y1, x2, y2 = prompt.box.astype(int)
+        box = np.array([
+            x1 - ox,
+            y1 - oy,
+            x2 - ox,
+            y2 - oy
+        ])
 
-            box = torch.tensor(prompt.box).view(-1, 4)
-
-            box_cxcywh = box_xywh_to_cxcywh(box)
-
-            norm_box = normalize_bbox(
-                box_cxcywh, W, H
-            ).flatten().tolist()
-
-            inference_state = processor.add_geometric_prompt(
-                state=inference_state,
-                box=norm_box,
-                label=True
-            )
-
-            box_prompts += 1
-
-        # ---------------------------
-        # POINT PROMPTS (optional)
-        # ---------------------------
-        elif len(getattr(prompt, "point_coords", [])) > 0:
-
-            x, y = prompt.point_coords[0]
-
-            norm_box = [
-                x / W,
-                y / H,
-                0.01,
-                0.01
-            ]
-
-            inference_state = processor.add_geometric_prompt(
-                state=inference_state,
-                box=norm_box,
-                label=True
-            )
-
-            point_prompts += 1
-
-    # -------------------------------------------------------
-    # SINGLE INFERENCE RESOLUTION
-    # -------------------------------------------------------
-    masks = None
-    scores = None
-
-    if isinstance(inference_state, dict):
-        masks = inference_state.get("masks", None)
-        scores = inference_state.get("scores", None)
-
-    if masks is None and hasattr(processor, "model"):
-        with torch.no_grad():
-            outputs = processor.model(inference_state)
-
-        masks = outputs.get("masks", None)
-        scores = outputs.get("scores", None)
-
-    if masks is None:
-        raise RuntimeError(
-            "SAM3 batch inference failed. "
-            f"inference_state keys: {list(inference_state.keys())}"
+        inference_state = processor.add_geometric_prompt(
+            state=inference_state,
+            box=box,
+            label=True
         )
 
-    # -------------------------------------------------------
-    # FLATTEN RESULTS
-    # -------------------------------------------------------
-    results = []
+        masks = inference_state.get("masks")
+        scores = inference_state.get("scores")
 
-    # ensure iterable
-    if isinstance(masks, np.ndarray) and masks.ndim == 3:
-        masks = list(masks)
-
-    num_masks = len(masks)
-
-    for i in range(num_masks):
-
-        mask = masks[i].astype(bool)
-        score = float(scores[i]) if scores is not None else 1.0
-
-        if score < cfg.mask_confidence_threshold:
+        if masks is None:
             continue
 
-        ys, xs = np.where(mask)
+        mask = masks[0].detach().cpu().numpy()
+        mask = masks[0].detach().cpu().numpy()
 
-        if xs.size == 0:
-            continue
+        # collapse extra dims safely
+        mask = np.squeeze(mask)
 
-        cx_n = float(xs.mean()) / W
-        cy_n = float(ys.mean()) / H
+        # ensure binary
+        mask = mask.astype(bool)
 
-        area = mask.sum() / (H * W)
+        if mask.ndim != 2:
+            raise ValueError(f"Unexpected mask shape after squeeze: {mask.shape}")
+        
+        score = float(scores[0].detach().cpu()) if scores is not None else 1.0
 
-        # IMPORTANT:
-        # We cannot assume 1:1 mapping between prompts and masks
-        # SAM3 may merge prompts internally
+        # 4. project back to full frame
+        full_mask = project_mask(mask, (ox, oy), (H, W))
 
         results.append({
-            "mask": mask,
+            "mask": full_mask,
             "confidence": score,
-            "centroid": (cx_n, cy_n),
-            "mask_area": float(area),
+            "centroid": roi["prompt"].priority,
+            "mask_area": full_mask.sum() / (H * W),
+            "prompt": prompt,
         })
 
     return results
@@ -307,28 +283,40 @@ class SAMStage:
     def __init__(self, config: SAMConfig):
         self.config = config
         self._track_id_counter = 0
+        self.prompt_filter = PromptFilter(max_prompts=5)
 
         if config.backend == "sam3":
+            # 1. Enable TF32 for Ampere+ GPUs as seen in the working notebook
+            torch.backends.cuda.matmul.allow_tf32 = True
+            torch.backends.cudnn.allow_tf32 = True
 
             sam3_root = os.path.join(os.path.dirname(sam3.__file__), "..")
             bpe_path = f"{sam3_root}/sam3/assets/bpe_simple_vocab_16e6.txt.gz"
 
-            model = build_sam3_image_model(
-                bpe_path=bpe_path
-            ).cuda().eval()
+            with torch.device("cuda"):
+                model = build_sam3_image_model(bpe_path=bpe_path)
+            model = model.to(device="cuda").eval()
+
+            # 2. Open the persistent global autocast context manager
+            torch.autocast("cuda", dtype=torch.bfloat16).__enter__()
 
             self.processor = Sam3Processor(
                 model,
-                confidence_threshold=0.5
+                confidence_threshold=0.5,
             )
-
         else:
             self.processor = None
 
     def run(self, frame: np.ndarray, encoded_prompts: EncodedPrompts,) -> SegmentationOutput:
 
+        if self.cached_state is None:
+            self.cached_state = self.processor.set_image(frame)
+        else:
+            self.cached_state = self.processor.update_image(frame)
+
         if self.config.backend == "sam3":
             raw_results = _sam3_segment(
+                self,
                 self.processor,
                 frame,
                 encoded_prompts.prompts,
@@ -341,13 +329,15 @@ class SAMStage:
                 self.config
             )
 
-        # --------------------------------------------------
-        # YOU WERE MISSING THIS ENTIRE PIPELINE STEP
-        # --------------------------------------------------
         raw_results = self._merge_overlapping(raw_results)
 
         masks = [
-            self._to_instance_mask(r, i, encoded_prompts.image_hw)
+            self._to_instance_mask(
+                r,
+                encoded_prompts.prompts[i],
+                i,
+                encoded_prompts.image_hw
+            )
             for i, r in enumerate(raw_results)
         ]
 

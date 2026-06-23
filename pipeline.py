@@ -40,6 +40,10 @@ from sam_stage import SAMStage, SAMConfig
 from kg import KGStage, KGConfig, KGRunResult
 from structure import VLMSceneOutput, SegmentationOutput
 
+from visualization.render_frame import overlay_masks
+from visualization.render_graph import render_graph
+from visualization.video_writer import VideoWriter
+
 from heatmap import build_heatmap
 
 log = logging.getLogger(__name__)
@@ -148,8 +152,6 @@ class Pipeline:
         # Stage 1b — Prompt encoding
         encoded = self.encoder.encode(vlm_output)
 
-        encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)
-
         log.info("Prompt encoding done: %d SAM prompts (%d skipped)",
                  len(encoded.prompts), len(encoded.skipped_regions))
         
@@ -192,6 +194,8 @@ class Pipeline:
             image_hw=frame.shape[:2],
         )
 
+        encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)
+
         # Stage 3 — Knowledge graph construction
         kg_result = self.kg.run(
             seg_output=seg_output,
@@ -233,7 +237,7 @@ frames = sorted(IMAGE_DIR.glob("*.jpg"))
 cfg = PipelineConfig(
     vlm=VLMConfig(
         backend="gemma",
-        model_name="google/gemma-4-e4b-it",
+        model_name="google/gemma-4-E2B-it",
         grpc_endpoint="http://localhost:8000/v1",
         device="cuda",
         temperature=0.2
@@ -247,7 +251,7 @@ cfg = PipelineConfig(
 pipeline = Pipeline(cfg)
 
 for i, frame_path in enumerate(frames):
-    frame = cv2.imread(str(frame_path))
+    frame = cv2.cvtColor(cv2.imread(str(frame_path)), cv2.COLOR_BGR2RGB)
 
     result = pipeline.run(
         frame,

@@ -164,7 +164,7 @@ class PromptEncoder:
             box=box,
         )
     
-    def bias_prompts_with_heatmap(prompts, heatmap):
+    def bias_prompts_with_heatmap(self, prompts, heatmap):
         H, W = heatmap.shape
 
         biased = []

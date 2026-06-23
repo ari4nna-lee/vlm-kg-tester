@@ -154,10 +154,16 @@ class SpatialEdgeInferrer:
 
     # ------------------------------------------------------------------
 
-    @staticmethod
-    def _centroid_dist(a: KGNode, b: KGNode) -> float:
-        return float(np.hypot(a.centroid[0] - b.centroid[0],
-                              a.centroid[1] - b.centroid[1]))
+    def _centroid_dist(self, a, b):
+        ca = a.centroid
+        cb = b.centroid
+
+        if isinstance(ca, (float, int)):
+            ca = (ca, ca)
+        if isinstance(cb, (float, int)):
+            cb = (cb, cb)
+
+        return float(np.hypot(ca[0] - cb[0], ca[1] - cb[1]))
 
     @staticmethod
     def _containment_ratio(outer: BBox, inner: BBox) -> float:
@@ -525,15 +531,19 @@ class KGStage:
         )
         return KGRunResult(output=kg_output, graph=G, traversability=T)
     
-    def update_from_heatmap(self, nodes, heatmap):
+    def update_from_heatmap(self, G, heatmap):
+
         H, W = heatmap.shape
 
-        for node in nodes:
+        for node_id, data in G.nodes(data=True):
+            node = data.get("node", None)
+            if node is None:
+                continue
+
             x, y = node.centroid
             ix, iy = int(x * W), int(y * H)
 
             heat_value = heatmap[iy, ix]
-
             node.priority = 0.8 * node.priority + 0.2 * heat_value
 
     # ------------------------------------------------------------------
