@@ -40,6 +40,8 @@ from sam_stage import SAMStage, SAMConfig
 from kg import KGStage, KGConfig, KGRunResult
 from structure import VLMSceneOutput, SegmentationOutput
 
+from heatmap import build_heatmap
+
 log = logging.getLogger(__name__)
 
 
@@ -146,6 +148,8 @@ class Pipeline:
         # Stage 1b — Prompt encoding
         encoded = self.encoder.encode(vlm_output)
 
+        encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)
+
         log.info("Prompt encoding done: %d SAM prompts (%d skipped)",
                  len(encoded.prompts), len(encoded.skipped_regions))
         
@@ -182,11 +186,20 @@ class Pipeline:
 
         log.info("Stage 2 done: %d masks", len(seg_output.masks))
 
+        heatmap = build_heatmap(
+            masks=[m.mask_array for m in seg_output.masks if m.mask_array is not None],
+            priorities=[m.priority for m in seg_output.masks if m.mask_array is not None],
+            image_hw=frame.shape[:2],
+        )
+
         # Stage 3 — Knowledge graph construction
         kg_result = self.kg.run(
             seg_output=seg_output,
             prev_seg_output=self._prev_seg,
         )
+
+        self.kg.update_from_heatmap(kg_result.graph, heatmap)
+
         log.info(
             "Stage 3 done: nodes=%d  edges=%d  traversability_edges=%d",
             kg_result.graph.number_of_nodes(),
@@ -210,3 +223,37 @@ class Pipeline:
         self._prev_seg = None
         self._frame_counter = 0
         log.info("Pipeline state reset.")
+
+from pathlib import Path
+import cv2
+
+IMAGE_DIR = Path("/home/arianna/vlm-kg-tester/tests/neighborhood_subset")
+frames = sorted(IMAGE_DIR.glob("*.jpg"))
+
+cfg = PipelineConfig(
+    vlm=VLMConfig(
+        backend="gemma",
+        model_name="google/gemma-4-e4b-it",
+        grpc_endpoint="http://localhost:8000/v1",
+        device="cuda",
+        temperature=0.2
+    ),
+    sam=SAMConfig(
+        backend="sam3",
+        device="cuda"
+    )
+)
+
+pipeline = Pipeline(cfg)
+
+for i, frame_path in enumerate(frames):
+    frame = cv2.imread(str(frame_path))
+
+    result = pipeline.run(
+        frame,
+        task_prompt="find traversable areas and identify locations where you would find cars"
+    )
+
+    print(f"\nFrame {i}")
+    print(result.vlm_output.scene_summary)
+    print(len(result.seg_output.masks))

@@ -39,14 +39,11 @@ from PIL import Image
 from prompt_encoder import SAMPrompt
 import torch
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(ROOT)
-
 import sam3
 from sam3 import build_sam3_image_model
 from sam3.model.sam3_image_processor import Sam3Processor
 from sam3.model.box_ops import box_xywh_to_cxcywh
-from sam3.model.sam3_image_processor import normalize_bbox
+from sam3.visualization_utils import normalize_bbox
 
 from prompt_encoder import EncodedPrompts
 from structure import InstanceMask, SegmentationOutput, BBox

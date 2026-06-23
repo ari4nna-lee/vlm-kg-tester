@@ -524,6 +524,17 @@ class KGStage:
             frame_id=seg_output.frame_id,
         )
         return KGRunResult(output=kg_output, graph=G, traversability=T)
+    
+    def update_from_heatmap(self, nodes, heatmap):
+        H, W = heatmap.shape
+
+        for node in nodes:
+            x, y = node.centroid
+            ix, iy = int(x * W), int(y * H)
+
+            heat_value = heatmap[iy, ix]
+
+            node.priority = 0.8 * node.priority + 0.2 * heat_value
 
     # ------------------------------------------------------------------
 

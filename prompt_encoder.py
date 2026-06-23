@@ -163,6 +163,24 @@ class PromptEncoder:
             point_labels=np.array(labels, dtype=np.int32),
             box=box,
         )
+    
+    def bias_prompts_with_heatmap(prompts, heatmap):
+        H, W = heatmap.shape
+
+        biased = []
+
+        for p in prompts:
+            if p.box is not None:
+                cx = int((p.box[0] + p.box[2]) / 2)
+                cy = int((p.box[1] + p.box[3]) / 2)
+
+                score = heatmap[cy, cx]
+
+                p.priority = p.priority + 0.5 * score
+
+            biased.append(p)
+
+        return biased
 
     def _positive_points(
         self, x1: int, y1: int, x2: int, y2: int, cx: int, cy: int

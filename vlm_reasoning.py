@@ -27,6 +27,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Literal, Optional
 import numpy as np
+import base64
 
 from io import BytesIO
 from PIL import Image
