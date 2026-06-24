@@ -307,10 +307,11 @@ class Pipeline:
 
         heatmap_vis = (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min() + 1e-6)
         heatmap_vis = (heatmap_vis * 255).astype(np.uint8)
+        colored = cv2.applyColorMap(heatmap_vis, cv2.COLORMAP_JET)
 
         cv2.imwrite(
             str(HEATMAP_DIR / f"heatmap_{fid}.png"),
-            heatmap_vis
+            colored
         )
 
         encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)

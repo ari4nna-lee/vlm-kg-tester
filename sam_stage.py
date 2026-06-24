@@ -193,7 +193,6 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             continue
 
         mask = masks[0].detach().cpu().numpy()
-        mask = masks[0].detach().cpu().numpy()
 
         # collapse extra dims safely
         mask = np.squeeze(mask)
