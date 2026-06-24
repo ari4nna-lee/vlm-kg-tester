@@ -201,7 +201,7 @@ class Pipeline:
 
                 vlm_output = self.vlm.run(
                     frame=frame,
-                    task_prompt="describe scene and vehicles",
+                    task_prompt="describe the scene",
                     frame_id=fid,
                     timestamp=0.0,
                 )
@@ -451,7 +451,7 @@ while True:
 
     frame_data = {
         "frame_id": fid,
-        "task_prompt": "find traversable areas and identify locations where you would find cars",
+        "task_prompt": "Identify traversable areas",
 
         "scene_summary": getattr(vlm_output, "scene_summary", None),
 
@@ -459,7 +459,7 @@ while True:
 
         "objects": [
             {
-                "id": getattr(m, "id", None),
+                "id": getattr(m, "node_id", None),
                 "priority": getattr(m, "priority", None)
             }
             for m in seg_output.masks

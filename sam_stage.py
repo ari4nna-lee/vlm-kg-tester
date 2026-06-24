@@ -210,7 +210,7 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             crop_h, crop_w = crop.shape[:2]
             if mask.shape != (crop_h, crop_w):
                 mask_resized = cv2.resize(
-                    mask.astype(np.unit8),
+                    mask.astype(np.uint8),
                     (crop_w, crop_h),
                     interpolation=cv2.INTER_NEAREST
                 ).astype(bool)
@@ -221,15 +221,20 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             print(f"crop shape: {crop.shape[:2]}, mask shape: {mask.shape}, offset: {(ox, oy)}, full: {(H, W)}")
             full_mask = project_mask(mask_resized, (ox, oy), (H, W))
 
+            ys, xs = np.where(full_mask)
+            cx_n = float(xs.mean()) / W if xs.size else 0.5
+            cy_n = float(ys.mean()) / H if ys.size else 0.5
+
             results.append({
                 "mask": full_mask,
                 "confidence": score,
-                "centroid": roi["prompt"].priority,
+                "priority": round(0.6 * prompt.priority + 0.4 * score, 4),
+                "centroid": (cx_n, cy_n),
                 "mask_area": full_mask.sum() / (H * W),
                 "prompt": prompt,
             })
 
-    return results
+            return results
 
 # ---------------------------------------------------------------------------
 # NanoSAM backend (Jetson on-device)
@@ -396,7 +401,7 @@ class SAMStage:
             confidence=raw["confidence"],
             track_id=track_id,
             source_region_id=prompt.region_id,
-            priority=prompt.priority,
+            priority=raw.get("priority", prompt.priority),
         )
 
     def _merge_overlapping(self, results: list[dict]) -> list[dict]:
