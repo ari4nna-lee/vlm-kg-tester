@@ -1,80 +1,35 @@
 {
   "frame_id": 32,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a complex of low-rise buildings with surrounding unpaved and paved areas, including a road and a few parked vehicles.",
-  "num_objects": 4,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a complex of low-rise buildings with surrounding paved roads and dry, undeveloped land.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
+      "id": "node_000",
+      "priority": 0.9434
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Roadway",
-        "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
-        "track_id": -1,
-        "mask_area": 0.1977289496527778,
-        "frame_id": 32,
-        "confidence": 0.95703125,
-        "source_region_id": "region_000_Roadway",
-        "id": "node_000"
-      },
-      {
         "label": "Building Complex",
         "semantic_class": "building",
-        "centroid": 0.85,
-        "priority": 0.85,
+        "centroid": [
+          0.3245019953408148,
+          0.32646317083136717
+        ],
+        "priority": 0.9434,
         "track_id": -1,
-        "mask_area": 0.2944552951388889,
+        "mask_area": 0.4001019965277778,
         "frame_id": 32,
-        "confidence": 0.9375,
-        "source_region_id": "region_001_Building Complex",
-        "id": "node_001"
-      },
-      {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.029251302083333333,
-        "frame_id": 32,
-        "confidence": 0.96484375,
-        "source_region_id": "region_002_Vehicle",
-        "id": "node_002"
-      },
-      {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.053031684027777776,
-        "frame_id": 32,
-        "confidence": 0.9453125,
-        "source_region_id": "region_003_Vegetation",
-        "id": "node_003"
+        "confidence": 0.93359375,
+        "source_region_id": "region_000_Building Complex",
+        "id": "node_000"
       }
     ],
     "links": []

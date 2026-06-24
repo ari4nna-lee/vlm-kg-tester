@@ -1,28 +1,16 @@
 {
   "frame_id": 20,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a road running alongside a dry, undeveloped area with some buildings and parked vehicles.",
-  "num_objects": 4,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a wide asphalt road bordered by dry, sparse vegetation and some buildings in the upper right.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
+      "id": "node_000",
+      "priority": 0.9419
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -31,60 +19,19 @@
       {
         "label": "Roadway",
         "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": [
+          0.4474924786971365,
+          0.5631500518929276
+        ],
+        "priority": 0.9419,
         "track_id": -1,
-        "mask_area": 0.50923828125,
+        "mask_area": 0.5203049045138889,
         "frame_id": 20,
-        "confidence": 0.8828125,
+        "confidence": 0.9296875,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
-      },
-      {
-        "label": "Building Complex",
-        "semantic_class": "building",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.14495985243055556,
-        "frame_id": 20,
-        "confidence": 0.9453125,
-        "source_region_id": "region_001_Building Complex",
-        "id": "node_001"
-      },
-      {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.019610460069444443,
-        "frame_id": 20,
-        "confidence": 0.9296875,
-        "source_region_id": "region_002_Vehicle",
-        "id": "node_002"
-      },
-      {
-        "label": "Vegetation/Dry Land",
-        "semantic_class": "vegetation",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.5277582465277778,
-        "frame_id": 20,
-        "confidence": 0.9296875,
-        "source_region_id": "region_003_Vegetation/Dry Land",
-        "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_001",
-        "target": "node_002"
-      }
-    ]
+    "links": []
   }
 }

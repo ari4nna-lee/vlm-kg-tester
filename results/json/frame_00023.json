@@ -1,104 +1,37 @@
 {
   "frame_id": 23,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road network intersecting with some buildings and sparse vegetation.",
-  "num_objects": 4,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a paved road intersecting with unpaved, dry vegetation and several buildings.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.65
+      "id": "node_000",
+      "priority": 0.9512
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Road Network",
+        "label": "Roadway",
         "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": [
+          0.49843966973932374,
+          0.4992807817123674
+        ],
+        "priority": 0.9512,
         "track_id": -1,
-        "mask_area": 0.9941536458333333,
+        "mask_area": 0.7013009982638889,
         "frame_id": 23,
-        "confidence": 0.9453125,
-        "source_region_id": "region_000_Road Network",
+        "confidence": 0.953125,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
-      },
-      {
-        "label": "Building Complex",
-        "semantic_class": "building",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.23376844618055556,
-        "frame_id": 23,
-        "confidence": 0.94140625,
-        "source_region_id": "region_001_Building Complex",
-        "id": "node_001"
-      },
-      {
-        "label": "Vegetation/Ground Cover",
-        "semantic_class": "vegetation",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.200693359375,
-        "frame_id": 23,
-        "confidence": 0.9375,
-        "source_region_id": "region_002_Vegetation/Ground Cover",
-        "id": "node_002"
-      },
-      {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.65,
-        "priority": 0.65,
-        "track_id": -1,
-        "mask_area": 0.019619140625,
-        "frame_id": 23,
-        "confidence": 0.96875,
-        "source_region_id": "region_003_Vehicle",
-        "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_001"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_002"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_003"
-      }
-    ]
+    "links": []
   }
 }

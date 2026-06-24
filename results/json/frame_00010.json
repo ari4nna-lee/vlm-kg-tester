@@ -1,28 +1,16 @@
 {
   "frame_id": 10,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersecting with uncultivated, dry terrain and some buildings.",
-  "num_objects": 4,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a paved road intersecting with uncultivated, dry, brush-covered terrain and some developed areas.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
+      "id": "node_000",
+      "priority": 0.9122
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -31,67 +19,19 @@
       {
         "label": "Roadway",
         "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": [
+          0.2662600192685274,
+          0.5215937685034088
+        ],
+        "priority": 0.9122,
         "track_id": -1,
-        "mask_area": 0.40997178819444446,
+        "mask_area": 0.500693359375,
         "frame_id": 10,
-        "confidence": 0.88671875,
+        "confidence": 0.85546875,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
-      },
-      {
-        "label": "Building Complex",
-        "semantic_class": "building",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.09552191840277778,
-        "frame_id": 10,
-        "confidence": 0.953125,
-        "source_region_id": "region_001_Building Complex",
-        "id": "node_001"
-      },
-      {
-        "label": "Vegetation/Terrain",
-        "semantic_class": "vegetation",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.7150900607638889,
-        "frame_id": 10,
-        "confidence": 0.9140625,
-        "source_region_id": "region_002_Vegetation/Terrain",
-        "id": "node_002"
-      },
-      {
-        "label": "Parking Area",
-        "semantic_class": "road",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.03679578993055556,
-        "frame_id": 10,
-        "confidence": 0.96484375,
-        "source_region_id": "region_003_Parking Area",
-        "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_001"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_002",
-        "target": "node_003"
-      }
-    ]
+    "links": []
   }
 }

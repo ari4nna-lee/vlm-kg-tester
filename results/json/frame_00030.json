@@ -1,24 +1,16 @@
 {
   "frame_id": 30,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road bordered by buildings and dry, scrubland vegetation.",
-  "num_objects": 3,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "The aerial image shows a mix of paved roads, buildings, and dry, scrubland terrain.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
+      "id": "node_000",
+      "priority": 0.8497
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -27,38 +19,17 @@
       {
         "label": "Roadway",
         "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": [
+          0.7963500772636152,
+          0.2357834948212496
+        ],
+        "priority": 0.8497,
         "track_id": -1,
-        "mask_area": 0.14029839409722222,
+        "mask_area": 0.10717122395833334,
         "frame_id": 30,
-        "confidence": 0.609375,
+        "confidence": 0.69921875,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
-      },
-      {
-        "label": "Building Complex",
-        "semantic_class": "building",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.1507052951388889,
-        "frame_id": 30,
-        "confidence": 0.95703125,
-        "source_region_id": "region_001_Building Complex",
-        "id": "node_001"
-      },
-      {
-        "label": "Vegetation/Scrubland",
-        "semantic_class": "vegetation",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.4025824652777778,
-        "frame_id": 30,
-        "confidence": 0.91796875,
-        "source_region_id": "region_002_Vegetation/Scrubland",
-        "id": "node_002"
       }
     ],
     "links": []

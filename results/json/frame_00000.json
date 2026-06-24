@@ -1,90 +1,37 @@
 {
   "frame_id": 0,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersection with some markings, a few vehicles, and surrounding dry, vegetated terrain.",
-  "num_objects": 4,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a paved road intersection with some surrounding dry, vegetated terrain and a single white vehicle.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
+      "id": "node_000",
+      "priority": 0.7825
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 1,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.95,
-        "priority": 0.95,
-        "track_id": -1,
-        "mask_area": 0.012796223958333333,
-        "frame_id": 0,
-        "confidence": 0.92578125,
-        "source_region_id": "region_000_Vehicle",
-        "id": "node_000"
-      },
-      {
-        "label": "Road",
+        "label": "Road Intersection",
         "semantic_class": "road",
-        "centroid": 0.85,
-        "priority": 0.85,
+        "centroid": [
+          0.8809243665054673,
+          0.23075192301096592
+        ],
+        "priority": 0.7825,
         "track_id": -1,
         "mask_area": 0.11600151909722223,
         "frame_id": 0,
         "confidence": 0.53125,
-        "source_region_id": "region_001_Road",
-        "id": "node_001"
-      },
-      {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.3792306857638889,
-        "frame_id": 0,
-        "confidence": 0.94140625,
-        "source_region_id": "region_002_Vegetation",
-        "id": "node_002"
-      },
-      {
-        "label": "Building",
-        "semantic_class": "building",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.030926649305555557,
-        "frame_id": 0,
-        "confidence": 0.953125,
-        "source_region_id": "region_003_Building",
-        "id": "node_003"
+        "source_region_id": "region_000_Road Intersection",
+        "id": "node_000"
       }
     ],
-    "links": [
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 0.762,
-        "source": "node_002",
-        "target": "node_000"
-      }
-    ]
+    "links": []
   }
 }

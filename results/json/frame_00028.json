@@ -1,24 +1,16 @@
 {
   "frame_id": 28,
-  "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road bordered by dry, scrubland vegetation and some buildings in the upper right.",
-  "num_objects": 3,
+  "task_prompt": "Identify traversable areas",
+  "scene_summary": "An aerial view shows a transition area between dry, scrubland vegetation and a paved road bordered by buildings.",
+  "num_objects": 1,
   "objects": [
     {
-      "id": null,
-      "priority": 0.95
-    },
-    {
-      "id": null,
-      "priority": 0.85
-    },
-    {
-      "id": null,
-      "priority": 0.75
+      "id": "node_000",
+      "priority": 0.7856
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 1,
+  "global_graph_edges": 0,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -27,38 +19,17 @@
       {
         "label": "Roadway",
         "semantic_class": "road",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": [
+          0.31600144906856725,
+          0.5540503361641897
+        ],
+        "priority": 0.7856,
         "track_id": -1,
-        "mask_area": 0.5208387586805555,
+        "mask_area": 0.2827907986111111,
         "frame_id": 28,
-        "confidence": 0.8828125,
+        "confidence": 0.5390625,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
-      },
-      {
-        "label": "Vegetation/Scrubland",
-        "semantic_class": "vegetation",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.232275390625,
-        "frame_id": 28,
-        "confidence": 0.9609375,
-        "source_region_id": "region_001_Vegetation/Scrubland",
-        "id": "node_001"
-      },
-      {
-        "label": "Building Complex",
-        "semantic_class": "building",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.152392578125,
-        "frame_id": 28,
-        "confidence": 0.9609375,
-        "source_region_id": "region_002_Building Complex",
-        "id": "node_002"
       }
     ],
     "links": []
