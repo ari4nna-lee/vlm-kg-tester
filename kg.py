@@ -476,6 +476,8 @@ class KGStage:
         self,
         seg_output: SegmentationOutput,
         prev_seg_output: Optional[SegmentationOutput] = None,
+        heatmap: Optional[np.ndarray] = None,
+        vlm_output = None,
     ) -> "KGRunResult":
         """
         Parameters
@@ -516,6 +518,10 @@ class KGStage:
         edges = [e for e in edges if e.confidence >= self.config.min_edge_confidence]
 
         G = self._build_graph(nodes, edges)
+
+        if heatmap is not None:
+            self.update_from_heatmap(G, heatmap)
+
         T = self._traversability_subgraph(G)
 
         elapsed = time.perf_counter() - t0

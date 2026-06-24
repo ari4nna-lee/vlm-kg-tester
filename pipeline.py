@@ -71,6 +71,12 @@ HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
 
 out_w, out_h = 1280, 720
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    force=True,
+)
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -97,6 +103,16 @@ class PipelineResult:
     seg_output:     SegmentationOutput
     kg_result:      KGRunResult
 
+@dataclass
+class KGItem:
+    fid: int
+    frame: np.ndarray
+    vlm_output: object
+    seg_output: object
+    encoded_prompts: object
+    heatmap: np.ndarray | None
+    prev_seg: object | None
+    prev_heatmap: np.ndarray | None
 
 # ---------------------------------------------------------------------------
 # Pipeline
@@ -128,16 +144,29 @@ class Pipeline:
     def __init__(self, config: Optional[PipelineConfig] = None):
         self.config = config or PipelineConfig()
         self.vlm     = VLMReasoningPass(self.config.vlm)
+        log.info("Building VLM...")
         self.encoder = PromptEncoder(self.config.encoder)
+        log.info("Building encoder...")
         self.sam     = SAMStage(self.config.sam)
+        log.info("Building SAM stage...")
         self.kg      = KGStage(self.config.kg)
+        log.info("Building KG stage...")
         self._prev_seg: Optional[SegmentationOutput] = None
         self._frame_counter = 0
         self.threads = []
+        log.info("Pipeline init complete.")
 
-        self.frame_q = queue.Queue(maxsize=2)
-        self.sam_q = queue.Queue(maxsize=2)
-        self.kg_q = queue.Queue(maxsize=2)
+        self.kg_q = queue.Queue(maxsize=128)
+        self.vlm_q = queue.Queue(maxsize=128)
+        self.sam_q = queue.Queue(maxsize=128)
+        self.latest_output = None
+
+        self._prev_heatmap: Optional[np.ndarray] = None
+
+        self._output_lock = threading.Lock()
+
+        self.total_frames = len(frames)
+        self.processed_frames = 0
 
         self.writer = cv2.VideoWriter(
             "output.mp4",
@@ -152,51 +181,191 @@ class Pipeline:
         for frame in frame_iterable:
             if stop_event.is_set():
                 break
-            frame_q.put(frame)
+            self.vlm_q.put(frame)
+
+    def vlm_worker(self):
+        i = 0
+        try:
+            while True:
+                try:
+                    item = self.vlm_q.get(timeout=1)
+                except queue.Empty:
+                    continue
+                if item is None:
+                    self.sam_q.put(None)
+                    break
+
+                fid, frame = item
+
+                log.info("vlm_worker received frame %s", fid)
+
+                vlm_output = self.vlm.run(
+                    frame=frame,
+                    task_prompt="describe scene and vehicles",
+                    frame_id=fid,
+                    timestamp=0.0,
+                )
+                log.info("vlm_worker finished VLM call for frame %s", fid)
+
+                encoded = self.encoder.encode(vlm_output)
+
+                # pass BOTH forward (no global cache)
+                self.sam_q.put((fid, frame, vlm_output, encoded))
+
+                i += 1
+
+        except queue.Empty:
+            log.warning("VLM worker stalled waiting for input")
+
+        except Exception as e:
+            log.exception("vlm_worker crashed: %s", e)
+            self.sam_q.put(None)
 
     def sam_worker(self):
-        while True:
-            frame = self.frame_q.get()
+        try:
+            while True:
+                try:
+                    item = self.sam_q.get(timeout=1)
 
-            seg_output = self.sam.run(
-                frame,
-                task_prompt="find traversable areas and cars"
-            )
+                    if isinstance(item, dict) and item.get("type") == "kg_refine":
+                        if item["frame"] is None:
+                            continue
+                        if item.get("fid") is None:
+                            continue
+                        encoded = self.encoder.encode_from_text(item["prompts"])
+                        seg_output = self.sam.run(frame=item["frame"], encoded_prompts=encoded)
+                        fid = item["fid"]
+                        frame = item["frame"]
+                        vlm_output = None
+                    else:
+                        fid, frame, vlm_output, encoded = item
+                        seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
+                except queue.Empty:
+                    continue
 
-            self.sam_q.put((frame, seg_output))
+                log.info("sam_worker received frame %s", fid)
+
+                if item is None:
+                    self.kg_q.put(None)
+                    self.latest_output = None
+                    return
+
+                masks = [m for m in seg_output.masks if m.mask_array is not None]
+
+                heatmap = None
+                log.info("sam_worker building heatmap for frame %s (%d masks)", fid, len(masks))
+                if masks:
+                    heatmap = build_heatmap(
+                        masks=[m.mask_array for m in masks],
+                        priorities=[m.priority for m in masks],
+                        image_hw=frame.shape[:2],
+                    )
+                
+                log.info("sam_worker finished heatmap for frame %s", fid)
+                self.kg_q.put(KGItem(
+                    fid=fid,
+                    frame=frame,
+                    vlm_output=vlm_output,
+                    seg_output=seg_output,
+                    encoded_prompts=encoded,
+                    heatmap=heatmap,
+                    prev_seg=self._prev_seg,
+                    prev_heatmap=None
+                ))
+                log.info("sam_worker put frame %s onto kg_q", fid)
+
+                if heatmap is not None:
+                    vis = cv2.normalize(heatmap, None, 0, 255, cv2.NORM_MINMAX)
+                    vis = vis.astype(np.uint8)
+                    vis = cv2.applyColorMap(vis, cv2.COLORMAP_JET)
+                    cv2.imwrite(str(HEATMAP_DIR / f"frame_{fid:05d}.png"), vis)
+
+        except queue.Empty:
+            log.warning("SAM worker stalled waiting for input")
+
+        except Exception as e:
+            log.exception("sam_worker crashed: %s", e)
+            self.latest_output = None
 
     def kg_worker(self):
-        while True:
-            frame, seg_output = sam_q.get()
+        try:
+            while True:
+                try:
+                    item = self.kg_q.get(timeout=1)
+                except queue.Empty:
+                    continue
 
-            heatmap = build_heatmap(seg_output.masks)
+                if item is None:
+                    with self._output_lock:
+                        self.latest_output = "DONE"
+                    return
 
-            kg_result = self.kg.run(
-                seg_output,
-                prev_seg_output=self._prev_seg
-            )
+                # -------------------------
+                # unpack structured input
+                # -------------------------
+                fid = item.fid
+                frame = item.frame
+                vlm_output = item.vlm_output
+                seg_output = item.seg_output
+                encoded_prompts = item.encoded_prompts
+                prev_seg = item.prev_seg
 
-            self._prev_seg = seg_output
+                log.info("kg_worker received frame %s", fid)
 
-            self.kg_q.put((frame, seg_output, kg_result))
+                heatmap = item.heatmap
 
-    def vlm_worker(self, interval=5):
-        i = 0
-        self.latest_output = None
-
-        while True:
-            frame, seg_output, kg_result = kg_q.get()
-
-            vlm_output = None
-            if i % interval == 0:
-                vlm_output = self.vlm.run(
-                    frame,
-                    task_prompt="describe scene and vehicles"
+                # -------------------------
+                # KG reasoning step
+                # -------------------------
+                kg_result = self.kg.run(
+                    seg_output,
+                    prev_seg_output=prev_seg,
+                    heatmap=heatmap,
+                    vlm_output=vlm_output
                 )
 
-            i += 1
+                # -------------------------
+                # IMPORTANT: persist KG state
+                # -------------------------
+                if not hasattr(self, "_kg_graph"):
+                    self._kg_graph = nx.DiGraph()
 
-            self.latest_output = (frame, seg_output, kg_result, vlm_output)
+                self._kg_graph = nx.compose(self._kg_graph, kg_result.graph)
+                log.info("kg_worker finished frame %s, setting latest_output", fid)
+
+                # -------------------------
+                # FEEDBACK LOOP (this is what you were missing)
+                # -------------------------
+                refined_prompts = getattr(kg_result, "refined_prompts", None)
+
+                if refined_prompts:
+                    self.sam_q.put({
+                        "type": "kg_refine",
+                        "fid": fid,
+                        "frame": frame,
+                        "prompts": refined_prompts
+                    })
+
+                    log.info("KG refined prompts for frame %s: %s", fid, refined_prompts)
+
+                # -------------------------
+                # expose latest output
+                # -------------------------
+                with self._output_lock:
+                    self.latest_output = (
+                        fid,
+                        frame,
+                        seg_output,
+                        kg_result,
+                        vlm_output
+                    )
+                    self.processed_frames += 1
+
+        except Exception as e:
+            log.exception("kg_worker crashed: %s", e)
+            with self._output_lock:
+                self.latest_output = "DONE"   # or signal failure
+            return
 
     def start_workers(self):
 
@@ -204,143 +373,10 @@ class Pipeline:
             threading.Thread(target=self.sam_worker, daemon=True),
             threading.Thread(target=self.kg_worker, daemon=True),
             threading.Thread(target=self.vlm_worker, daemon=True),
-            threading.Thread(target=self.render_loop, daemon=True),
         ]
 
         for t in self.threads:
             t.start()
-
-    def render_loop(self):
-        import time
-
-        while True:
-            if not hasattr(self, "latest_output") or self.latest_output is None:
-                time.sleep(0.01)
-                continue
-
-            frame, seg, kg, vlm = self.latest_output
-
-            frame_viz = overlay_masks(frame, seg.masks)
-            graph_img = render_graph(kg.graph)
-
-            combined = stitch(frame_viz, graph_img)
-
-            cv2.imshow("pipeline", combined)
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-
-    def run(self, frame: np.ndarray, task_prompt: str, timestamp: float = 0.0,) -> PipelineResult:
-        """
-        Run the full pipeline on a single frame.
-
-        Parameters
-        ----------
-        frame : np.ndarray
-            H×W×3 uint8 RGB image.
-        task_prompt : str
-            Natural-language task description (can change per frame).
-        timestamp : float
-            Optional sensor/wall-clock timestamp.
-
-        Returns
-        -------
-        PipelineResult
-        """
-        fid = self._frame_counter
-        self._frame_counter += 1
-        log.info("=== Frame %d ===", fid)
-
-        # Stage 1 — VLM scene reasoning
-        vlm_output = self.vlm.run(
-            frame=frame,
-            task_prompt=task_prompt,
-            frame_id=fid,
-            timestamp=timestamp,
-        )
-        log.info("Stage 1 done: %d priority regions", len(vlm_output.priority_regions))
-
-        # Stage 1b — Prompt encoding
-        encoded = self.encoder.encode(vlm_output)
-
-        log.info("Prompt encoding done: %d SAM prompts (%d skipped)",
-                 len(encoded.prompts), len(encoded.skipped_regions))
-        
-        # -----------------------------
-        # VALIDATE ENCODER OUTPUT
-        # -----------------------------
-        assert hasattr(encoded, "prompts"), "EncodedPrompts missing .prompts"
-        assert hasattr(encoded, "image_hw"), "EncodedPrompts missing .image_hw"
-        assert encoded.image_hw is not None, "Encoder must set image_hw (H, W)"
-
-        from prompt_encoder import SAMPrompt
-
-        assert len(encoded.prompts) > 0, "No SAM prompts generated"
-        assert all(
-            isinstance(p, SAMPrompt) for p in encoded.prompts
-        ), "Encoder must output list[SAMPrompt]"
-
-        # Stage 2 — SAM segmentation
-        seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
-
-        if len(seg_output.masks) == 0:
-            log.warning("No masks returned from SAM — skipping KG stage for this frame")
-            return PipelineResult(
-                frame_id=fid,
-                task_prompt=task_prompt,
-                vlm_output=vlm_output,
-                encoded_prompts=encoded,
-                seg_output=seg_output,
-                kg_result = KGRunResult(
-                    graph=self.kg.empty_graph(),
-                    output=self.kg.empty_output(),
-                )
-            )
-
-        log.info("Stage 2 done: %d masks", len(seg_output.masks))
-
-        heatmap = build_heatmap(
-            masks=[m.mask_array for m in seg_output.masks if m.mask_array is not None],
-            priorities=[m.priority for m in seg_output.masks if m.mask_array is not None],
-            image_hw=frame.shape[:2],
-        )
-
-        heatmap_vis = (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min() + 1e-6)
-        heatmap_vis = (heatmap_vis * 255).astype(np.uint8)
-        colored = cv2.applyColorMap(heatmap_vis, cv2.COLORMAP_JET)
-
-        cv2.imwrite(
-            str(HEATMAP_DIR / f"heatmap_{fid}.png"),
-            colored
-        )
-
-        encoded.prompts = self.encoder.bias_prompts_with_heatmap(encoded.prompts, heatmap)
-
-        # Stage 3 — Knowledge graph construction
-        kg_result = self.kg.run(
-            seg_output=seg_output,
-            prev_seg_output=self._prev_seg,
-        )
-
-        self.kg.update_from_heatmap(kg_result.graph, heatmap)
-
-        log.info(
-            "Stage 3 done: nodes=%d  edges=%d  traversability_edges=%d",
-            kg_result.graph.number_of_nodes(),
-            kg_result.graph.number_of_edges(),
-            kg_result.traversability.number_of_edges(),
-        )
-
-        self._prev_seg = seg_output
-
-        return PipelineResult(
-            frame_id=fid,
-            task_prompt=task_prompt,
-            vlm_output=vlm_output,
-            encoded_prompts=encoded,
-            seg_output=seg_output,
-            kg_result=kg_result,
-        )
 
     def reset(self) -> None:
         """Clear temporal state (call when starting a new sequence)."""
@@ -365,61 +401,86 @@ cfg = PipelineConfig(
     )
 )
 
-G = nx.DiGraph()
 writer = VideoWriter("output.mp4")
 pipeline = Pipeline(cfg)
+pipeline._cached_vlm = None
+pipeline._prev_heatmap = None
+pipeline.start_workers()
 
-for i, frame_path in enumerate(frames):
+def feed_frames():
+    log.info("feed_frames starting, %d frames found", len(frames))
+    for fid, frame_path in enumerate(frames):
+        frame = cv2.cvtColor(cv2.imread(str(frame_path)), cv2.COLOR_BGR2RGB)
+        log.info("queuing frame %s (%s)", fid, frame_path.name)
+        pipeline.vlm_q.put((fid, frame))
+    pipeline.vlm_q.put(None)
+    log.info("feed_frames done")
 
-    frame = cv2.cvtColor(cv2.imread(str(frame_path)), cv2.COLOR_BGR2RGB)
+feed_thread = threading.Thread(target=feed_frames, daemon=True)
+feed_thread.start()
 
-    result = pipeline.run(
-        frame,
-        task_prompt="find traversable areas and identify locations where you would find cars"
-    )
+G = nx.DiGraph()
+
+while True:
+    if not hasattr(pipeline, "latest_output") or pipeline.latest_output is None:
+        time.sleep(0.01)
+        continue
+
+    with pipeline._output_lock:
+        result = pipeline.latest_output
+        pipeline.latest_output = None
+
+    if pipeline.processed_frames >= pipeline.total_frames:
+        break
+
+    if result == "DONE":
+        print("All frames processed.")
+        break
+
+    fid, frame, seg_output, kg_result, vlm_output = result
 
     # -----------------------------
     # 1. UPDATE GLOBAL GRAPH
     # -----------------------------
-    G = nx.compose(G, result.kg_result.graph)
+    G = nx.compose(G, kg_result.graph)
 
     # -----------------------------
     # 2. SAVE FRAME JSON
     # -----------------------------
+
     frame_data = {
-        "frame_id": i,
+        "frame_id": fid,
         "task_prompt": "find traversable areas and identify locations where you would find cars",
 
-        "scene_summary": getattr(result.vlm_output, "scene_summary", None),
+        "scene_summary": getattr(vlm_output, "scene_summary", None),
 
-        "num_objects": len(result.seg_output.masks),
+        "num_objects": len(seg_output.masks),
 
         "objects": [
             {
                 "id": getattr(m, "id", None),
                 "priority": getattr(m, "priority", None)
             }
-            for m in result.seg_output.masks
+            for m in seg_output.masks
         ],
 
         "global_graph_nodes": G.number_of_nodes(),
         "global_graph_edges": G.number_of_edges(),
-
-        "graph": json_graph.node_link_data(result.kg_result.graph)
+        "graph": json_graph.node_link_data(kg_result.graph)
     }
-
-    with open(JSON_DIR / f"frame_{i:05d}.json", "w") as f:
+    
+    log.info("WRITING JSON for frame %s", fid)
+    with open(JSON_DIR / f"frame_{fid:05d}.json", "w") as f:
         json.dump(frame_data, f, indent=2)
 
     # -----------------------------
     # 3. VISUALIZATION (OUTSIDE IO BLOCK)
     # -----------------------------
-    frame_viz = overlay_masks(frame, result.seg_output.masks)
+    frame_viz = overlay_masks(frame, seg_output.masks)
+    graph_img = render_graph(kg_result.graph)
 
-    graph_img = render_graph(G)
-
+    cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)
     combined = stitch(frame_viz, graph_img)
-
     combined = cv2.resize(combined, (out_w, out_h))
 
     # -----------------------------
@@ -435,9 +496,10 @@ for i, frame_path in enumerate(frames):
     # -----------------------------
     # 6. LOGGING
     # -----------------------------
-    print(f"\nFrame {i}")
-    print(getattr(result.vlm_output, "scene_summary", None))
-    print(len(result.seg_output.masks))
+    print(f"\nFrame {fid}")
+    if vlm_output:
+        print(getattr(vlm_output, "scene_summary", None))
+    print(len(seg_output.masks))
 
     # optional exit
     key = cv2.waitKey(1)
@@ -446,3 +508,4 @@ for i, frame_path in enumerate(frames):
 
 cv2.destroyAllWindows()
 writer.close()
+print(f"Done.")

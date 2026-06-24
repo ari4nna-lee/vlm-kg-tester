@@ -161,60 +161,61 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
     H, W = frame.shape[:2]
 
     # 3. per-ROI SAM inference
-    for roi in rois:
-        crop = roi["crop"]
-        prompt = roi["prompt"]
-        ox, oy = roi["offset"]
+    with torch.autocast("cuda", dtype=torch.bfloat16):
+        for roi in rois:
+            crop = roi["crop"]
+            prompt = roi["prompt"]
+            ox, oy = roi["offset"]
 
-        image = Image.fromarray(crop)
+            image = Image.fromarray(crop)
 
-        inference_state = processor.set_image(image)
-        processor.reset_all_prompts(inference_state)
+            inference_state = processor.set_image(image)
+            processor.reset_all_prompts(inference_state)
 
-        # adjust box to crop coordinates
-        x1, y1, x2, y2 = prompt.box.astype(int)
-        box = np.array([
-            x1 - ox,
-            y1 - oy,
-            x2 - ox,
-            y2 - oy
-        ])
+            # adjust box to crop coordinates
+            x1, y1, x2, y2 = prompt.box.astype(int)
+            box = np.array([
+                x1 - ox,
+                y1 - oy,
+                x2 - ox,
+                y2 - oy
+            ])
 
-        inference_state = processor.add_geometric_prompt(
-            state=inference_state,
-            box=box,
-            label=True
-        )
+            inference_state = processor.add_geometric_prompt(
+                state=inference_state,
+                box=box,
+                label=True
+            )
 
-        masks = inference_state.get("masks")
-        scores = inference_state.get("scores")
+            masks = inference_state.get("masks")
+            scores = inference_state.get("scores")
 
-        if masks is None:
-            continue
+            if masks is None:
+                continue
 
-        mask = masks[0].detach().cpu().numpy()
+            mask = masks[0].detach().cpu().numpy()
 
-        # collapse extra dims safely
-        mask = np.squeeze(mask)
+            # collapse extra dims safely
+            mask = np.squeeze(mask)
 
-        # ensure binary
-        mask = mask.astype(bool)
+            # ensure binary
+            mask = mask.astype(bool)
 
-        if mask.ndim != 2:
-            raise ValueError(f"Unexpected mask shape after squeeze: {mask.shape}")
-        
-        score = float(scores[0].detach().cpu()) if scores is not None else 1.0
+            if mask.ndim != 2:
+                raise ValueError(f"Unexpected mask shape after squeeze: {mask.shape}")
+            
+            score = float(scores[0].detach().cpu()) if scores is not None else 1.0
 
-        # 4. project back to full frame
-        full_mask = project_mask(mask, (ox, oy), (H, W))
+            # 4. project back to full frame
+            full_mask = project_mask(mask, (ox, oy), (H, W))
 
-        results.append({
-            "mask": full_mask,
-            "confidence": score,
-            "centroid": roi["prompt"].priority,
-            "mask_area": full_mask.sum() / (H * W),
-            "prompt": prompt,
-        })
+            results.append({
+                "mask": full_mask,
+                "confidence": score,
+                "centroid": roi["prompt"].priority,
+                "mask_area": full_mask.sum() / (H * W),
+                "prompt": prompt,
+            })
 
     return results
 
@@ -297,7 +298,7 @@ class SAMStage:
             model = model.to(device="cuda").eval()
 
             # 2. Open the persistent global autocast context manager
-            torch.autocast("cuda", dtype=torch.bfloat16).__enter__()
+            # torch.autocast("cuda", dtype=torch.bfloat16).__enter__()
 
             self.processor = Sam3Processor(
                 model,
