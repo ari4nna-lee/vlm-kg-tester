@@ -38,6 +38,7 @@ import numpy as np
 from PIL import Image
 from prompt_encoder import SAMPrompt
 import torch
+import cv2
 
 import sam3
 from sam3 import build_sam3_image_model
@@ -206,8 +207,19 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             
             score = float(scores[0].detach().cpu()) if scores is not None else 1.0
 
+            crop_h, crop_w = crop.shape[:2]
+            if mask.shape != (crop_h, crop_w):
+                mask_resized = cv2.resize(
+                    mask.astype(np.unit8),
+                    (crop_w, crop_h),
+                    interpolation=cv2.INTER_NEAREST
+                ).astype(bool)
+            else:
+                mask_resized = mask
+
             # 4. project back to full frame
-            full_mask = project_mask(mask, (ox, oy), (H, W))
+            print(f"crop shape: {crop.shape[:2]}, mask shape: {mask.shape}, offset: {(ox, oy)}, full: {(H, W)}")
+            full_mask = project_mask(mask_resized, (ox, oy), (H, W))
 
             results.append({
                 "mask": full_mask,

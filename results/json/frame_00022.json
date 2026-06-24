@@ -1,7 +1,7 @@
 {
   "frame_id": 22,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersecting with parking areas, some sparse vegetation, and a cluster of buildings.",
+  "scene_summary": "An aerial view shows a paved road intersecting with unpaved, dry terrain, bordered by some buildings and sparse vegetation.",
   "num_objects": 4,
   "objects": [
     {
@@ -21,8 +21,8 @@
       "priority": 0.6
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 12,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,9 +34,9 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.012336971296932234,
+        "mask_area": 0.6102973090277778,
         "frame_id": 22,
-        "confidence": 0.96484375,
+        "confidence": 0.94140625,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
@@ -46,49 +46,49 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.0032575334821428573,
+        "mask_area": 0.10670789930555556,
         "frame_id": 22,
-        "confidence": 0.953125,
+        "confidence": 0.96484375,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Parking Area",
-        "semantic_class": "road",
+        "label": "Vegetation/Terrain",
+        "semantic_class": "vegetation",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.0031538631453182234,
+        "mask_area": 0.5306846788194445,
         "frame_id": 22,
-        "confidence": 0.9375,
-        "source_region_id": "region_002_Parking Area",
+        "confidence": 0.87890625,
+        "source_region_id": "region_002_Vegetation/Terrain",
         "id": "node_002"
       },
       {
-        "label": "Vegetation/Dry Ground",
-        "semantic_class": "vegetation",
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.007382772257039835,
+        "mask_area": 0.02616427951388889,
         "frame_id": 22,
-        "confidence": 0.97265625,
-        "source_region_id": "region_003_Vegetation/Dry Ground",
+        "confidence": 0.9296875,
+        "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
+        "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.9,
+        "confidence": 0.402,
         "source": "node_000",
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "occluded_by",
         "tier": 1,
-        "confidence": 0.9,
+        "confidence": 0.402,
         "source": "node_002",
         "target": "node_000"
       }

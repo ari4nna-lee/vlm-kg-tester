@@ -1,8 +1,8 @@
 {
   "frame_id": 17,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road running alongside dry, sparsely vegetated terrain and some buildings.",
-  "num_objects": 5,
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated area with some construction activity.",
+  "num_objects": 3,
   "objects": [
     {
       "id": null,
@@ -15,18 +15,10 @@
     {
       "id": null,
       "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
-    },
-    {
-      "id": null,
-      "priority": 0.5
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 12,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -38,9 +30,9 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.012211525047218407,
+        "mask_area": 0.5958072916666667,
         "frame_id": 17,
-        "confidence": 0.92578125,
+        "confidence": 0.91796875,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
@@ -50,47 +42,23 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.00037340995592948715,
+        "mask_area": 0.016591796875,
         "frame_id": 17,
         "confidence": 0.96875,
         "source_region_id": "region_001_Vehicle",
         "id": "node_001"
       },
       {
-        "label": "Building",
-        "semantic_class": "building",
+        "label": "Construction Area",
+        "semantic_class": "anomaly",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.0011180165049793956,
+        "mask_area": 0.13011827256944444,
         "frame_id": 17,
-        "confidence": 0.984375,
-        "source_region_id": "region_002_Building",
+        "confidence": 0.921875,
+        "source_region_id": "region_002_Construction Area",
         "id": "node_002"
-      },
-      {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.010349416208791208,
-        "frame_id": 17,
-        "confidence": 0.9140625,
-        "source_region_id": "region_003_Vegetation",
-        "id": "node_003"
-      },
-      {
-        "label": "Anomaly",
-        "semantic_class": "anomaly",
-        "centroid": 0.5,
-        "priority": 0.5,
-        "track_id": -1,
-        "mask_area": 0.00038349305317078754,
-        "frame_id": 17,
-        "confidence": 0.97265625,
-        "source_region_id": "region_004_Anomaly",
-        "id": "node_004"
       }
     ],
     "links": [
@@ -105,8 +73,15 @@
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_003",
-        "target": "node_004"
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_001"
       }
     ]
   }

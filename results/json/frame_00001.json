@@ -1,7 +1,7 @@
 {
   "frame_id": 1,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows an intersection of paved roads, some landscaping, and a few vehicles.",
+  "scene_summary": "An aerial view shows a paved road intersection with some landscaping and a few vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -10,11 +10,11 @@
     },
     {
       "id": null,
-      "priority": 0.85
+      "priority": 0.9
     },
     {
       "id": null,
-      "priority": 0.7
+      "priority": 0.75
     },
     {
       "id": null,
@@ -34,33 +34,33 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.0003580282022664835,
+        "mask_area": 0.012489149305555556,
         "frame_id": 1,
-        "confidence": 0.95703125,
+        "confidence": 0.93359375,
         "source_region_id": "region_000_Vehicle",
         "id": "node_000"
       },
       {
         "label": "Road",
         "semantic_class": "road",
-        "centroid": 0.85,
-        "priority": 0.85,
+        "centroid": 0.9,
+        "priority": 0.9,
         "track_id": -1,
-        "mask_area": 0.02046862032823947,
+        "mask_area": 0.8806684027777778,
         "frame_id": 1,
-        "confidence": 0.94921875,
+        "confidence": 0.94140625,
         "source_region_id": "region_001_Road",
         "id": "node_001"
       },
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
-        "centroid": 0.7,
-        "priority": 0.7,
+        "centroid": 0.75,
+        "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.002211328303857601,
+        "mask_area": 0.11343641493055556,
         "frame_id": 1,
-        "confidence": 0.96875,
+        "confidence": 0.92578125,
         "source_region_id": "region_002_Vegetation",
         "id": "node_002"
       },
@@ -70,9 +70,9 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.0006974999284569597,
+        "mask_area": 0.025450303819444443,
         "frame_id": 1,
-        "confidence": 0.96875,
+        "confidence": 0.9453125,
         "source_region_id": "region_003_Building",
         "id": "node_003"
       }

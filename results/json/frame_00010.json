@@ -1,7 +1,7 @@
 {
   "frame_id": 10,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some buildings in the foreground.",
+  "scene_summary": "An aerial view shows a paved road intersecting with uncultivated, dry terrain and some buildings.",
   "num_objects": 4,
   "objects": [
     {
@@ -21,8 +21,8 @@
       "priority": 0.6
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,34 +34,34 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.009388257819654303,
+        "mask_area": 0.40997178819444446,
         "frame_id": 10,
-        "confidence": 0.9375,
+        "confidence": 0.88671875,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Embankment/Terrain",
-        "semantic_class": "vegetation",
+        "label": "Building Complex",
+        "semantic_class": "building",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.016580032516311814,
+        "mask_area": 0.090634765625,
         "frame_id": 10,
-        "confidence": 0.96484375,
-        "source_region_id": "region_001_Embankment/Terrain",
+        "confidence": 0.9140625,
+        "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Buildings",
-        "semantic_class": "building",
+        "label": "Vegetation/Terrain",
+        "semantic_class": "vegetation",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.001588121351304945,
+        "mask_area": 0.7150900607638889,
         "frame_id": 10,
-        "confidence": 0.9609375,
-        "source_region_id": "region_002_Buildings",
+        "confidence": 0.9140625,
+        "source_region_id": "region_002_Vegetation/Terrain",
         "id": "node_002"
       },
       {
@@ -70,9 +70,9 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.0033565311641483514,
+        "mask_area": 0.03679578993055556,
         "frame_id": 10,
-        "confidence": 0.98046875,
+        "confidence": 0.96484375,
         "source_region_id": "region_003_Parking Area",
         "id": "node_003"
       }
@@ -83,13 +83,13 @@
         "tier": 1,
         "confidence": 1.0,
         "source": "node_000",
-        "target": "node_002"
+        "target": "node_001"
       },
       {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_001",
+        "source": "node_002",
         "target": "node_003"
       }
     ]

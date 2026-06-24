@@ -1,0 +1,66 @@
+{
+  "frame_id": 30,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a paved road bordered by buildings and dry, sparse vegetation.",
+  "num_objects": 3,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.75
+    }
+  ],
+  "global_graph_nodes": 4,
+  "global_graph_edges": 12,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.14029839409722222,
+        "frame_id": 30,
+        "confidence": 0.609375,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.16688042534722222,
+        "frame_id": 30,
+        "confidence": 0.95703125,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Dry Ground",
+        "semantic_class": "vegetation",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.3877994791666667,
+        "frame_id": 30,
+        "confidence": 0.92578125,
+        "source_region_id": "region_002_Vegetation/Dry Ground",
+        "id": "node_002"
+      }
+    ],
+    "links": []
+  }
+}

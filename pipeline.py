@@ -42,7 +42,7 @@ from structure import VLMSceneOutput, SegmentationOutput
 
 from visualization.render_frame import overlay_masks
 from visualization.render_graph import render_graph
-from visualization.video_writer import VideoWriter, stitch
+from visualization.video_writer import stitch
 
 from heatmap import build_heatmap
 
@@ -69,7 +69,14 @@ JSON_DIR.mkdir(parents=True, exist_ok=True)
 GRAPH_DIR.mkdir(parents=True, exist_ok=True)
 HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
 
-out_w, out_h = 1280, 720
+TARGET_H, TARGET_W = 720, 1280
+
+writer = cv2.VideoWriter(
+            "output.avi",
+            cv2.VideoWriter_fourcc(*"XVID"),
+            20,
+            (TARGET_W, TARGET_H)
+        )
 
 logging.basicConfig(
     level=logging.INFO,
@@ -167,13 +174,6 @@ class Pipeline:
 
         self.total_frames = len(frames)
         self.processed_frames = 0
-
-        self.writer = cv2.VideoWriter(
-            "output.mp4",
-            cv2.VideoWriter_fourcc(*"mp4v"),
-            20,
-            (out_w, out_h)
-        )
 
     # ------------------------------------------------------------------
 
@@ -401,7 +401,6 @@ cfg = PipelineConfig(
     )
 )
 
-writer = VideoWriter("output.mp4")
 pipeline = Pipeline(cfg)
 pipeline._cached_vlm = None
 pipeline._prev_heatmap = None
@@ -411,6 +410,7 @@ def feed_frames():
     log.info("feed_frames starting, %d frames found", len(frames))
     for fid, frame_path in enumerate(frames):
         frame = cv2.cvtColor(cv2.imread(str(frame_path)), cv2.COLOR_BGR2RGB)
+        frame = cv2.resize(frame, (TARGET_W, TARGET_H))
         log.info("queuing frame %s (%s)", fid, frame_path.name)
         pipeline.vlm_q.put((fid, frame))
     pipeline.vlm_q.put(None)
@@ -481,7 +481,8 @@ while True:
 
     cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)
     combined = stitch(frame_viz, graph_img)
-    combined = cv2.resize(combined, (out_w, out_h))
+    combined = cv2.resize(combined, (TARGET_W, TARGET_H))
+    combined_bgr = cv2.cvtColor(combined, cv2.COLOR_RGB2BGR)
 
     # -----------------------------
     # 4. DISPLAY (OPTIONAL)
@@ -491,7 +492,7 @@ while True:
     # -----------------------------
     # 5. WRITE VIDEO
     # -----------------------------
-    writer.write(combined)
+    writer.write(combined_bgr)
 
     # -----------------------------
     # 6. LOGGING
@@ -507,5 +508,5 @@ while True:
         break
 
 cv2.destroyAllWindows()
-writer.close()
+writer.release()
 print(f"Done.")

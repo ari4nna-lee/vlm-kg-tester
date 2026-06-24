@@ -1,8 +1,8 @@
 {
   "frame_id": 13,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated hillside with some structures in the upper right.",
-  "num_objects": 3,
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, scrubland area with some structures in the upper right.",
+  "num_objects": 4,
   "objects": [
     {
       "id": null,
@@ -15,10 +15,14 @@
     {
       "id": null,
       "priority": 0.75
+    },
+    {
+      "id": null,
+      "priority": 0.6
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -30,49 +34,61 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.008922445555746337,
+        "mask_area": 0.24603407118055556,
         "frame_id": 13,
-        "confidence": 0.96484375,
+        "confidence": 0.9375,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Hillside/Terrain",
+        "label": "Scrubland/Terrain",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.021925795558608057,
+        "mask_area": 0.6328363715277778,
         "frame_id": 13,
-        "confidence": 0.96875,
-        "source_region_id": "region_001_Hillside/Terrain",
+        "confidence": 0.89453125,
+        "source_region_id": "region_001_Scrubland/Terrain",
         "id": "node_001"
       },
       {
-        "label": "Structures",
+        "label": "Structure/Ruins",
         "semantic_class": "building",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.0026468912760416667,
+        "mask_area": 0.1430251736111111,
         "frame_id": 13,
-        "confidence": 0.984375,
-        "source_region_id": "region_002_Structures",
+        "confidence": 0.9375,
+        "source_region_id": "region_002_Structure/Ruins",
         "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": 0.6,
+        "priority": 0.6,
+        "track_id": -1,
+        "mask_area": 0.023567708333333333,
+        "frame_id": 13,
+        "confidence": 0.95703125,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
       }
     ],
     "links": [
       {
-        "predicate": "occludes",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.418,
+        "confidence": 1.0,
         "source": "node_000",
-        "target": "node_001"
+        "target": "node_003"
       },
       {
-        "predicate": "occluded_by",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.418,
+        "confidence": 0.755,
         "source": "node_001",
         "target": "node_000"
       },
@@ -81,7 +97,7 @@
         "tier": 1,
         "confidence": 1.0,
         "source": "node_001",
-        "target": "node_002"
+        "target": "node_003"
       }
     ]
   }

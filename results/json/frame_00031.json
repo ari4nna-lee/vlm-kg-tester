@@ -1,0 +1,82 @@
+{
+  "frame_id": 31,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a mix of buildings, paved roads, and undeveloped, dry vegetation.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.7
+    },
+    {
+      "id": null,
+      "priority": 0.6
+    }
+  ],
+  "global_graph_nodes": 4,
+  "global_graph_edges": 12,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Network",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.2061501736111111,
+        "frame_id": 31,
+        "confidence": 0.55859375,
+        "source_region_id": "region_000_Road Network",
+        "id": "node_000"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.19581380208333332,
+        "frame_id": 31,
+        "confidence": 0.92578125,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Dry Land",
+        "semantic_class": "vegetation",
+        "centroid": 0.7,
+        "priority": 0.7,
+        "track_id": -1,
+        "mask_area": 0.4044585503472222,
+        "frame_id": 31,
+        "confidence": 0.94140625,
+        "source_region_id": "region_002_Vegetation/Dry Land",
+        "id": "node_002"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": 0.6,
+        "priority": 0.6,
+        "track_id": -1,
+        "mask_area": 0.11072482638888889,
+        "frame_id": 31,
+        "confidence": 0.953125,
+        "source_region_id": "region_003_Building Complex",
+        "id": "node_003"
+      }
+    ],
+    "links": []
+  }
+}

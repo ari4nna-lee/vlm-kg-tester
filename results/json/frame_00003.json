@@ -1,12 +1,16 @@
 {
   "frame_id": 3,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersection surrounded by dry, hilly terrain with some sparse vegetation.",
-  "num_objects": 3,
+  "scene_summary": "An aerial view shows a paved road intersection with some landscaping and a few parked vehicles.",
+  "num_objects": 4,
   "objects": [
     {
       "id": null,
       "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
     },
     {
       "id": null,
@@ -30,35 +34,47 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.017995757497710624,
+        "mask_area": 0.9979665798611111,
         "frame_id": 3,
-        "confidence": 0.87109375,
+        "confidence": 0.921875,
         "source_region_id": "region_000_Road Intersection",
         "id": "node_000"
       },
       {
-        "label": "Vegetation/Hills",
-        "semantic_class": "vegetation",
-        "centroid": 0.6,
-        "priority": 0.75,
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": 0.85,
+        "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.003149525848500458,
+        "mask_area": 0.02216037326388889,
         "frame_id": 3,
-        "confidence": 0.9609375,
-        "source_region_id": "region_001_Vegetation/Hills",
+        "confidence": 0.9765625,
+        "source_region_id": "region_001_Vehicle",
         "id": "node_001"
       },
       {
-        "label": "Road",
-        "semantic_class": "road",
-        "centroid": 0.4,
+        "label": "Vegetation",
+        "semantic_class": "vegetation",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.191484375,
+        "frame_id": 3,
+        "confidence": 0.91015625,
+        "source_region_id": "region_002_Vegetation",
+        "id": "node_002"
+      },
+      {
+        "label": "Building",
+        "semantic_class": "building",
+        "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.0022754263965201467,
+        "mask_area": 0.022369791666666666,
         "frame_id": 3,
-        "confidence": 0.93359375,
-        "source_region_id": "region_002_Road",
-        "id": "node_002"
+        "confidence": 0.953125,
+        "source_region_id": "region_003_Building",
+        "id": "node_003"
       }
     ],
     "links": [
@@ -70,18 +86,18 @@
         "target": "node_001"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_002",
-        "target": "node_000"
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
       }
     ]
   }

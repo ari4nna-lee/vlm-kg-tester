@@ -1,7 +1,7 @@
 {
   "frame_id": 14,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a dry, sparsely vegetated, hilly terrain bordering an asphalt road.",
+  "scene_summary": "An aerial view shows a dry, sparsely vegetated field bordered by paved roads.",
   "num_objects": 4,
   "objects": [
     {
@@ -18,10 +18,10 @@
     },
     {
       "id": null,
-      "priority": 0.6
+      "priority": 0.5
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 10,
   "graph": {
     "directed": true,
@@ -34,54 +34,61 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.00896125765510531,
+        "mask_area": 0.376806640625,
         "frame_id": 14,
         "confidence": 0.90625,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Dry Terrain/Vegetation",
+        "label": "Field/Vegetation",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.013959410950377747,
+        "mask_area": 0.6764854600694444,
         "frame_id": 14,
-        "confidence": 0.95703125,
-        "source_region_id": "region_001_Dry Terrain/Vegetation",
+        "confidence": 0.9375,
+        "source_region_id": "region_001_Field/Vegetation",
         "id": "node_001"
       },
       {
-        "label": "Dirt Track/Path",
+        "label": "Road/Path",
         "semantic_class": "road",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.006634745056375916,
+        "mask_area": 0.22049370659722223,
         "frame_id": 14,
-        "confidence": 0.94140625,
-        "source_region_id": "region_002_Dirt Track/Path",
+        "confidence": 0.92578125,
+        "source_region_id": "region_002_Road/Path",
         "id": "node_002"
       },
       {
-        "label": "Structure/Building Fragment",
-        "semantic_class": "building",
-        "centroid": 0.6,
-        "priority": 0.6,
+        "label": "Anomaly",
+        "semantic_class": "anomaly",
+        "centroid": 0.5,
+        "priority": 0.5,
         "track_id": -1,
-        "mask_area": 0.00042067307692307695,
+        "mask_area": 0.018075086805555557,
         "frame_id": 14,
-        "confidence": 0.96875,
-        "source_region_id": "region_003_Structure/Building Fragment",
+        "confidence": 0.94921875,
+        "source_region_id": "region_003_Anomaly",
         "id": "node_003"
       }
     ],
     "links": [
       {
-        "predicate": "occludes",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.426,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
         "source": "node_001",
         "target": "node_002"
       },
@@ -93,11 +100,11 @@
         "target": "node_003"
       },
       {
-        "predicate": "occluded_by",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.426,
+        "confidence": 0.9,
         "source": "node_002",
-        "target": "node_001"
+        "target": "node_000"
       }
     ]
   }
