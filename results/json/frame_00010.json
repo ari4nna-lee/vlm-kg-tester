@@ -1,7 +1,7 @@
 {
   "frame_id": 10,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road bordered by dry, scrubby terrain and some buildings.",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some buildings in the foreground.",
   "num_objects": 4,
   "objects": [
     {
@@ -21,8 +21,8 @@
       "priority": 0.6
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 8,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -41,19 +41,19 @@
         "id": "node_000"
       },
       {
-        "label": "Dry Terrain/Brush",
+        "label": "Embankment/Terrain",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.01767025902157738,
+        "mask_area": 0.016580032516311814,
         "frame_id": 10,
-        "confidence": 0.953125,
-        "source_region_id": "region_001_Dry Terrain/Brush",
+        "confidence": 0.96484375,
+        "source_region_id": "region_001_Embankment/Terrain",
         "id": "node_001"
       },
       {
-        "label": "Building Complex",
+        "label": "Buildings",
         "semantic_class": "building",
         "centroid": 0.75,
         "priority": 0.75,
@@ -61,7 +61,7 @@
         "mask_area": 0.001588121351304945,
         "frame_id": 10,
         "confidence": 0.9609375,
-        "source_region_id": "region_002_Building Complex",
+        "source_region_id": "region_002_Buildings",
         "id": "node_002"
       },
       {
@@ -70,7 +70,7 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.0030612596225389195,
+        "mask_area": 0.0033565311641483514,
         "frame_id": 10,
         "confidence": 0.98046875,
         "source_region_id": "region_003_Parking Area",
@@ -88,7 +88,7 @@
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 0.862,
+        "confidence": 1.0,
         "source": "node_001",
         "target": "node_003"
       }

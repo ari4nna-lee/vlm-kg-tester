@@ -1,0 +1,118 @@
+{
+  "frame_id": 12,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated hillside.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.6
+    },
+    {
+      "id": null,
+      "priority": 0.5
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 9,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.010432741493532509,
+        "frame_id": 12,
+        "confidence": 0.93359375,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Hillside/Terrain",
+        "semantic_class": "vegetation",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.015681161286630038,
+        "frame_id": 12,
+        "confidence": 0.90234375,
+        "source_region_id": "region_001_Hillside/Terrain",
+        "id": "node_001"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": 0.6,
+        "priority": 0.6,
+        "track_id": -1,
+        "mask_area": 0.00012750311212225276,
+        "frame_id": 12,
+        "confidence": 0.921875,
+        "source_region_id": "region_002_Vehicle",
+        "id": "node_002"
+      },
+      {
+        "label": "Vegetation/Brush",
+        "semantic_class": "vegetation",
+        "centroid": 0.5,
+        "priority": 0.5,
+        "track_id": -1,
+        "mask_area": 0.002529784261961996,
+        "frame_id": 12,
+        "confidence": 0.94921875,
+        "source_region_id": "region_003_Vegetation/Brush",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.409,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.409,
+        "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_002"
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "frame_id": 6,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved intersection with surrounding landscaping and a few parked vehicles.",
+  "scene_summary": "An aerial view shows a paved intersection with surrounding landscaping, some buildings, and a few parked vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -21,8 +21,8 @@
       "priority": 0.65
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,9 +34,9 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.0004407945570054945,
+        "mask_area": 0.00038259876516712454,
         "frame_id": 6,
-        "confidence": 0.88671875,
+        "confidence": 0.87890625,
         "source_region_id": "region_000_Vehicle",
         "id": "node_000"
       },
@@ -53,27 +53,27 @@
         "id": "node_001"
       },
       {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
+        "label": "Building",
+        "semantic_class": "building",
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.0030597393329326924,
+        "mask_area": 0.001770645532852564,
         "frame_id": 6,
-        "confidence": 0.9140625,
-        "source_region_id": "region_002_Vegetation",
+        "confidence": 0.9375,
+        "source_region_id": "region_002_Building",
         "id": "node_002"
       },
       {
-        "label": "Building",
-        "semantic_class": "building",
+        "label": "Vegetation",
+        "semantic_class": "vegetation",
         "centroid": 0.65,
         "priority": 0.65,
         "track_id": -1,
-        "mask_area": 0.001207870092147436,
+        "mask_area": 0.004836041237408425,
         "frame_id": 6,
-        "confidence": 0.97265625,
-        "source_region_id": "region_003_Building",
+        "confidence": 0.90234375,
+        "source_region_id": "region_003_Vegetation",
         "id": "node_003"
       }
     ],
@@ -102,8 +102,8 @@
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 0.87,
-        "source": "node_002",
+        "confidence": 0.926,
+        "source": "node_003",
         "target": "node_000"
       }
     ]

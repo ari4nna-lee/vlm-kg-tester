@@ -1,0 +1,104 @@
+{
+  "frame_id": 18,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated hillside with some buildings in the upper right.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.75
+    },
+    {
+      "id": null,
+      "priority": 0.6
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 12,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.01656424833304716,
+        "frame_id": 18,
+        "confidence": 0.90625,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Vehicles",
+        "semantic_class": "vehicle",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.0005394345238095238,
+        "frame_id": 18,
+        "confidence": 0.97265625,
+        "source_region_id": "region_001_Vehicles",
+        "id": "node_001"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.003378553006238553,
+        "frame_id": 18,
+        "confidence": 0.94140625,
+        "source_region_id": "region_002_Building Complex",
+        "id": "node_002"
+      },
+      {
+        "label": "Vegetation/Terrain",
+        "semantic_class": "vegetation",
+        "centroid": 0.6,
+        "priority": 0.6,
+        "track_id": -1,
+        "mask_area": 0.0115438719808837,
+        "frame_id": 18,
+        "confidence": 0.8828125,
+        "source_region_id": "region_003_Vegetation/Terrain",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_001"
+      }
+    ]
+  }
+}

@@ -14,7 +14,7 @@
     },
     {
       "id": null,
-      "priority": 0.7
+      "priority": 0.75
     },
     {
       "id": null,
@@ -34,9 +34,9 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.0006434849330357143,
+        "mask_area": 0.0006076910556891026,
         "frame_id": 0,
-        "confidence": 0.94921875,
+        "confidence": 0.94140625,
         "source_region_id": "region_000_Vehicle",
         "id": "node_000"
       },
@@ -55,12 +55,12 @@
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
-        "centroid": 0.7,
-        "priority": 0.7,
+        "centroid": 0.75,
+        "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.003240072508871337,
+        "mask_area": 0.005121609754178113,
         "frame_id": 0,
-        "confidence": 0.92578125,
+        "confidence": 0.94140625,
         "source_region_id": "region_002_Vegetation",
         "id": "node_002"
       },

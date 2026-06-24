@@ -1,7 +1,7 @@
 {
   "frame_id": 1,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows an intersection of paved roads with some landscaping and a few vehicles present.",
+  "scene_summary": "An aerial view shows an intersection of paved roads, some landscaping, and a few vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -34,7 +34,7 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.00047200520833333334,
+        "mask_area": 0.0003580282022664835,
         "frame_id": 1,
         "confidence": 0.95703125,
         "source_region_id": "region_000_Vehicle",
@@ -58,9 +58,9 @@
         "centroid": 0.7,
         "priority": 0.7,
         "track_id": -1,
-        "mask_area": 0.0026337005279876372,
+        "mask_area": 0.002211328303857601,
         "frame_id": 1,
-        "confidence": 0.94140625,
+        "confidence": 0.96875,
         "source_region_id": "region_002_Vegetation",
         "id": "node_002"
       },
@@ -70,9 +70,9 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.0007068228808951465,
+        "mask_area": 0.0006974999284569597,
         "frame_id": 1,
-        "confidence": 0.9453125,
+        "confidence": 0.96875,
         "source_region_id": "region_003_Building",
         "id": "node_003"
       }

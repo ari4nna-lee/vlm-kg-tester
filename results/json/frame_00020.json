@@ -1,0 +1,90 @@
+{
+  "frame_id": 20,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a road bordered by dry, sparse vegetation on one side and a cluster of buildings and parked vehicles on the other.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.75
+    },
+    {
+      "id": null,
+      "priority": 0.6
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 12,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.010804429945054945,
+        "frame_id": 20,
+        "confidence": 0.91796875,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Buildings",
+        "semantic_class": "building",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.00445116203783196,
+        "frame_id": 20,
+        "confidence": 0.953125,
+        "source_region_id": "region_001_Buildings",
+        "id": "node_001"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.0004145024896978022,
+        "frame_id": 20,
+        "confidence": 0.97265625,
+        "source_region_id": "region_002_Vehicle",
+        "id": "node_002"
+      },
+      {
+        "label": "Vegetation",
+        "semantic_class": "vegetation",
+        "centroid": 0.6,
+        "priority": 0.6,
+        "track_id": -1,
+        "mask_area": 0.011441923148466118,
+        "frame_id": 20,
+        "confidence": 0.9375,
+        "source_region_id": "region_003_Vegetation",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 0.991,
+        "source": "node_000",
+        "target": "node_002"
+      }
+    ]
+  }
+}

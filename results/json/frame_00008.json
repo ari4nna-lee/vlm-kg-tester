@@ -21,8 +21,8 @@
       "priority": 0.65
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 8,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -65,7 +65,7 @@
         "id": "node_002"
       },
       {
-        "label": "Vegetation/Hillside",
+        "label": "Vegetation/Hills",
         "semantic_class": "vegetation",
         "centroid": 0.65,
         "priority": 0.65,
@@ -73,7 +73,7 @@
         "mask_area": 0.009936143365098443,
         "frame_id": 8,
         "confidence": 0.9453125,
-        "source_region_id": "region_003_Vegetation/Hillside",
+        "source_region_id": "region_003_Vegetation/Hills",
         "id": "node_003"
       }
     ],

@@ -1,0 +1,88 @@
+{
+  "frame_id": 13,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated hillside with some structures in the upper right.",
+  "num_objects": 3,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.75
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 9,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.008922445555746337,
+        "frame_id": 13,
+        "confidence": 0.96484375,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Hillside/Terrain",
+        "semantic_class": "vegetation",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.021925795558608057,
+        "frame_id": 13,
+        "confidence": 0.96875,
+        "source_region_id": "region_001_Hillside/Terrain",
+        "id": "node_001"
+      },
+      {
+        "label": "Structures",
+        "semantic_class": "building",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.0026468912760416667,
+        "frame_id": 13,
+        "confidence": 0.984375,
+        "source_region_id": "region_002_Structures",
+        "id": "node_002"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.418,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.418,
+        "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_002"
+      }
+    ]
+  }
+}

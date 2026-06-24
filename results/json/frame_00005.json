@@ -1,7 +1,7 @@
 {
   "frame_id": 5,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows an intersection with paved roads, some landscaping, and a single parked vehicle.",
+  "scene_summary": "An aerial view shows an intersection with paved roads, some landscaping, and a few parked vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -14,14 +14,14 @@
     },
     {
       "id": null,
-      "priority": 0.7
+      "priority": 0.75
     },
     {
       "id": null,
-      "priority": 0.6
+      "priority": 0.65
     }
   ],
-  "global_graph_nodes": 4,
+  "global_graph_nodes": 5,
   "global_graph_edges": 7,
   "graph": {
     "directed": true,
@@ -34,9 +34,9 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.0005394121666094323,
+        "mask_area": 0.0005393674522092491,
         "frame_id": 5,
-        "confidence": 0.9453125,
+        "confidence": 0.95703125,
         "source_region_id": "region_000_Vehicle",
         "id": "node_000"
       },
@@ -55,8 +55,8 @@
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
-        "centroid": 0.7,
-        "priority": 0.7,
+        "centroid": 0.75,
+        "priority": 0.75,
         "track_id": -1,
         "mask_area": 0.007388585129063645,
         "frame_id": 5,
@@ -67,8 +67,8 @@
       {
         "label": "Building",
         "semantic_class": "building",
-        "centroid": 0.6,
-        "priority": 0.6,
+        "centroid": 0.65,
+        "priority": 0.65,
         "track_id": -1,
         "mask_area": 0.0012175284025869963,
         "frame_id": 5,

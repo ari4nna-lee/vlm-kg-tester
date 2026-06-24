@@ -2,11 +2,11 @@
   "frame_id": 4,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
   "scene_summary": "An aerial view shows a paved intersection with a few vehicles, surrounding buildings, and a large, undeveloped, dry patch of land.",
-  "num_objects": 4,
+  "num_objects": 5,
   "objects": [
     {
       "id": null,
-      "priority": 0.95
+      "priority": 0.9
     },
     {
       "id": null,
@@ -19,9 +19,13 @@
     {
       "id": null,
       "priority": 0.6
+    },
+    {
+      "id": null,
+      "priority": 0.5
     }
   ],
-  "global_graph_nodes": 4,
+  "global_graph_nodes": 5,
   "global_graph_edges": 7,
   "graph": {
     "directed": true,
@@ -29,27 +33,27 @@
     "graph": {},
     "nodes": [
       {
+        "label": "Paved Intersection",
+        "semantic_class": "road",
+        "centroid": 0.9,
+        "priority": 0.9,
+        "track_id": -1,
+        "mask_area": 0.011765901334993133,
+        "frame_id": 4,
+        "confidence": 0.9375,
+        "source_region_id": "region_000_Paved Intersection",
+        "id": "node_000"
+      },
+      {
         "label": "Vehicle",
         "semantic_class": "vehicle",
-        "centroid": 0.95,
-        "priority": 0.95,
+        "centroid": 0.85,
+        "priority": 0.85,
         "track_id": -1,
         "mask_area": 0.0004005068824404762,
         "frame_id": 4,
         "confidence": 0.9609375,
-        "source_region_id": "region_000_Vehicle",
-        "id": "node_000"
-      },
-      {
-        "label": "Road",
-        "semantic_class": "road",
-        "centroid": 0.85,
-        "priority": 0.85,
-        "track_id": -1,
-        "mask_area": 0.004460462633070055,
-        "frame_id": 4,
-        "confidence": 0.9375,
-        "source_region_id": "region_001_Road",
+        "source_region_id": "region_001_Vehicle",
         "id": "node_001"
       },
       {
@@ -75,8 +79,42 @@
         "confidence": 0.94140625,
         "source_region_id": "region_003_Vegetation",
         "id": "node_003"
+      },
+      {
+        "label": "Anomaly",
+        "semantic_class": "anomaly",
+        "centroid": 0.5,
+        "priority": 0.5,
+        "track_id": -1,
+        "mask_area": 0.0007057497352907509,
+        "frame_id": 4,
+        "confidence": 0.96875,
+        "source_region_id": "region_004_Anomaly",
+        "id": "node_004"
       }
     ],
-    "links": []
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_003",
+        "target": "node_004"
+      }
+    ]
   }
 }
