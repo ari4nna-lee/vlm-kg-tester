@@ -1,8 +1,8 @@
 {
   "frame_id": 25,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows an intersection of paved roads, some parking areas, and low-rise buildings in a dry, sparsely vegetated environment.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows an intersection of paved roads, some parking areas, and low-rise buildings in a dry, somewhat arid environment.",
+  "num_objects": 3,
   "objects": [
     {
       "id": null,
@@ -15,21 +15,17 @@
     {
       "id": null,
       "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.65
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 12,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Intersection/Road Network",
+        "label": "Road Intersection",
         "semantic_class": "road",
         "centroid": 0.95,
         "priority": 0.95,
@@ -37,7 +33,7 @@
         "mask_area": 0.8374066840277777,
         "frame_id": 25,
         "confidence": 0.94921875,
-        "source_region_id": "region_000_Intersection/Road Network",
+        "source_region_id": "region_000_Road Intersection",
         "id": "node_000"
       },
       {
@@ -63,18 +59,6 @@
         "confidence": 0.953125,
         "source_region_id": "region_002_Parking Area",
         "id": "node_002"
-      },
-      {
-        "label": "Vegetation/Ground Cover",
-        "semantic_class": "vegetation",
-        "centroid": 0.65,
-        "priority": 0.65,
-        "track_id": -1,
-        "mask_area": 0.3719314236111111,
-        "frame_id": 25,
-        "confidence": 0.93359375,
-        "source_region_id": "region_003_Vegetation/Ground Cover",
-        "id": "node_003"
       }
     ],
     "links": [
@@ -93,32 +77,11 @@
         "target": "node_002"
       },
       {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 0.555,
-        "source": "node_000",
-        "target": "node_003"
-      },
-      {
         "predicate": "connected_to",
         "tier": 1,
         "confidence": 0.9,
         "source": "node_002",
         "target": "node_000"
-      },
-      {
-        "predicate": "occluded_by",
-        "tier": 1,
-        "confidence": 0.555,
-        "source": "node_003",
-        "target": "node_000"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_003",
-        "target": "node_002"
       }
     ]
   }

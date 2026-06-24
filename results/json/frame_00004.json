@@ -1,7 +1,7 @@
 {
   "frame_id": 4,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows an intersection with paved roads, some buildings, and a large, undeveloped, and somewhat barren patch of land.",
+  "scene_summary": "An aerial view shows an intersection with paved roads, some buildings, and a large, undeveloped, dry patch of land.",
   "num_objects": 4,
   "objects": [
     {
@@ -22,34 +22,34 @@
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 6,
+  "global_graph_edges": 7,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Road Network",
+        "label": "Road intersection",
         "semantic_class": "road",
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.44324327256944446,
+        "mask_area": 0.42563585069444443,
         "frame_id": 4,
-        "confidence": 0.94140625,
-        "source_region_id": "region_000_Road Network",
+        "confidence": 0.953125,
+        "source_region_id": "region_000_Road intersection",
         "id": "node_000"
       },
       {
-        "label": "Undeveloped Land",
+        "label": "Undeveloped land",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.3923741319444444,
+        "mask_area": 0.36460286458333335,
         "frame_id": 4,
-        "confidence": 0.96875,
-        "source_region_id": "region_001_Undeveloped Land",
+        "confidence": 0.9765625,
+        "source_region_id": "region_001_Undeveloped land",
         "id": "node_001"
       },
       {
@@ -58,22 +58,22 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.02479709201388889,
+        "mask_area": 0.015611979166666666,
         "frame_id": 4,
-        "confidence": 0.97265625,
+        "confidence": 0.9609375,
         "source_region_id": "region_002_Vehicle",
         "id": "node_002"
       },
       {
-        "label": "Building Structures",
+        "label": "Building",
         "semantic_class": "building",
         "centroid": 0.65,
         "priority": 0.65,
         "track_id": -1,
-        "mask_area": 0.06284722222222222,
+        "mask_area": 0.05466254340277778,
         "frame_id": 4,
-        "confidence": 0.9609375,
-        "source_region_id": "region_003_Building Structures",
+        "confidence": 0.94140625,
+        "source_region_id": "region_003_Building",
         "id": "node_003"
       }
     ],

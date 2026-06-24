@@ -1,7 +1,7 @@
 {
   "frame_id": 1,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersection with some landscaping and a few vehicles.",
+  "scene_summary": "An aerial view shows a paved road intersection with some parking areas, landscaping, and a few vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -10,19 +10,19 @@
     },
     {
       "id": null,
-      "priority": 0.9
+      "priority": 0.85
     },
     {
       "id": null,
-      "priority": 0.75
+      "priority": 0.7
     },
     {
       "id": null,
-      "priority": 0.6
+      "priority": 0.5
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 3,
+  "global_graph_edges": 4,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,17 +34,17 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.012489149305555556,
+        "mask_area": 0.007840711805555555,
         "frame_id": 1,
-        "confidence": 0.93359375,
+        "confidence": 0.87890625,
         "source_region_id": "region_000_Vehicle",
         "id": "node_000"
       },
       {
         "label": "Road",
         "semantic_class": "road",
-        "centroid": 0.9,
-        "priority": 0.9,
+        "centroid": 0.85,
+        "priority": 0.85,
         "track_id": -1,
         "mask_area": 0.8806684027777778,
         "frame_id": 1,
@@ -55,8 +55,8 @@
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
-        "centroid": 0.75,
-        "priority": 0.75,
+        "centroid": 0.7,
+        "priority": 0.7,
         "track_id": -1,
         "mask_area": 0.11343641493055556,
         "frame_id": 1,
@@ -67,8 +67,8 @@
       {
         "label": "Building",
         "semantic_class": "building",
-        "centroid": 0.6,
-        "priority": 0.6,
+        "centroid": 0.5,
+        "priority": 0.5,
         "track_id": -1,
         "mask_area": 0.025450303819444443,
         "frame_id": 1,

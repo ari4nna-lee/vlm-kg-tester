@@ -74,7 +74,7 @@ TARGET_H, TARGET_W = 720, 1280
 writer = cv2.VideoWriter(
             "output.avi",
             cv2.VideoWriter_fourcc(*"XVID"),
-            20,
+            2,
             (TARGET_W, TARGET_H)
         )
 
@@ -357,7 +357,8 @@ class Pipeline:
                         frame,
                         seg_output,
                         kg_result,
-                        vlm_output
+                        vlm_output,
+                        heatmap
                     )
                     self.processed_frames += 1
 
@@ -437,7 +438,7 @@ while True:
         print("All frames processed.")
         break
 
-    fid, frame, seg_output, kg_result, vlm_output = result
+    fid, frame, seg_output, kg_result, vlm_output, heatmap = result
 
     # -----------------------------
     # 1. UPDATE GLOBAL GRAPH
@@ -477,6 +478,13 @@ while True:
     # 3. VISUALIZATION (OUTSIDE IO BLOCK)
     # -----------------------------
     frame_viz = overlay_masks(frame, seg_output.masks)
+
+    if heatmap is not None:
+        heatmap_vis = cv2.normalize(heatmap, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+        heatmap_color = cv2.applyColorMap(heatmap_vis, cv2.COLORMAP_JET)
+        heatmap_color = cv2.cvtColor(heatmap_color, cv2.COLOR_BGR2RGB)
+        frame_viz = cv2.addWeighted(frame_viz, 0.6, heatmap_color, 0.4, 0)
+
     graph_img = render_graph(kg_result.graph)
 
     cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)

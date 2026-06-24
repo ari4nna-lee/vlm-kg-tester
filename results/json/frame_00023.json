@@ -22,7 +22,7 @@
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 11,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -46,34 +46,34 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.2349609375,
+        "mask_area": 0.23376844618055556,
         "frame_id": 23,
-        "confidence": 0.9453125,
+        "confidence": 0.94140625,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.75,
-        "priority": 0.75,
-        "track_id": -1,
-        "mask_area": 0.019619140625,
-        "frame_id": 23,
-        "confidence": 0.96875,
-        "source_region_id": "region_002_Vehicle",
-        "id": "node_002"
-      },
-      {
         "label": "Vegetation/Ground Cover",
         "semantic_class": "vegetation",
-        "centroid": 0.65,
-        "priority": 0.65,
+        "centroid": 0.75,
+        "priority": 0.75,
         "track_id": -1,
         "mask_area": 0.200693359375,
         "frame_id": 23,
         "confidence": 0.9375,
-        "source_region_id": "region_003_Vegetation/Ground Cover",
+        "source_region_id": "region_002_Vegetation/Ground Cover",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": 0.65,
+        "priority": 0.65,
+        "track_id": -1,
+        "mask_area": 0.019619140625,
+        "frame_id": 23,
+        "confidence": 0.96875,
+        "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
     ],

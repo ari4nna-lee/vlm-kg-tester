@@ -1,7 +1,7 @@
 {
   "frame_id": 32,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a complex of low-rise buildings with paved roads and some sparse vegetation.",
+  "scene_summary": "An aerial view shows a complex of low-rise buildings with surrounding unpaved and paved areas, including a road and a few parked vehicles.",
   "num_objects": 4,
   "objects": [
     {
@@ -22,34 +22,34 @@
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 12,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Building Complex",
-        "semantic_class": "building",
+        "label": "Roadway",
+        "semantic_class": "road",
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.5373893229166666,
+        "mask_area": 0.1977289496527778,
         "frame_id": 32,
-        "confidence": 0.9453125,
-        "source_region_id": "region_000_Building Complex",
+        "confidence": 0.95703125,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Road Network",
-        "semantic_class": "road",
+        "label": "Building Complex",
+        "semantic_class": "building",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.6476768663194444,
+        "mask_area": 0.2944552951388889,
         "frame_id": 32,
-        "confidence": 0.921875,
-        "source_region_id": "region_001_Road Network",
+        "confidence": 0.9375,
+        "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
@@ -58,9 +58,9 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.025338541666666665,
+        "mask_area": 0.029251302083333333,
         "frame_id": 32,
-        "confidence": 0.96875,
+        "confidence": 0.96484375,
         "source_region_id": "region_002_Vehicle",
         "id": "node_002"
       },
@@ -70,9 +70,9 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.07118489583333333,
+        "mask_area": 0.053031684027777776,
         "frame_id": 32,
-        "confidence": 0.83203125,
+        "confidence": 0.9453125,
         "source_region_id": "region_003_Vegetation",
         "id": "node_003"
       }

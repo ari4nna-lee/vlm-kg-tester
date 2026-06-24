@@ -14,18 +14,18 @@
     },
     {
       "id": null,
-      "priority": 0.75
+      "priority": 0.6
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 11,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Roadway",
+        "label": "Road",
         "semantic_class": "road",
         "centroid": 0.95,
         "priority": 0.95,
@@ -33,11 +33,11 @@
         "mask_area": 0.5261187065972223,
         "frame_id": 16,
         "confidence": 0.93359375,
-        "source_region_id": "region_000_Roadway",
+        "source_region_id": "region_000_Road",
         "id": "node_000"
       },
       {
-        "label": "Vegetation/Terrain",
+        "label": "Vegetation",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
@@ -45,50 +45,29 @@
         "mask_area": 0.5274826388888889,
         "frame_id": 16,
         "confidence": 0.94140625,
-        "source_region_id": "region_001_Vegetation/Terrain",
+        "source_region_id": "region_001_Vegetation",
         "id": "node_001"
       },
       {
-        "label": "Road Edge/Shoulder",
-        "semantic_class": "road",
-        "centroid": 0.75,
-        "priority": 0.75,
+        "label": "Anomaly",
+        "semantic_class": "anomaly",
+        "centroid": 0.6,
+        "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.2916134982638889,
+        "mask_area": 0.014967447916666666,
         "frame_id": 16,
-        "confidence": 0.94140625,
-        "source_region_id": "region_002_Road Edge/Shoulder",
+        "confidence": 0.97265625,
+        "source_region_id": "region_002_Anomaly",
         "id": "node_002"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_000",
-        "target": "node_002"
-      },
-      {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 0.555,
+        "confidence": 1.0,
         "source": "node_001",
         "target": "node_002"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_002",
-        "target": "node_000"
-      },
-      {
-        "predicate": "occluded_by",
-        "tier": 1,
-        "confidence": 0.555,
-        "source": "node_002",
-        "target": "node_001"
       }
     ]
   }

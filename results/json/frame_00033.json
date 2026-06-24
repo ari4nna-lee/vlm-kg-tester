@@ -1,7 +1,7 @@
 {
   "frame_id": 33,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a complex of low-rise buildings with paved roads and some sparse vegetation in the foreground.",
+  "scene_summary": "An aerial view shows a complex of low-rise buildings, paved roads, and some sparse vegetation in an arid environment.",
   "num_objects": 4,
   "objects": [
     {
@@ -22,7 +22,7 @@
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 12,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -46,9 +46,9 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.35040907118055553,
+        "mask_area": 0.41357204861111113,
         "frame_id": 33,
-        "confidence": 0.953125,
+        "confidence": 0.94921875,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
@@ -65,15 +65,15 @@
         "id": "node_002"
       },
       {
-        "label": "Vegetation",
+        "label": "Vegetation/Ground Cover",
         "semantic_class": "vegetation",
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.10370551215277778,
+        "mask_area": 0.1546657986111111,
         "frame_id": 33,
-        "confidence": 0.9609375,
-        "source_region_id": "region_003_Vegetation",
+        "confidence": 0.56640625,
+        "source_region_id": "region_003_Vegetation/Ground Cover",
         "id": "node_003"
       }
     ],
@@ -84,6 +84,13 @@
         "confidence": 1.0,
         "source": "node_000",
         "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
       }
     ]
   }

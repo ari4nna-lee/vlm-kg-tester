@@ -1,8 +1,8 @@
 {
   "frame_id": 28,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road bordered by dry, scrubby vegetation and some buildings in the upper right.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a paved road bordered by dry, scrubland vegetation and some buildings in the upper right.",
+  "num_objects": 3,
   "objects": [
     {
       "id": null,
@@ -15,14 +15,10 @@
     {
       "id": null,
       "priority": 0.75
-    },
-    {
-      "id": null,
-      "priority": 0.6
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 12,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,22 +30,22 @@
         "centroid": 0.95,
         "priority": 0.95,
         "track_id": -1,
-        "mask_area": 0.3279850260416667,
+        "mask_area": 0.5208387586805555,
         "frame_id": 28,
-        "confidence": 0.9140625,
+        "confidence": 0.8828125,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Vegetation/Dry Land",
+        "label": "Vegetation/Scrubland",
         "semantic_class": "vegetation",
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.25776041666666666,
+        "mask_area": 0.232275390625,
         "frame_id": 28,
-        "confidence": 0.96484375,
-        "source_region_id": "region_001_Vegetation/Dry Land",
+        "confidence": 0.9609375,
+        "source_region_id": "region_001_Vegetation/Scrubland",
         "id": "node_001"
       },
       {
@@ -58,33 +54,13 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.1349240451388889,
+        "mask_area": 0.152392578125,
         "frame_id": 28,
-        "confidence": 0.97265625,
+        "confidence": 0.9609375,
         "source_region_id": "region_002_Building Complex",
         "id": "node_002"
-      },
-      {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
-        "centroid": 0.6,
-        "priority": 0.6,
-        "track_id": -1,
-        "mask_area": 0.017724609375,
-        "frame_id": 28,
-        "confidence": 0.9765625,
-        "source_region_id": "region_003_Vehicle",
-        "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_003"
-      }
-    ]
+    "links": []
   }
 }

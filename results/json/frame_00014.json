@@ -58,9 +58,9 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.22049370659722223,
+        "mask_area": 0.25623263888888886,
         "frame_id": 14,
-        "confidence": 0.92578125,
+        "confidence": 0.90234375,
         "source_region_id": "region_002_Road/Path",
         "id": "node_002"
       },

@@ -1,7 +1,7 @@
 {
   "frame_id": 11,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated, and somewhat barren terrain.",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated, and somewhat arid landscape.",
   "num_objects": 4,
   "objects": [
     {
@@ -18,7 +18,7 @@
     },
     {
       "id": null,
-      "priority": 0.65
+      "priority": 0.6
     }
   ],
   "global_graph_nodes": 4,
@@ -46,9 +46,9 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.5529481336805555,
+        "mask_area": 0.6170106336805555,
         "frame_id": 11,
-        "confidence": 0.9296875,
+        "confidence": 0.94140625,
         "source_region_id": "region_001_Dry Terrain",
         "id": "node_001"
       },
@@ -58,22 +58,22 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.04736328125,
+        "mask_area": 0.06970594618055556,
         "frame_id": 11,
-        "confidence": 0.9453125,
+        "confidence": 0.9140625,
         "source_region_id": "region_002_Parking Area",
         "id": "node_002"
       },
       {
-        "label": "Road Edge/Shoulder",
+        "label": "Unpaved Path",
         "semantic_class": "road",
-        "centroid": 0.65,
-        "priority": 0.65,
+        "centroid": 0.6,
+        "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.05749240451388889,
+        "mask_area": 0.08115993923611112,
         "frame_id": 11,
-        "confidence": 0.91015625,
-        "source_region_id": "region_003_Road Edge/Shoulder",
+        "confidence": 0.95703125,
+        "source_region_id": "region_003_Unpaved Path",
         "id": "node_003"
       }
     ],
@@ -86,18 +86,11 @@
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_000",
+        "confidence": 1.0,
+        "source": "node_001",
         "target": "node_003"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_003",
-        "target": "node_000"
       }
     ]
   }

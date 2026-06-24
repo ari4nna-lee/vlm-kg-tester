@@ -1,7 +1,7 @@
 {
   "frame_id": 26,
   "task_prompt": "find traversable areas and identify locations where you would find cars",
-  "scene_summary": "An aerial view shows a paved road intersection with several parked vehicles and adjacent buildings in a dry, somewhat arid environment.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some parked vehicles and surrounding buildings in a dry, somewhat arid environment.",
   "num_objects": 4,
   "objects": [
     {
@@ -18,11 +18,11 @@
     },
     {
       "id": null,
-      "priority": 0.6
+      "priority": 0.65
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 12,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -46,9 +46,9 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.017327473958333332,
+        "mask_area": 0.012005208333333333,
         "frame_id": 26,
-        "confidence": 0.9765625,
+        "confidence": 0.96875,
         "source_region_id": "region_001_Vehicle",
         "id": "node_001"
       },
@@ -58,17 +58,17 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.14662109375,
+        "mask_area": 0.14821614583333334,
         "frame_id": 26,
-        "confidence": 0.9140625,
+        "confidence": 0.9375,
         "source_region_id": "region_002_Building Complex",
         "id": "node_002"
       },
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
-        "centroid": 0.6,
-        "priority": 0.6,
+        "centroid": 0.65,
+        "priority": 0.65,
         "track_id": -1,
         "mask_area": 0.1897829861111111,
         "frame_id": 26,

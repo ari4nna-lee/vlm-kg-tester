@@ -70,9 +70,9 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.01569118923611111,
+        "mask_area": 0.02437934027777778,
         "frame_id": 7,
-        "confidence": 0.9609375,
+        "confidence": 0.95703125,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
@@ -105,13 +105,6 @@
         "confidence": 0.9,
         "source": "node_001",
         "target": "node_000"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_002",
-        "target": "node_003"
       }
     ]
   }

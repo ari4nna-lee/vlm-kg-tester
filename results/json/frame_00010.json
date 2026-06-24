@@ -46,9 +46,9 @@
         "centroid": 0.85,
         "priority": 0.85,
         "track_id": -1,
-        "mask_area": 0.090634765625,
+        "mask_area": 0.09552191840277778,
         "frame_id": 10,
-        "confidence": 0.9140625,
+        "confidence": 0.953125,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },

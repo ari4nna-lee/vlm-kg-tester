@@ -22,7 +22,7 @@
     }
   ],
   "global_graph_nodes": 4,
-  "global_graph_edges": 0,
+  "global_graph_edges": 1,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -58,9 +58,9 @@
         "centroid": 0.75,
         "priority": 0.75,
         "track_id": -1,
-        "mask_area": 0.18341579861111112,
+        "mask_area": 0.3792306857638889,
         "frame_id": 0,
-        "confidence": 0.93359375,
+        "confidence": 0.94140625,
         "source_region_id": "region_002_Vegetation",
         "id": "node_002"
       },
@@ -70,13 +70,21 @@
         "centroid": 0.6,
         "priority": 0.6,
         "track_id": -1,
-        "mask_area": 0.027368706597222223,
+        "mask_area": 0.030926649305555557,
         "frame_id": 0,
-        "confidence": 0.97265625,
+        "confidence": 0.953125,
         "source_region_id": "region_003_Building",
         "id": "node_003"
       }
     ],
-    "links": []
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 0.762,
+        "source": "node_002",
+        "target": "node_000"
+      }
+    ]
   }
 }
