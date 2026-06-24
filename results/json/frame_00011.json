@@ -1,0 +1,66 @@
+{
+  "frame_id": 11,
+  "task_prompt": "find traversable areas and identify locations where you would find cars",
+  "scene_summary": "An aerial view shows a multi-lane road bordered by dry, scrubby vegetation and some residential structures.",
+  "num_objects": 3,
+  "objects": [
+    {
+      "id": null,
+      "priority": 0.95
+    },
+    {
+      "id": null,
+      "priority": 0.85
+    },
+    {
+      "id": null,
+      "priority": 0.75
+    }
+  ],
+  "global_graph_nodes": 4,
+  "global_graph_edges": 8,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": 0.95,
+        "priority": 0.95,
+        "track_id": -1,
+        "mask_area": 0.007036280370020604,
+        "frame_id": 11,
+        "confidence": 0.9609375,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Vegetation/Terrain",
+        "semantic_class": "vegetation",
+        "centroid": 0.85,
+        "priority": 0.85,
+        "track_id": -1,
+        "mask_area": 0.005113985948946886,
+        "frame_id": 11,
+        "confidence": 0.6953125,
+        "source_region_id": "region_001_Vegetation/Terrain",
+        "id": "node_001"
+      },
+      {
+        "label": "Building/Residential Area",
+        "semantic_class": "building",
+        "centroid": 0.75,
+        "priority": 0.75,
+        "track_id": -1,
+        "mask_area": 0.001720610119047619,
+        "frame_id": 11,
+        "confidence": 0.93359375,
+        "source_region_id": "region_002_Building/Residential Area",
+        "id": "node_002"
+      }
+    ],
+    "links": []
+  }
+}
