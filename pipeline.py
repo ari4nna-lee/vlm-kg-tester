@@ -180,6 +180,9 @@ class Pipeline:
         self.total_frames = len(frames)
         self.processed_frames = 0
 
+        self._last_vlm_output = None
+        self.vlm_skip_interval = 2  # run VLM every n frame
+
     # ------------------------------------------------------------------
 
     def frame_reader(self, frame_iterable, stop_event):
@@ -189,7 +192,6 @@ class Pipeline:
             self.vlm_q.put(frame)
 
     def vlm_worker(self):
-        i = 0
         try:
             while True:
                 try:
@@ -204,20 +206,23 @@ class Pipeline:
 
                 log.info("vlm_worker received frame %s", fid)
 
-                vlm_output = self.vlm.run(
-                    frame=frame,
-                    task_prompt="describe the scene",
-                    frame_id=fid,
-                    timestamp=0.0,
-                )
-                log.info("vlm_worker finished VLM call for frame %s", fid)
+                if fid % self.vlm_skip_interval == 0 or self._last_vlm_output is None:
+                    vlm_output = self.vlm.run(
+                        frame=frame,
+                        task_prompt="describe the scene",
+                        frame_id=fid,
+                        timestamp=0.0,
+                    )
+                    self._last_vlm_output = vlm_output
+                    log.info("vlm_worker ran VLM for frame %s", fid)
+                else:
+                    vlm_output = self._last_vlm_output
+                    log.info("vlm_worker skipped VLM for frame %s, reusing frame %s output",
+                            fid, fid - (fid % self.vlm_skip_interval))
 
                 encoded = self.encoder.encode(vlm_output)
-
-                # pass BOTH forward (no global cache)
                 self.sam_q.put((fid, frame, vlm_output, encoded))
 
-                i += 1
 
         except queue.Empty:
             log.warning("VLM worker stalled waiting for input")
@@ -229,36 +234,37 @@ class Pipeline:
     def sam_worker(self):
         try:
             while True:
+                # --- get next item, falling back to refine queue ---
                 try:
                     item = self.sam_q.get(timeout=1)
-                    if isinstance(item, dict) and item.get("type") == "kg_refine":
-                        if item["frame"] is None:
-                            continue
-                        if item.get("fid") is None:
-                            continue
-                        encoded = self.encoder.encode_from_text(item["prompts"])
-                        seg_output = self.sam.run(frame=item["frame"], encoded_prompts=encoded)
-                        fid = item["fid"]
-                        frame = item["frame"]
-                        vlm_output = None
-                    else:
-                        fid, frame, vlm_output, encoded = item
-                        seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
                 except queue.Empty:
                     try:
                         item = self.sam_refine_q.get_nowait()
                     except queue.Empty:
                         continue
 
-                log.info("sam_worker received frame %s", fid)
-
+                # --- shutdown signal ---
                 if item is None:
                     self.kg_q.put(None)
-                    self.latest_output = None
                     return
 
-                masks = [m for m in seg_output.masks if m.mask_array is not None]
+                # --- unpack based on item type ---
+                if isinstance(item, dict) and item.get("type") == "kg_refine":
+                    if item["frame"] is None or item.get("fid") is None:
+                        continue
+                    fid = item["fid"]
+                    frame = item["frame"]
+                    vlm_output = None
+                    encoded = self.encoder.encode_from_text(item["prompts"])
+                else:
+                    fid, frame, vlm_output, encoded = item
 
+                seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
+
+                log.info("sam_worker received frame %s", fid)
+
+                # --- heatmap ---
+                masks = [m for m in seg_output.masks if m.mask_array is not None]
                 heatmap = None
                 log.info("sam_worker building heatmap for frame %s (%d masks)", fid, len(masks))
                 if masks:
@@ -267,7 +273,7 @@ class Pipeline:
                         priorities=[m.priority for m in masks],
                         image_hw=frame.shape[:2],
                     )
-                
+
                 log.info("sam_worker finished heatmap for frame %s", fid)
                 self.kg_q.put(KGItem(
                     fid=fid,
@@ -287,12 +293,9 @@ class Pipeline:
                     vis = cv2.applyColorMap(vis, cv2.COLORMAP_JET)
                     cv2.imwrite(str(HEATMAP_DIR / f"frame_{fid:05d}.png"), vis)
 
-        except queue.Empty:
-            log.warning("SAM worker stalled waiting for input")
-
         except Exception as e:
             log.exception("sam_worker crashed: %s", e)
-            self.latest_output = None
+            self.kg_q.put(None)  # ensure kg_worker doesn't hang if sam dies
 
     def kg_worker(self):
         try:
@@ -431,6 +434,7 @@ class Pipeline:
             threading.Thread(target=self.sam_worker, daemon=True),
             threading.Thread(target=self.kg_worker, daemon=True),
             threading.Thread(target=self.vlm_worker, daemon=True),
+            threading.Thread(target=self.vlm_worker, daemon=True),
             threading.Thread(target=self.output_worker, daemon=True)
         ]
 
@@ -449,7 +453,7 @@ frames = sorted(IMAGE_DIR.glob("*.jpg"))
 cfg = PipelineConfig(
     vlm=VLMConfig(
         backend="gemma",
-        model_name="google/gemma-4-E4B-it",
+        model_name="google/gemma-4-E2B-it",
         grpc_endpoint="http://localhost:8000/v1",
         device="cuda",
         temperature=0.2
@@ -477,8 +481,6 @@ def feed_frames():
 
 feed_thread = threading.Thread(target=feed_frames, daemon=True)
 feed_thread.start()
-
-G = nx.DiGraph()
 
 while True:
     if not hasattr(pipeline, "latest_output") or pipeline.latest_output is None:

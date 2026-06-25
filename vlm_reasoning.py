@@ -28,6 +28,7 @@ from dataclasses import dataclass, field
 from typing import Literal, Optional
 import numpy as np
 import base64
+import re
 
 from io import BytesIO
 from PIL import Image
@@ -49,7 +50,7 @@ class VLMConfig:
     backend: Literal["gemma", "stub"] = "stub"
     model_name: str = "stub"
     device: str = "cuda"
-    max_new_tokens: int = 1024
+    max_new_tokens: int = 512
     temperature: float = 0.2
     # If running the VLM on a ground station over the wire, set this.
     grpc_endpoint: Optional[str] = None
@@ -115,6 +116,12 @@ def _call_stub(frame: np.ndarray, task_prompt: str, cfg: VLMConfig) -> dict:
         ],
     }
 
+def _empty_vlm_output() -> dict:
+    return {
+        "scene_summary": "",
+        "priority_regions": [],
+    }
+
 def _call_gemma(frame: np.ndarray,
                 task_prompt: str,
                 cfg: VLMConfig) -> dict:
@@ -130,6 +137,7 @@ def _call_gemma(frame: np.ndarray,
 
     # Convert image -> base64
     pil_img = Image.fromarray(frame)
+    pil_img = pil_img.resize((640, 360), Image.LANCZOS)  # half res
 
     buffer = BytesIO()
     pil_img.save(buffer, format="JPEG")
@@ -188,7 +196,18 @@ def _call_gemma(frame: np.ndarray,
 
     text = text[start:end]
 
-    return json.loads(text)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # attempt to extract the first valid JSON object from the response
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group())
+            except json.JSONDecodeError:
+                pass
+        log.warning("Gemma returned unparseable JSON, returning empty output. Raw: %s", text[:200])
+        return _empty_vlm_output()  # whatever your fallback/default return looks like
 
 _BACKENDS = {
     "gemma":    _call_gemma,

@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg")  # must be before importing pyplot
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import networkx as nx
