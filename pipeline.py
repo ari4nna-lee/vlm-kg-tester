@@ -499,8 +499,6 @@ while True:
 
     pipeline.output_q.put(result)
 
-    print(f"\nFrame {fid}")
-
 cv2.destroyAllWindows()
 writer.release()
 print(f"Done.")
