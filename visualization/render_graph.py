@@ -25,14 +25,13 @@ def render_graph(G, size=(6, 6)):
         for node in G.nodes()
     ]
     if priorities:
-        p_min, p_max = min(priorities), max(priorities)
-        p_range = p_max - p_min if p_max > p_min else 1.0
-        normalized = [(p - p_min) / p_range for p in priorities]
+        normalized = [G.nodes[n].get("priority", 0.0) for n in G.nodes()]
     else:
         normalized = []
 
     cmap = cm.get_cmap("jet")
-    node_colors = [cmap(v) for v in normalized]
+    norm = plt.Normalize(vmin=0.0, vmax=1.0)
+    node_colors = [cmap(norm(v)) for v in normalized]
 
     # --- labels ---
     node_labels = {
@@ -43,6 +42,12 @@ def render_graph(G, size=(6, 6)):
         (u, v): data.get("relation", data.get("predicate", ""))
         for u, v, data in G.edges(data=True)
     }
+
+    print("=== render_graph debug ===")
+    print(f"cmap name: {cmap.name}")
+    print(f"norm range: {norm.vmin} - {norm.vmax}")
+    for node, v in zip(G.nodes(), normalized):
+        print(f"  {G.nodes[node].get('label', node)}: priority={v} -> color={cmap(norm(v))}")
 
     nx.draw(
         G,
@@ -65,13 +70,10 @@ def render_graph(G, size=(6, 6)):
     )
 
     # --- colorbar legend ---
-    sm = cm.ScalarMappable(
-        cmap=cmap,
-        norm=plt.Normalize(vmin=p_min if priorities else 0,
-                           vmax=p_max if priorities else 1)
-    )
+    
+    sm = cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])
-    plt.colorbar(sm, ax=fig.axes[0], label="priority", shrink=0.6)
+    cbar = plt.colorbar(sm, ax=fig.axes[0], label="priority", shrink=0.6)
 
     fig.canvas.draw()
     img = np.asarray(fig.canvas.buffer_rgba())

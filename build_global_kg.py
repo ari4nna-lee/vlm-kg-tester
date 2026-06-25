@@ -113,13 +113,10 @@ def render_global_graph(G: nx.DiGraph, output_path: Path):
             break
 
     # --- node colors from priority ---
-    priorities = [G.nodes[n].get("priority", 0.0) for n in G.nodes()]
-    p_min = min(priorities) if priorities else 0.0
-    p_max = max(priorities) if priorities else 1.0
-    p_range = p_max - p_min if p_max > p_min else 1.0
-    normalized = [(p - p_min) / p_range for p in priorities]
+    normalized = [G.nodes[n].get("priority", 0.0) for n in G.nodes()]
     cmap = cm.get_cmap("jet")
-    node_colors = [cmap(v) for v in normalized]
+    norm = plt.Normalize(vmin=0.0, vmax=1.0)
+    node_colors = [cmap(norm(v)) for v in normalized]
 
     # --- node labels ---
     node_labels = {
@@ -167,10 +164,9 @@ def render_global_graph(G: nx.DiGraph, output_path: Path):
                                         fc="white", alpha=0.5))
 
     # --- colorbar ---
-    sm = cm.ScalarMappable(cmap=cmap,
-                           norm=plt.Normalize(vmin=p_min, vmax=p_max))
+    sm = cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])
-    plt.colorbar(sm, ax=ax, label="priority", shrink=0.5)
+    cbar = plt.colorbar(sm, ax=fig.axes[0], label="priority", shrink=0.6)
 
     # --- legend for edge types ---
     from matplotlib.lines import Line2D
