@@ -49,7 +49,7 @@ class VLMConfig:
     backend: Literal["gemma", "stub"] = "gemma"
     model_name: str = "gemma"
     device: str = "cuda"
-    max_new_tokens: int = 512
+    max_new_tokens: int = 128
     temperature: float = 0.2
     # If running the VLM on a ground station over the wire, set this.
     grpc_endpoint: Optional[str] = None
