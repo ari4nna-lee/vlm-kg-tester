@@ -195,7 +195,7 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             masks = inference_state.get("masks")
             scores = inference_state.get("scores")
 
-            if masks is None:
+            if masks is None or masks.shape[0] == 0:
                 continue
 
             mask = masks[0].detach().cpu().numpy()
@@ -209,7 +209,7 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
             if mask.ndim != 2:
                 raise ValueError(f"Unexpected mask shape after squeeze: {mask.shape}")
             
-            score = float(scores[0].detach().cpu()) if scores is not None else 1.0
+            score = float(scores[0].detach().cpu()) if (scores is not None and scores.shape[0] > 0) else 1.0
 
             crop_h, crop_w = crop.shape[:2]
             if mask.shape != (crop_h, crop_w):
