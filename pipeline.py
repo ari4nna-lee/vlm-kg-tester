@@ -388,7 +388,7 @@ class Pipeline:
 
             frame_data = {
                 "frame_id": fid,
-                "task_prompt": "Identify traversable areas",
+                "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
 
                 "scene_summary": getattr(vlm_output, "scene_summary", None),
 
@@ -433,7 +433,6 @@ class Pipeline:
         self.threads = [
             threading.Thread(target=self.sam_worker, daemon=True),
             threading.Thread(target=self.kg_worker, daemon=True),
-            threading.Thread(target=self.vlm_worker, daemon=True),
             threading.Thread(target=self.vlm_worker, daemon=True),
             threading.Thread(target=self.output_worker, daemon=True)
         ]
