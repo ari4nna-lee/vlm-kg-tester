@@ -187,6 +187,10 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
                 box=box,
                 label=True
             )
+            inference_state = processor.set_text_prompt(
+                prompt=prompt.label,
+                state=inference_state
+            )
 
             masks = inference_state.get("masks")
             scores = inference_state.get("scores")
@@ -234,7 +238,7 @@ def _sam3_segment(self, processor, frame, prompts, cfg):
                 "prompt": prompt,
             })
 
-            return results
+        return results
 
 # ---------------------------------------------------------------------------
 # NanoSAM backend (Jetson on-device)

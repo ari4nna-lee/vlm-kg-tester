@@ -166,11 +166,16 @@ class Pipeline:
         self.kg_q = queue.Queue(maxsize=128)
         self.vlm_q = queue.Queue(maxsize=128)
         self.sam_q = queue.Queue(maxsize=128)
+        self.output_q = queue.Queue(maxsize=64)
+        self.sam_refine_q = queue.Queue(maxsize=32)
+
         self.latest_output = None
+        self._kg_graph = nx.DiGraph()
 
         self._prev_heatmap: Optional[np.ndarray] = None
 
         self._output_lock = threading.Lock()
+        self._graph_lock = threading.Lock()
 
         self.total_frames = len(frames)
         self.processed_frames = 0
@@ -226,7 +231,6 @@ class Pipeline:
             while True:
                 try:
                     item = self.sam_q.get(timeout=1)
-
                     if isinstance(item, dict) and item.get("type") == "kg_refine":
                         if item["frame"] is None:
                             continue
@@ -241,7 +245,10 @@ class Pipeline:
                         fid, frame, vlm_output, encoded = item
                         seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
                 except queue.Empty:
-                    continue
+                    try:
+                        item = self.sam_refine_q.get_nowait()
+                    except queue.Empty:
+                        continue
 
                 log.info("sam_worker received frame %s", fid)
 
@@ -323,15 +330,9 @@ class Pipeline:
                     heatmap=heatmap,
                     vlm_output=vlm_output
                 )
-
-                # -------------------------
-                # IMPORTANT: persist KG state
-                # -------------------------
-                if not hasattr(self, "_kg_graph"):
-                    self._kg_graph = nx.DiGraph()
-
-                self._kg_graph = nx.compose(self._kg_graph, kg_result.graph)
-                log.info("kg_worker finished frame %s, setting latest_output", fid)
+                with self._graph_lock:
+                    self._kg_graph = nx.compose(self._kg_graph, kg_result.graph)
+                    log.info("kg_worker finished frame %s, setting latest_output", fid)
 
                 # -------------------------
                 # FEEDBACK LOOP (this is what you were missing)
@@ -339,7 +340,7 @@ class Pipeline:
                 refined_prompts = getattr(kg_result, "refined_prompts", None)
 
                 if refined_prompts:
-                    self.sam_q.put({
+                    self.sam_refine_q.put({
                         "type": "kg_refine",
                         "fid": fid,
                         "frame": frame,
@@ -367,6 +368,62 @@ class Pipeline:
             with self._output_lock:
                 self.latest_output = "DONE"   # or signal failure
             return
+        
+    def output_worker(self):
+        while True:
+            try:
+                item = self.output_q.get(timeout=2)
+            except queue.Empty:
+                continue
+            if item is None:
+                break
+
+            fid, frame, seg_output, kg_result, vlm_output, heatmap = item
+            with self._graph_lock:
+                n_nodes = self._kg_graph.number_of_nodes()
+                n_edges = self._kg_graph.number_of_edges()
+
+            frame_data = {
+                "frame_id": fid,
+                "task_prompt": "Identify traversable areas",
+
+                "scene_summary": getattr(vlm_output, "scene_summary", None),
+
+                "num_objects": len(seg_output.masks),
+
+                "objects": [
+                    {
+                        "id": getattr(m, "node_id", None),
+                        "priority": getattr(m, "priority", None)
+                    }
+                    for m in seg_output.masks
+                ],
+                "global_graph_nodes": n_nodes,
+                "global_graph_edges": n_edges,
+                "graph": json_graph.node_link_data(kg_result.graph)
+            }
+            
+            log.info("WRITING JSON for frame %s", fid)
+            with open(JSON_DIR / f"frame_{fid:05d}.json", "w") as f:
+                json.dump(frame_data, f, indent=2)
+
+            frame_viz = overlay_masks(frame, seg_output.masks)
+
+            if heatmap is not None:
+                heatmap_vis = cv2.normalize(heatmap, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+                heatmap_color = cv2.applyColorMap(heatmap_vis, cv2.COLORMAP_JET)
+                heatmap_color = cv2.cvtColor(heatmap_color, cv2.COLOR_BGR2RGB)
+                frame_viz = cv2.addWeighted(frame_viz, 0.6, heatmap_color, 0.4, 0)
+
+            graph_img = render_graph(kg_result.graph)
+
+            cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)
+            combined = stitch(frame_viz, graph_img)
+            combined = cv2.resize(combined, (TARGET_W, TARGET_H))
+            combined_bgr = cv2.cvtColor(combined, cv2.COLOR_RGB2BGR)
+
+            writer.write(combined_bgr)
+            log.info("output_worker wrote frame %s", fid)
 
     def start_workers(self):
 
@@ -374,6 +431,7 @@ class Pipeline:
             threading.Thread(target=self.sam_worker, daemon=True),
             threading.Thread(target=self.kg_worker, daemon=True),
             threading.Thread(target=self.vlm_worker, daemon=True),
+            threading.Thread(target=self.output_worker, daemon=True)
         ]
 
         for t in self.threads:
@@ -391,7 +449,7 @@ frames = sorted(IMAGE_DIR.glob("*.jpg"))
 cfg = PipelineConfig(
     vlm=VLMConfig(
         backend="gemma",
-        model_name="google/gemma-4-E2B-it",
+        model_name="google/gemma-4-E4B-it",
         grpc_endpoint="http://localhost:8000/v1",
         device="cuda",
         temperature=0.2
@@ -434,86 +492,14 @@ while True:
     if pipeline.processed_frames >= pipeline.total_frames:
         break
 
-    if result == "DONE":
+    if result == "DONE" or pipeline.processed_frames >= pipeline.total_frames:
+        pipeline.output_q.put(None)
         print("All frames processed.")
         break
 
-    fid, frame, seg_output, kg_result, vlm_output, heatmap = result
+    pipeline.output_q.put(result)
 
-    # -----------------------------
-    # 1. UPDATE GLOBAL GRAPH
-    # -----------------------------
-    G = nx.compose(G, kg_result.graph)
-
-    # -----------------------------
-    # 2. SAVE FRAME JSON
-    # -----------------------------
-
-    frame_data = {
-        "frame_id": fid,
-        "task_prompt": "Identify traversable areas",
-
-        "scene_summary": getattr(vlm_output, "scene_summary", None),
-
-        "num_objects": len(seg_output.masks),
-
-        "objects": [
-            {
-                "id": getattr(m, "node_id", None),
-                "priority": getattr(m, "priority", None)
-            }
-            for m in seg_output.masks
-        ],
-
-        "global_graph_nodes": G.number_of_nodes(),
-        "global_graph_edges": G.number_of_edges(),
-        "graph": json_graph.node_link_data(kg_result.graph)
-    }
-    
-    log.info("WRITING JSON for frame %s", fid)
-    with open(JSON_DIR / f"frame_{fid:05d}.json", "w") as f:
-        json.dump(frame_data, f, indent=2)
-
-    # -----------------------------
-    # 3. VISUALIZATION (OUTSIDE IO BLOCK)
-    # -----------------------------
-    frame_viz = overlay_masks(frame, seg_output.masks)
-
-    if heatmap is not None:
-        heatmap_vis = cv2.normalize(heatmap, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-        heatmap_color = cv2.applyColorMap(heatmap_vis, cv2.COLORMAP_JET)
-        heatmap_color = cv2.cvtColor(heatmap_color, cv2.COLOR_BGR2RGB)
-        frame_viz = cv2.addWeighted(frame_viz, 0.6, heatmap_color, 0.4, 0)
-
-    graph_img = render_graph(kg_result.graph)
-
-    cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)
-    combined = stitch(frame_viz, graph_img)
-    combined = cv2.resize(combined, (TARGET_W, TARGET_H))
-    combined_bgr = cv2.cvtColor(combined, cv2.COLOR_RGB2BGR)
-
-    # -----------------------------
-    # 4. DISPLAY (OPTIONAL)
-    # -----------------------------
-    # cv2.imshow("pipeline", combined)
-
-    # -----------------------------
-    # 5. WRITE VIDEO
-    # -----------------------------
-    writer.write(combined_bgr)
-
-    # -----------------------------
-    # 6. LOGGING
-    # -----------------------------
     print(f"\nFrame {fid}")
-    if vlm_output:
-        print(getattr(vlm_output, "scene_summary", None))
-    print(len(seg_output.masks))
-
-    # optional exit
-    key = cv2.waitKey(1)
-    if key & 0xFF == ord('q'):
-        break
 
 cv2.destroyAllWindows()
 writer.release()

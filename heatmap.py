@@ -26,7 +26,7 @@ def build_heatmap(masks, priorities, image_hw):
             dist /= dist.max()
 
         dist = np.power(dist, 0.6)
-        dist = cv2.GaussianBlur(dist, (0, 0), sigmaX=15)
+        # dist = cv2.GaussianBlur(dist, (0, 0), sigmaX=15)
 
         heatmap += dist * p
 
