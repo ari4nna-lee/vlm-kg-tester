@@ -7,8 +7,7 @@ and returns a VLMSceneOutput containing:
   - a list of PriorityRegion objects (label, bbox, priority, class, reason)
 
 The VLM is expected to respond in structured JSON so the output can be
-deterministically parsed into typed dataclasses.  A stub backend is
-included for testing without a live model.
+deterministically parsed into typed dataclasses.
 
 Typical usage
 -------------
@@ -47,8 +46,8 @@ log = logging.getLogger(__name__)
 
 @dataclass
 class VLMConfig:
-    backend: Literal["gemma", "stub"] = "stub"
-    model_name: str = "stub"
+    backend: Literal["gemma", "stub"] = "gemma"
+    model_name: str = "gemma"
     device: str = "cuda"
     max_new_tokens: int = 512
     temperature: float = 0.2
@@ -92,29 +91,6 @@ No trailing commas.
 # ---------------------------------------------------------------------------
 # Backend adapters
 # ---------------------------------------------------------------------------
-
-def _call_stub(frame: np.ndarray, task_prompt: str, cfg: VLMConfig) -> dict:
-    """Returns deterministic fake output for unit testing."""
-    return {
-        "scene_summary": "Urban intersection with mixed vehicle and pedestrian traffic observed from nadir view.",
-        "priority_regions": [
-            {"label": "main_road_corridor", "bbox": {"x": 0.1, "y": 0.3, "w": 0.8, "h": 0.2},
-             "priority": 0.95, "semantic_class": "road",
-             "reason": "Primary traversal corridor spanning scene width."},
-            {"label": "vehicle_cluster_nw", "bbox": {"x": 0.05, "y": 0.1, "w": 0.25, "h": 0.2},
-             "priority": 0.85, "semantic_class": "vehicle",
-             "reason": "Dense vehicle cluster may impede access to northwest zone."},
-            {"label": "building_footprint_a", "bbox": {"x": 0.6, "y": 0.05, "w": 0.35, "h": 0.25},
-             "priority": 0.4, "semantic_class": "building",
-             "reason": "Static structure; low priority unless blocking LOS."},
-            {"label": "anomaly_debris", "bbox": {"x": 0.45, "y": 0.55, "w": 0.1, "h": 0.08},
-             "priority": 0.78, "semantic_class": "anomaly",
-             "reason": "Unclassified debris on road surface, potential obstruction."},
-            {"label": "pedestrian_crossing", "bbox": {"x": 0.35, "y": 0.28, "w": 0.12, "h": 0.1},
-             "priority": 0.7, "semantic_class": "person",
-             "reason": "Pedestrian activity at road crossing requires safety monitoring."},
-        ],
-    }
 
 def _empty_vlm_output() -> dict:
     return {
@@ -211,7 +187,6 @@ def _call_gemma(frame: np.ndarray,
 
 _BACKENDS = {
     "gemma":    _call_gemma,
-    "stub":     _call_stub,
 }
 
 
@@ -230,7 +205,7 @@ class VLMReasoningPass:
 
     Example
     -------
-    >>> stage = VLMReasoningPass(VLMConfig(backend="stub"))
+    >>> stage = VLMReasoningPass(VLMConfig(backend="gemma"))
     >>> out = stage.run(frame=np.zeros((720,1280,3), dtype=np.uint8),
     ...                 task_prompt="find high-priority traversal zones",
     ...                 frame_id=0)
