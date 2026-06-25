@@ -1,0 +1,163 @@
+{
+  "frame_id": 1,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road intersection with some parking areas, sparse vegetation, and a single white vehicle.",
+  "num_objects": 5,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9528
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8772
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8203
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7319
+    },
+    {
+      "id": "node_004",
+      "priority": 0.6797
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 7,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Intersection",
+        "semantic_class": "road",
+        "centroid": [
+          0.5051801472102474,
+          0.4395650469382587
+        ],
+        "priority": 0.9528,
+        "track_id": -1,
+        "mask_area": 0.5927571614583333,
+        "frame_id": 0,
+        "confidence": 0.95703125,
+        "source_region_id": "region_000_Road Intersection",
+        "id": "node_000"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.7292901719099726,
+          0.5937504029769636
+        ],
+        "priority": 0.8772,
+        "track_id": -1,
+        "mask_area": 0.02617838541666667,
+        "frame_id": 0,
+        "confidence": 0.91796875,
+        "source_region_id": "region_001_Vehicle",
+        "id": "node_001"
+      },
+      {
+        "label": "Parking Area",
+        "semantic_class": "road",
+        "centroid": [
+          0.15055531691168667,
+          0.18364509252379438
+        ],
+        "priority": 0.8203,
+        "track_id": -1,
+        "mask_area": 0.10222439236111111,
+        "frame_id": 0,
+        "confidence": 0.92578125,
+        "source_region_id": "region_002_Parking Area",
+        "id": "node_002"
+      },
+      {
+        "label": "Vegetation",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.8580714310188279,
+          0.7031098014805678
+        ],
+        "priority": 0.7319,
+        "track_id": -1,
+        "mask_area": 0.12667317708333334,
+        "frame_id": 0,
+        "confidence": 0.9296875,
+        "source_region_id": "region_003_Vegetation",
+        "id": "node_003"
+      },
+      {
+        "label": "Building Structure",
+        "semantic_class": "building",
+        "centroid": [
+          0.42234209590772637,
+          0.42741832130756136
+        ],
+        "priority": 0.6797,
+        "track_id": -1,
+        "mask_area": 0.006867404513888889,
+        "frame_id": 0,
+        "confidence": 0.94921875,
+        "source_region_id": "region_004_Building Structure",
+        "id": "node_004"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.554,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_004"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_002",
+        "target": "node_000"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.554,
+        "source": "node_003",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_003",
+        "target": "node_001"
+      }
+    ]
+  }
+}

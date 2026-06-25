@@ -43,12 +43,6 @@ def render_graph(G, size=(6, 6)):
         for u, v, data in G.edges(data=True)
     }
 
-    print("=== render_graph debug ===")
-    print(f"cmap name: {cmap.name}")
-    print(f"norm range: {norm.vmin} - {norm.vmax}")
-    for node, v in zip(G.nodes(), normalized):
-        print(f"  {G.nodes[node].get('label', node)}: priority={v} -> color={cmap(norm(v))}")
-
     nx.draw(
         G,
         pos,

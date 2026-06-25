@@ -1,0 +1,111 @@
+{
+  "frame_id": 3,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road intersection with some surrounding dry vegetation and scattered trees.",
+  "num_objects": 3,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9434
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8756
+    },
+    {
+      "id": "node_002",
+      "priority": 0.6656
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 9,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Intersection",
+        "semantic_class": "road",
+        "centroid": [
+          0.4997412903015014,
+          0.49817492608102143
+        ],
+        "priority": 0.9434,
+        "track_id": -1,
+        "mask_area": 0.994228515625,
+        "frame_id": 2,
+        "confidence": 0.93359375,
+        "source_region_id": "region_000_Road Intersection",
+        "id": "node_000"
+      },
+      {
+        "label": "Vegetation/Trees",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.5868196179611683,
+          0.3979981098990745
+        ],
+        "priority": 0.8756,
+        "track_id": -1,
+        "mask_area": 0.6526334635416666,
+        "frame_id": 2,
+        "confidence": 0.9140625,
+        "source_region_id": "region_001_Vegetation/Trees",
+        "id": "node_001"
+      },
+      {
+        "label": "Road Markings/Crosswalks",
+        "semantic_class": "road",
+        "centroid": [
+          0.0696960483643542,
+          0.6201306636585824
+        ],
+        "priority": 0.6656,
+        "track_id": -1,
+        "mask_area": 0.001923828125,
+        "frame_id": 2,
+        "confidence": 0.5390625,
+        "source_region_id": "region_002_Road Markings/Crosswalks",
+        "id": "node_002"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_002"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_002",
+        "target": "node_000"
+      }
+    ]
+  }
+}

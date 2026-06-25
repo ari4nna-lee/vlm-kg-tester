@@ -1,0 +1,130 @@
+{
+  "frame_id": 26,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road intersection with surrounding dry, scrubland vegetation and some low-rise buildings.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9544
+    },
+    {
+      "id": "node_001",
+      "priority": 0.885
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8297
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7541
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Intersection",
+        "semantic_class": "road",
+        "centroid": [
+          0.4892119295572138,
+          0.544228130049836
+        ],
+        "priority": 0.9544,
+        "track_id": -1,
+        "mask_area": 0.3214876302083333,
+        "frame_id": 26,
+        "confidence": 0.9609375,
+        "source_region_id": "region_000_Road Intersection",
+        "id": "node_000"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": [
+          0.7510577466985884,
+          0.7483097521153558
+        ],
+        "priority": 0.885,
+        "track_id": -1,
+        "mask_area": 0.14650390625,
+        "frame_id": 26,
+        "confidence": 0.9375,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Scrubland",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.2609286987113949,
+          0.24599926910455663
+        ],
+        "priority": 0.8297,
+        "track_id": -1,
+        "mask_area": 0.2812445746527778,
+        "frame_id": 26,
+        "confidence": 0.94921875,
+        "source_region_id": "region_002_Vegetation/Scrubland",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.274488648117501,
+          0.4136996429611241
+        ],
+        "priority": 0.7541,
+        "track_id": -1,
+        "mask_area": 0.015735677083333333,
+        "frame_id": 26,
+        "confidence": 0.91015625,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.413,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.413,
+        "source": "node_002",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_003"
+      }
+    ]
+  }
+}

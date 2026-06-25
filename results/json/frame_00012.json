@@ -1,0 +1,83 @@
+{
+  "frame_id": 12,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated hillside.",
+  "num_objects": 3,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9387
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8881
+    },
+    {
+      "id": "node_002",
+      "priority": 0.6919
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": [
+          0.2445860389278291,
+          0.4933881516481798
+        ],
+        "priority": 0.9387,
+        "track_id": -1,
+        "mask_area": 0.4641069878472222,
+        "frame_id": 12,
+        "confidence": 0.921875,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Dry Hillside",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.6376419805320597,
+          0.4923776757561281
+        ],
+        "priority": 0.8881,
+        "track_id": -1,
+        "mask_area": 0.716962890625,
+        "frame_id": 12,
+        "confidence": 0.9453125,
+        "source_region_id": "region_001_Dry Hillside",
+        "id": "node_001"
+      },
+      {
+        "label": "Dirt Path",
+        "semantic_class": "road",
+        "centroid": [
+          0.9341491110779543,
+          0.7750003825788877
+        ],
+        "priority": 0.6919,
+        "track_id": -1,
+        "mask_area": 0.011817491319444444,
+        "frame_id": 12,
+        "confidence": 0.6796875,
+        "source_region_id": "region_002_Dirt Path",
+        "id": "node_002"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_002"
+      }
+    ]
+  }
+}

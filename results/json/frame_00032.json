@@ -1,0 +1,94 @@
+{
+  "frame_id": 32,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a residential area with rooftops, paved roads, and some sparse vegetation.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.8966
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8928
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8044
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7475
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Network",
+        "semantic_class": "road",
+        "centroid": [
+          0.5373668820097575,
+          0.48503942914735965
+        ],
+        "priority": 0.8966,
+        "track_id": -1,
+        "mask_area": 0.17859375,
+        "frame_id": 32,
+        "confidence": 0.81640625,
+        "source_region_id": "region_000_Road Network",
+        "id": "node_000"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": [
+          0.2651009540489676,
+          0.22735430004892557
+        ],
+        "priority": 0.8928,
+        "track_id": -1,
+        "mask_area": 0.24100043402777777,
+        "frame_id": 32,
+        "confidence": 0.95703125,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Ground Cover",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.7480129600761163,
+          0.7829576484103175
+        ],
+        "priority": 0.8044,
+        "track_id": -1,
+        "mask_area": 0.2188205295138889,
+        "frame_id": 32,
+        "confidence": 0.9609375,
+        "source_region_id": "region_002_Vegetation/Ground Cover",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.7746121838581701,
+          0.2764689574895997
+        ],
+        "priority": 0.7475,
+        "track_id": -1,
+        "mask_area": 0.017504340277777777,
+        "frame_id": 32,
+        "confidence": 0.96875,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
+      }
+    ],
+    "links": []
+  }
+}

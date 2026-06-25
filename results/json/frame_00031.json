@@ -1,0 +1,109 @@
+{
+  "frame_id": 31,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a mix of residential buildings, paved roads, and undeveloped, arid terrain.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9481
+    },
+    {
+      "id": "node_001",
+      "priority": 0.7428
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8203
+    },
+    {
+      "id": "node_003",
+      "priority": 0.6434
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Residential Buildings",
+        "semantic_class": "building",
+        "centroid": [
+          0.19094365242734276,
+          0.1773956281108892
+        ],
+        "priority": 0.9481,
+        "track_id": -1,
+        "mask_area": 0.13310004340277778,
+        "frame_id": 30,
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Residential Buildings",
+        "id": "node_000"
+      },
+      {
+        "label": "Road Network",
+        "semantic_class": "road",
+        "centroid": [
+          0.359668061406505,
+          0.3616172129661257
+        ],
+        "priority": 0.7428,
+        "track_id": -1,
+        "mask_area": 0.14295247395833333,
+        "frame_id": 30,
+        "confidence": 0.58203125,
+        "source_region_id": "region_001_Road Network",
+        "id": "node_001"
+      },
+      {
+        "label": "Arid Vegetation/Ground",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.7234389386271436,
+          0.6902506096598368
+        ],
+        "priority": 0.8203,
+        "track_id": -1,
+        "mask_area": 0.34824652777777776,
+        "frame_id": 30,
+        "confidence": 0.92578125,
+        "source_region_id": "region_002_Arid Vegetation/Ground",
+        "id": "node_002"
+      },
+      {
+        "label": "Paved Road (Upper)",
+        "semantic_class": "road",
+        "centroid": [
+          0.7867357420126987,
+          0.10810806310287051
+        ],
+        "priority": 0.6434,
+        "track_id": -1,
+        "mask_area": 0.06425672743055555,
+        "frame_id": 30,
+        "confidence": 0.55859375,
+        "source_region_id": "region_003_Paved Road (Upper)",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_001",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_003",
+        "target": "node_001"
+      }
+    ]
+  }
+}

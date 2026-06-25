@@ -1,0 +1,116 @@
+{
+  "frame_id": 20,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a wide asphalt road bordered by dry, scrubland vegetation and some buildings in the upper right.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9403
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8881
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8187
+    },
+    {
+      "id": "node_003",
+      "priority": 0.6025
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": [
+          0.5319912844764128,
+          0.5196165524196356
+        ],
+        "priority": 0.9403,
+        "track_id": -1,
+        "mask_area": 0.6927951388888889,
+        "frame_id": 20,
+        "confidence": 0.92578125,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Vegetation/Scrubland",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.26018625772554915,
+          0.5340704787072271
+        ],
+        "priority": 0.8881,
+        "track_id": -1,
+        "mask_area": 0.4856130642361111,
+        "frame_id": 20,
+        "confidence": 0.9453125,
+        "source_region_id": "region_001_Vegetation/Scrubland",
+        "id": "node_001"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": [
+          0.7495832652820582,
+          0.2992614982038532
+        ],
+        "priority": 0.8187,
+        "track_id": -1,
+        "mask_area": 0.18519314236111112,
+        "frame_id": 20,
+        "confidence": 0.921875,
+        "source_region_id": "region_002_Building Complex",
+        "id": "node_002"
+      },
+      {
+        "label": "Road Edge/Curb",
+        "semantic_class": "road",
+        "centroid": [
+          0.5984415384416569,
+          0.498614323251043
+        ],
+        "priority": 0.6025,
+        "track_id": -1,
+        "mask_area": 0.141689453125,
+        "frame_id": 20,
+        "confidence": 0.53125,
+        "source_region_id": "region_003_Road Edge/Curb",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_003",
+        "target": "node_000"
+      }
+    ]
+  }
+}

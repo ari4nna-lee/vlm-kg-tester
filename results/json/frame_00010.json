@@ -1,0 +1,109 @@
+{
+  "frame_id": 10,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some developed areas.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9372
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8397
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8281
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7728
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Roadway",
+        "semantic_class": "road",
+        "centroid": [
+          0.20144004600279594,
+          0.546020749121305
+        ],
+        "priority": 0.9372,
+        "track_id": -1,
+        "mask_area": 0.16687825520833333,
+        "frame_id": 10,
+        "confidence": 0.91796875,
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Embankment/Terrain",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.6444088800000972,
+          0.4011669673229286
+        ],
+        "priority": 0.8397,
+        "track_id": -1,
+        "mask_area": 0.5583930121527778,
+        "frame_id": 10,
+        "confidence": 0.82421875,
+        "source_region_id": "region_001_Embankment/Terrain",
+        "id": "node_001"
+      },
+      {
+        "label": "Developed Area",
+        "semantic_class": "building",
+        "centroid": [
+          0.16526646519263444,
+          0.8207051782461618
+        ],
+        "priority": 0.8281,
+        "track_id": -1,
+        "mask_area": 0.11814778645833333,
+        "frame_id": 10,
+        "confidence": 0.9453125,
+        "source_region_id": "region_002_Developed Area",
+        "id": "node_002"
+      },
+      {
+        "label": "Parking Lot/Ground",
+        "semantic_class": "road",
+        "centroid": [
+          0.8964501400396779,
+          0.7668767261835298
+        ],
+        "priority": 0.7728,
+        "track_id": -1,
+        "mask_area": 0.03719184027777778,
+        "frame_id": 10,
+        "confidence": 0.95703125,
+        "source_region_id": "region_003_Parking Lot/Ground",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 0.871,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_003"
+      }
+    ]
+  }
+}

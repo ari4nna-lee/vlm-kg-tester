@@ -1,0 +1,163 @@
+{
+  "frame_id": 8,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road intersecting with a curved road and some buildings surrounded by dry, vegetated terrain.",
+  "num_objects": 5,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9481
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8897
+    },
+    {
+      "id": "node_002",
+      "priority": 0.8328
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7744
+    },
+    {
+      "id": "node_004",
+      "priority": 0.6813
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 13,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Main Roadway",
+        "semantic_class": "road",
+        "centroid": [
+          0.28759921574006003,
+          0.5258235633359314
+        ],
+        "priority": 0.9481,
+        "track_id": -1,
+        "mask_area": 0.1963009982638889,
+        "frame_id": 8,
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Main Roadway",
+        "id": "node_000"
+      },
+      {
+        "label": "Intersection Area",
+        "semantic_class": "road",
+        "centroid": [
+          0.4642813463318385,
+          0.6668446681107298
+        ],
+        "priority": 0.8897,
+        "track_id": -1,
+        "mask_area": 0.14009440104166668,
+        "frame_id": 8,
+        "confidence": 0.94921875,
+        "source_region_id": "region_001_Intersection Area",
+        "id": "node_001"
+      },
+      {
+        "label": "Buildings",
+        "semantic_class": "building",
+        "centroid": [
+          0.08973293712382177,
+          0.615565970776394
+        ],
+        "priority": 0.8328,
+        "track_id": -1,
+        "mask_area": 0.05732855902777778,
+        "frame_id": 8,
+        "confidence": 0.95703125,
+        "source_region_id": "region_002_Buildings",
+        "id": "node_002"
+      },
+      {
+        "label": "Vegetation/Hills",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.6502826267146125,
+          0.2690047769212073
+        ],
+        "priority": 0.7744,
+        "track_id": -1,
+        "mask_area": 0.34821831597222225,
+        "frame_id": 8,
+        "confidence": 0.9609375,
+        "source_region_id": "region_003_Vegetation/Hills",
+        "id": "node_003"
+      },
+      {
+        "label": "Parking/Pavement",
+        "semantic_class": "road",
+        "centroid": [
+          0.7059030973421295,
+          0.7412019088643946
+        ],
+        "priority": 0.6813,
+        "track_id": -1,
+        "mask_area": 0.09991861979166666,
+        "frame_id": 8,
+        "confidence": 0.953125,
+        "source_region_id": "region_004_Parking/Pavement",
+        "id": "node_004"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_004"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_001",
+        "target": "node_004"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_004",
+        "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_004",
+        "target": "node_001"
+      }
+    ]
+  }
+}

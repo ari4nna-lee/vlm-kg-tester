@@ -1,0 +1,163 @@
+{
+  "frame_id": 25,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a paved road intersection with some buildings, parking areas, and sparse vegetation in a dry, arid environment.",
+  "num_objects": 5,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.9481
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8881
+    },
+    {
+      "id": "node_002",
+      "priority": 0.7078
+    },
+    {
+      "id": "node_003",
+      "priority": 0.7228
+    },
+    {
+      "id": "node_004",
+      "priority": 0.7066
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Intersection",
+        "semantic_class": "road",
+        "centroid": [
+          0.4399818137668426,
+          0.49900220335255974
+        ],
+        "priority": 0.9481,
+        "track_id": -1,
+        "mask_area": 0.37172743055555557,
+        "frame_id": 24,
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Road Intersection",
+        "id": "node_000"
+      },
+      {
+        "label": "Building Complex",
+        "semantic_class": "building",
+        "centroid": [
+          0.6995979670597687,
+          0.7482134579272395
+        ],
+        "priority": 0.8881,
+        "track_id": -1,
+        "mask_area": 0.18907877604166667,
+        "frame_id": 24,
+        "confidence": 0.9453125,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Dry Ground",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.20661874847539283,
+          0.1735215451460649
+        ],
+        "priority": 0.7078,
+        "track_id": -1,
+        "mask_area": 0.16013346354166666,
+        "frame_id": 24,
+        "confidence": 0.64453125,
+        "source_region_id": "region_002_Vegetation/Dry Ground",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.37438546661107636,
+          0.31412061164771193
+        ],
+        "priority": 0.7228,
+        "track_id": -1,
+        "mask_area": 0.015615234375,
+        "frame_id": 24,
+        "confidence": 0.83203125,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
+      },
+      {
+        "label": "Parking Area",
+        "semantic_class": "building",
+        "centroid": [
+          0.8496278741567579,
+          0.720723054107564
+        ],
+        "priority": 0.7066,
+        "track_id": -1,
+        "mask_area": 0.06369574652777778,
+        "frame_id": 24,
+        "confidence": 0.94140625,
+        "source_region_id": "region_004_Parking Area",
+        "id": "node_004"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_004"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.473,
+        "source": "node_001",
+        "target": "node_004"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.473,
+        "source": "node_004",
+        "target": "node_001"
+      }
+    ]
+  }
+}

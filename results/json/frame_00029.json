@@ -1,0 +1,94 @@
+{
+  "frame_id": 29,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a mix of dry, scrubland vegetation, a paved road, and residential buildings in the foreground.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "priority": 0.8966
+    },
+    {
+      "id": "node_001",
+      "priority": 0.8897
+    },
+    {
+      "id": "node_002",
+      "priority": 0.825
+    },
+    {
+      "id": "node_003",
+      "priority": 0.6834
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 14,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road",
+        "semantic_class": "road",
+        "centroid": [
+          0.5662774348422497,
+          0.6429887795634888
+        ],
+        "priority": 0.8966,
+        "track_id": -1,
+        "mask_area": 0.320361328125,
+        "frame_id": 28,
+        "confidence": 0.81640625,
+        "source_region_id": "region_000_Road",
+        "id": "node_000"
+      },
+      {
+        "label": "Vegetation",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.26831662704930315,
+          0.2769011340382524
+        ],
+        "priority": 0.8897,
+        "track_id": -1,
+        "mask_area": 0.28969292534722224,
+        "frame_id": 28,
+        "confidence": 0.94921875,
+        "source_region_id": "region_001_Vegetation",
+        "id": "node_001"
+      },
+      {
+        "label": "Building",
+        "semantic_class": "building",
+        "centroid": [
+          0.7984238916061849,
+          0.18646317625609202
+        ],
+        "priority": 0.825,
+        "track_id": -1,
+        "mask_area": 0.13754340277777777,
+        "frame_id": 28,
+        "confidence": 0.9375,
+        "source_region_id": "region_002_Building",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.29958498523009947,
+          0.8743057283029299
+        ],
+        "priority": 0.6834,
+        "track_id": -1,
+        "mask_area": 0.026171875,
+        "frame_id": 28,
+        "confidence": 0.80859375,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
+      }
+    ],
+    "links": []
+  }
+}
