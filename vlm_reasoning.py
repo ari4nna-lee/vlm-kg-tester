@@ -54,7 +54,7 @@ class VLMConfig:
     # If running the VLM on a ground station over the wire, set this.
     grpc_endpoint: Optional[str] = None
     # How many regions to request at most.
-    max_regions: int = 8
+    max_regions: int = 5
 
 
 # ---------------------------------------------------------------------------
