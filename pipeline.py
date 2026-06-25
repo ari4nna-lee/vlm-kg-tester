@@ -420,12 +420,13 @@ class Pipeline:
 
             graph_img = render_graph(kg_result.graph)
 
-            cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), graph_img)
-            combined = stitch(frame_viz, graph_img)
+            cv2.imwrite(str(GRAPH_DIR / f"frame_{fid:05d}.png"), cv2.cvtColor(graph_img, cv2.COLOR_RGB2BGR))
+            frame_viz_bgr = cv2.cvtColor(frame_viz, cv2.COLOR_RGB2BGR)
+            graph_bgr = cv2.cvtColor(graph_img, cv2.COLOR_RGB2BGR)
+            combined = stitch(frame_viz_bgr, graph_bgr)
             combined = cv2.resize(combined, (TARGET_W, TARGET_H))
-            combined_bgr = cv2.cvtColor(combined, cv2.COLOR_RGB2BGR)
 
-            writer.write(combined_bgr)
+            writer.write(combined)
             log.info("output_worker wrote frame %s", fid)
 
     def start_workers(self):
