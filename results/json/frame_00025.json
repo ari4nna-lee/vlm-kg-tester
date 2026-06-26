@@ -6,27 +6,32 @@
   "objects": [
     {
       "id": "node_000",
+      "track_id": 26,
       "priority": 0.9481
     },
     {
       "id": "node_001",
+      "track_id": 22,
       "priority": 0.8881
     },
     {
       "id": "node_002",
+      "track_id": 24,
       "priority": 0.7078
     },
     {
       "id": "node_003",
-      "priority": 0.7228
+      "track_id": 27,
+      "priority": 0.7431
     },
     {
       "id": "node_004",
-      "priority": 0.7066
+      "track_id": 28,
+      "priority": 0.705
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 13,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -40,7 +45,7 @@
           0.49900220335255974
         ],
         "priority": 0.9481,
-        "track_id": -1,
+        "track_id": 26,
         "mask_area": 0.37172743055555557,
         "frame_id": 24,
         "confidence": 0.9453125,
@@ -51,12 +56,12 @@
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.6995979670597687,
-          0.7482134579272395
+          0.699484275329672,
+          0.649040375868875
         ],
         "priority": 0.8881,
-        "track_id": -1,
-        "mask_area": 0.18907877604166667,
+        "track_id": 22,
+        "mask_area": 0.18966471354166667,
         "frame_id": 24,
         "confidence": 0.9453125,
         "source_region_id": "region_001_Building Complex",
@@ -70,7 +75,7 @@
           0.1735215451460649
         ],
         "priority": 0.7078,
-        "track_id": -1,
+        "track_id": 24,
         "mask_area": 0.16013346354166666,
         "frame_id": 24,
         "confidence": 0.64453125,
@@ -81,29 +86,29 @@
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.37438546661107636,
-          0.31412061164771193
+          0.40704081587252616,
+          0.2821490437093636
         ],
-        "priority": 0.7228,
-        "track_id": -1,
-        "mask_area": 0.015615234375,
+        "priority": 0.7431,
+        "track_id": 27,
+        "mask_area": 0.02286349826388889,
         "frame_id": 24,
-        "confidence": 0.83203125,
+        "confidence": 0.8828125,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       },
       {
         "label": "Parking Area",
-        "semantic_class": "building",
+        "semantic_class": "road",
         "centroid": [
-          0.8496278741567579,
-          0.720723054107564
+          0.748458043547957,
+          0.7889740125165415
         ],
-        "priority": 0.7066,
-        "track_id": -1,
-        "mask_area": 0.06369574652777778,
+        "priority": 0.705,
+        "track_id": 28,
+        "mask_area": 0.08545789930555556,
         "frame_id": 24,
-        "confidence": 0.94140625,
+        "confidence": 0.9375,
         "source_region_id": "region_004_Parking Area",
         "id": "node_004"
       }
@@ -131,17 +136,10 @@
         "target": "node_003"
       },
       {
-        "predicate": "contains",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 1.0,
+        "confidence": 0.9,
         "source": "node_000",
-        "target": "node_004"
-      },
-      {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 0.473,
-        "source": "node_001",
         "target": "node_004"
       },
       {
@@ -152,11 +150,25 @@
         "target": "node_003"
       },
       {
-        "predicate": "occluded_by",
-        "tier": 1,
-        "confidence": 0.473,
-        "source": "node_004",
+        "predicate": "moving_toward",
+        "tier": 2,
+        "confidence": 0.641,
+        "source": "node_003",
+        "target": "node_000"
+      },
+      {
+        "predicate": "moving_toward",
+        "tier": 2,
+        "confidence": 0.529,
+        "source": "node_003",
         "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_004",
+        "target": "node_000"
       }
     ]
   }

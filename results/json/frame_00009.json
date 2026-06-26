@@ -6,105 +6,110 @@
   "objects": [
     {
       "id": "node_000",
-      "priority": 0.9497
+      "track_id": 13,
+      "priority": 0.9481
     },
     {
       "id": "node_001",
-      "priority": 0.8819
+      "track_id": 14,
+      "priority": 0.8881
     },
     {
       "id": "node_002",
-      "priority": 0.8359
+      "track_id": 3,
+      "priority": 0.8094
     },
     {
       "id": "node_003",
-      "priority": 0.7728
+      "track_id": 5,
+      "priority": 0.7666
     },
     {
       "id": "node_004",
-      "priority": 0.6844
+      "track_id": 15,
+      "priority": 0.68
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 13,
+  "global_graph_edges": 7,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Main Roadway",
+        "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.24122975055544166,
-          0.49976757410848305
+          0.24201804590317116,
+          0.4998299792424167
         ],
-        "priority": 0.9497,
-        "track_id": -1,
-        "mask_area": 0.16409613715277777,
+        "priority": 0.9481,
+        "track_id": 13,
+        "mask_area": 0.167216796875,
         "frame_id": 8,
-        "confidence": 0.94921875,
-        "source_region_id": "region_000_Main Roadway",
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Intersection Area",
+        "label": "Intersection",
         "semantic_class": "road",
         "centroid": [
-          0.40395600308579993,
-          0.6775084303549302
+          0.4019259547620459,
+          0.6721638638163886
         ],
-        "priority": 0.8819,
-        "track_id": -1,
-        "mask_area": 0.08105143229166667,
+        "priority": 0.8881,
+        "track_id": 14,
+        "mask_area": 0.07321072048611112,
         "frame_id": 8,
-        "confidence": 0.9296875,
-        "source_region_id": "region_001_Intersection Area",
+        "confidence": 0.9453125,
+        "source_region_id": "region_001_Intersection",
         "id": "node_001"
       },
       {
-        "label": "Buildings",
+        "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.19263939438308791,
-          0.5382368982101244
+          0.1151965762427509,
+          0.17695144218843342
         ],
-        "priority": 0.8359,
-        "track_id": -1,
-        "mask_area": 0.0097265625,
+        "priority": 0.8094,
+        "track_id": 3,
+        "mask_area": 0.082138671875,
         "frame_id": 8,
-        "confidence": 0.96484375,
-        "source_region_id": "region_002_Buildings",
+        "confidence": 0.8984375,
+        "source_region_id": "region_002_Building Complex",
         "id": "node_002"
       },
       {
-        "label": "Vegetation/Hills",
+        "label": "Vegetation/Hillside",
         "semantic_class": "vegetation",
         "centroid": [
-          0.6465540232693272,
-          0.293302401474399
+          0.5045552415101022,
+          0.3238030492084646
         ],
-        "priority": 0.7728,
-        "track_id": -1,
-        "mask_area": 0.41081814236111114,
+        "priority": 0.7666,
+        "track_id": 5,
+        "mask_area": 0.4258213975694444,
         "frame_id": 8,
-        "confidence": 0.95703125,
-        "source_region_id": "region_003_Vegetation/Hills",
+        "confidence": 0.94140625,
+        "source_region_id": "region_003_Vegetation/Hillside",
         "id": "node_003"
       },
       {
-        "label": "Parking/Pavement",
-        "semantic_class": "road",
+        "label": "Building Structure",
+        "semantic_class": "building",
         "centroid": [
-          0.7511299224125845,
-          0.7886155472738531
+          0.6460372025752334,
+          0.5833717931979895
         ],
-        "priority": 0.6844,
-        "track_id": -1,
-        "mask_area": 0.09287868923611112,
+        "priority": 0.68,
+        "track_id": 15,
+        "mask_area": 0.08311089409722222,
         "frame_id": 8,
-        "confidence": 0.9609375,
-        "source_region_id": "region_004_Parking/Pavement",
+        "confidence": 0.875,
+        "source_region_id": "region_004_Building Structure",
         "id": "node_004"
       }
     ],
@@ -127,36 +132,8 @@
         "predicate": "connected_to",
         "tier": 1,
         "confidence": 0.9,
-        "source": "node_000",
-        "target": "node_004"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
         "source": "node_001",
         "target": "node_000"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_001",
-        "target": "node_004"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_004",
-        "target": "node_000"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_004",
-        "target": "node_001"
       }
     ]
   }

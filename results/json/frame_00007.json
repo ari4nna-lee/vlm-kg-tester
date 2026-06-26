@@ -1,91 +1,95 @@
 {
   "frame_id": 7,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads with some surrounding buildings and patches of dry vegetation.",
+  "scene_summary": "An aerial view of a paved intersection with surrounding buildings, roads, and patches of dry vegetation.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "priority": 0.9434
+      "track_id": 0,
+      "priority": 0.9544
     },
     {
       "id": "node_001",
-      "priority": 0.8866
+      "track_id": 3,
+      "priority": 0.8834
     },
     {
       "id": "node_002",
-      "priority": 0.6656
+      "track_id": 10,
+      "priority": 0.8156
     },
     {
       "id": "node_003",
-      "priority": 0.7288
+      "track_id": 12,
+      "priority": 0.6541
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 7,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Intersection/Road Network",
+        "label": "Intersection/Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.48499210347290556,
-          0.5466740760184396
+          0.4816186228933298,
+          0.5450575899600163
         ],
-        "priority": 0.9434,
-        "track_id": -1,
-        "mask_area": 0.41130967881944447,
+        "priority": 0.9544,
+        "track_id": 0,
+        "mask_area": 0.36286241319444446,
         "frame_id": 6,
-        "confidence": 0.93359375,
-        "source_region_id": "region_000_Intersection/Road Network",
+        "confidence": 0.9609375,
+        "source_region_id": "region_000_Intersection/Roadway",
         "id": "node_000"
       },
       {
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.1401766252714441,
-          0.17709701109904694
+          0.1652072235636739,
+          0.17704294898182793
         ],
-        "priority": 0.8866,
-        "track_id": -1,
-        "mask_area": 0.09993489583333333,
+        "priority": 0.8834,
+        "track_id": 3,
+        "mask_area": 0.11773654513888888,
         "frame_id": 6,
-        "confidence": 0.94140625,
+        "confidence": 0.93359375,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Vegetation/Dry Ground",
+        "label": "Vegetation/Trees",
         "semantic_class": "vegetation",
         "centroid": [
-          0.6843069245542617,
-          0.8842634039859056
+          0.5398090426795854,
+          0.5169311813304496
         ],
-        "priority": 0.6656,
-        "track_id": -1,
-        "mask_area": 0.10035481770833334,
+        "priority": 0.8156,
+        "track_id": 10,
+        "mask_area": 0.22375325520833333,
         "frame_id": 6,
-        "confidence": 0.5390625,
-        "source_region_id": "region_002_Vegetation/Dry Ground",
+        "confidence": 0.9140625,
+        "source_region_id": "region_002_Vegetation/Trees",
         "id": "node_002"
       },
       {
-        "label": "Vehicle",
-        "semantic_class": "vehicle",
+        "label": "Road Markings/Crosswalks",
+        "semantic_class": "road",
         "centroid": [
-          0.5746087903370652,
-          0.5743103367991113
+          0.8858183994865719,
+          0.6384187949798139
         ],
-        "priority": 0.7288,
-        "track_id": -1,
-        "mask_area": 0.018123914930555554,
+        "priority": 0.6541,
+        "track_id": 12,
+        "mask_area": 0.0027473958333333335,
         "frame_id": 6,
-        "confidence": 0.921875,
-        "source_region_id": "region_003_Vehicle",
+        "confidence": 0.66015625,
+        "source_region_id": "region_003_Road Markings/Crosswalks",
         "id": "node_003"
       }
     ],
@@ -105,11 +109,18 @@
         "target": "node_002"
       },
       {
-        "predicate": "contains",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 1.0,
+        "confidence": 0.9,
         "source": "node_000",
         "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_003",
+        "target": "node_000"
       }
     ]
   }

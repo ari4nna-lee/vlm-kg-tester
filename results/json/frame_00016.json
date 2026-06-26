@@ -1,28 +1,27 @@
 {
   "frame_id": 16,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a dry, sparsely vegetated landscape bordered by a paved road and a railway line.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a dry, sparsely vegetated landscape with a paved road running alongside a dry creek bed.",
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
+      "track_id": 5,
       "priority": 0.9497
     },
     {
       "id": "node_001",
-      "priority": 0.8772
+      "track_id": 13,
+      "priority": 0.885
     },
     {
       "id": "node_002",
-      "priority": 0.825
-    },
-    {
-      "id": "node_003",
-      "priority": 0.5719
+      "track_id": 20,
+      "priority": 0.6913
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,27 +35,12 @@
           0.5031431456739259
         ],
         "priority": 0.9497,
-        "track_id": -1,
+        "track_id": 5,
         "mask_area": 0.5225238715277778,
         "frame_id": 16,
         "confidence": 0.94921875,
         "source_region_id": "region_000_Road",
         "id": "node_000"
-      },
-      {
-        "label": "Railway Line",
-        "semantic_class": "road",
-        "centroid": [
-          0.4994999801211918,
-          0.4992234957700113
-        ],
-        "priority": 0.8772,
-        "track_id": -1,
-        "mask_area": 0.46226019965277776,
-        "frame_id": 16,
-        "confidence": 0.91796875,
-        "source_region_id": "region_001_Railway Line",
-        "id": "node_001"
       },
       {
         "label": "Vegetation",
@@ -65,51 +49,37 @@
           0.2658187794474184,
           0.49943651266966244
         ],
-        "priority": 0.825,
-        "track_id": -1,
+        "priority": 0.885,
+        "track_id": 13,
         "mask_area": 0.5294552951388889,
         "frame_id": 16,
         "confidence": 0.9375,
-        "source_region_id": "region_002_Vegetation",
-        "id": "node_002"
+        "source_region_id": "region_001_Vegetation",
+        "id": "node_001"
       },
       {
         "label": "Anomaly",
         "semantic_class": "anomaly",
         "centroid": [
-          0.065234375,
-          0.44930555555555557
+          0.34960425958436137,
+          0.3493091580382812
         ],
-        "priority": 0.5719,
-        "track_id": -1,
-        "mask_area": 0.027708333333333335,
+        "priority": 0.6913,
+        "track_id": 20,
+        "mask_area": 0.034303385416666665,
         "frame_id": 16,
-        "confidence": 0.6796875,
-        "source_region_id": "region_003_Anomaly",
-        "id": "node_003"
+        "confidence": 0.828125,
+        "source_region_id": "region_002_Anomaly",
+        "id": "node_002"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_000",
-        "target": "node_001"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_001",
-        "target": "node_000"
-      },
-      {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_002",
-        "target": "node_003"
+        "source": "node_001",
+        "target": "node_002"
       }
     ]
   }

@@ -1,28 +1,32 @@
 {
   "frame_id": 23,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road curving through an area with dry vegetation and a cluster of white buildings.",
+  "scene_summary": "An aerial view shows a paved road curving through an area with sparse vegetation and a cluster of buildings.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
+      "track_id": 25,
       "priority": 0.9466
     },
     {
       "id": "node_001",
+      "track_id": 21,
       "priority": 0.8928
     },
     {
       "id": "node_002",
+      "track_id": 13,
       "priority": 0.8078
     },
     {
       "id": "node_003",
+      "track_id": 24,
       "priority": 0.7697
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,7 +40,7 @@
           0.5971108864720828
         ],
         "priority": 0.9466,
-        "track_id": -1,
+        "track_id": 25,
         "mask_area": 0.1945529513888889,
         "frame_id": 22,
         "confidence": 0.94140625,
@@ -51,7 +55,7 @@
           0.30919794728705663
         ],
         "priority": 0.8928,
-        "track_id": -1,
+        "track_id": 21,
         "mask_area": 0.1622927517361111,
         "frame_id": 22,
         "confidence": 0.95703125,
@@ -66,7 +70,7 @@
           0.6756712811861018
         ],
         "priority": 0.8078,
-        "track_id": -1,
+        "track_id": 13,
         "mask_area": 0.3374424913194444,
         "frame_id": 22,
         "confidence": 0.89453125,
@@ -81,7 +85,7 @@
           0.16041079037957023
         ],
         "priority": 0.7697,
-        "track_id": -1,
+        "track_id": 24,
         "mask_area": 0.03180121527777778,
         "frame_id": 22,
         "confidence": 0.94921875,

@@ -1,24 +1,27 @@
 {
   "frame_id": 30,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a mix of residential buildings, paved roads, and undeveloped, arid terrain.",
+  "scene_summary": "An aerial view shows a mix of residential buildings, paved roads, and undeveloped, dry vegetation.",
   "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
+      "track_id": 24,
       "priority": 0.9372
     },
     {
       "id": "node_001",
-      "priority": 0.8266
+      "track_id": 32,
+      "priority": 0.7288
     },
     {
       "id": "node_002",
-      "priority": 0.6825
+      "track_id": 26,
+      "priority": 0.8266
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 13,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -32,7 +35,7 @@
           0.1762442932593322
         ],
         "priority": 0.9372,
-        "track_id": -1,
+        "track_id": 24,
         "mask_area": 0.13333441840277777,
         "frame_id": 30,
         "confidence": 0.91796875,
@@ -43,30 +46,30 @@
         "label": "Road Network",
         "semantic_class": "road",
         "centroid": [
-          0.678764459973263,
-          0.6838771885962467
+          0.30681566463051807,
+          0.26980930175219664
         ],
-        "priority": 0.8266,
-        "track_id": -1,
-        "mask_area": 0.4021766493055556,
+        "priority": 0.7288,
+        "track_id": 32,
+        "mask_area": 0.087529296875,
         "frame_id": 30,
-        "confidence": 0.94140625,
+        "confidence": 0.546875,
         "source_region_id": "region_001_Road Network",
         "id": "node_001"
       },
       {
-        "label": "Arid Vegetation/Ground",
+        "label": "Dry Vegetation/Field",
         "semantic_class": "vegetation",
         "centroid": [
-          0.49982955872430973,
-          0.09737206767697738
+          0.6789692782105841,
+          0.6837438999272951
         ],
-        "priority": 0.6825,
-        "track_id": -1,
-        "mask_area": 0.10453559027777778,
+        "priority": 0.8266,
+        "track_id": 26,
+        "mask_area": 0.39980577256944444,
         "frame_id": 30,
-        "confidence": 0.65625,
-        "source_region_id": "region_002_Arid Vegetation/Ground",
+        "confidence": 0.94140625,
+        "source_region_id": "region_002_Dry Vegetation/Field",
         "id": "node_002"
       }
     ],

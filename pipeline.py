@@ -259,7 +259,7 @@ class Pipeline:
                 else:
                     fid, frame, vlm_output, encoded = item
 
-                seg_output = self.sam.run(frame=frame, encoded_prompts=encoded)
+                seg_output = self.sam.run(frame=frame, encoded_prompts=encoded, prev_seg=self._prev_seg,)
 
                 log.info("sam_worker received frame %s", fid)
 
@@ -285,6 +285,7 @@ class Pipeline:
                     prev_seg=self._prev_seg,
                     prev_heatmap=None
                 ))
+                self._prev_seg = seg_output
                 log.info("sam_worker put frame %s onto kg_q", fid)
 
                 if heatmap is not None:
@@ -397,6 +398,7 @@ class Pipeline:
                 "objects": [
                     {
                         "id": getattr(m, "node_id", None),
+                        "track_id": getattr(m, "track_id", -1), 
                         "priority": getattr(m, "priority", None)
                     }
                     for m in seg_output.masks
@@ -460,7 +462,8 @@ cfg = PipelineConfig(
     ),
     sam=SAMConfig(
         backend="sam3",
-        device="cuda"
+        device="cuda",
+        use_tracking=True
     )
 )
 

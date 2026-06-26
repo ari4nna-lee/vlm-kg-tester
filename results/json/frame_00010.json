@@ -6,23 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "priority": 0.9372
+      "track_id": 13,
+      "priority": 0.9325
     },
     {
       "id": "node_001",
+      "track_id": 5,
       "priority": 0.8397
     },
     {
       "id": "node_002",
+      "track_id": 16,
       "priority": 0.8281
     },
     {
       "id": "node_003",
-      "priority": 0.7728
+      "track_id": 17,
+      "priority": 0.765
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -32,14 +36,14 @@
         "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.20144004600279594,
-          0.546020749121305
+          0.2132798439302146,
+          0.5722734480510244
         ],
-        "priority": 0.9372,
-        "track_id": -1,
-        "mask_area": 0.16687825520833333,
+        "priority": 0.9325,
+        "track_id": 13,
+        "mask_area": 0.17122178819444445,
         "frame_id": 10,
-        "confidence": 0.91796875,
+        "confidence": 0.90625,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
@@ -51,7 +55,7 @@
           0.4011669673229286
         ],
         "priority": 0.8397,
-        "track_id": -1,
+        "track_id": 5,
         "mask_area": 0.5583930121527778,
         "frame_id": 10,
         "confidence": 0.82421875,
@@ -66,7 +70,7 @@
           0.8207051782461618
         ],
         "priority": 0.8281,
-        "track_id": -1,
+        "track_id": 16,
         "mask_area": 0.11814778645833333,
         "frame_id": 10,
         "confidence": 0.9453125,
@@ -74,18 +78,18 @@
         "id": "node_002"
       },
       {
-        "label": "Parking Lot/Ground",
+        "label": "Parking Lot",
         "semantic_class": "road",
         "centroid": [
-          0.8964501400396779,
-          0.7668767261835298
+          0.8089120286598179,
+          0.8461935948322826
         ],
-        "priority": 0.7728,
-        "track_id": -1,
-        "mask_area": 0.03719184027777778,
+        "priority": 0.765,
+        "track_id": 17,
+        "mask_area": 0.1161838107638889,
         "frame_id": 10,
-        "confidence": 0.95703125,
-        "source_region_id": "region_003_Parking Lot/Ground",
+        "confidence": 0.9375,
+        "source_region_id": "region_003_Parking Lot",
         "id": "node_003"
       }
     ],
@@ -93,7 +97,7 @@
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 0.871,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_002"
       },

@@ -1,28 +1,27 @@
 {
   "frame_id": 21,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a wide asphalt road bordered by dry, scrubland vegetation and some buildings in the upper right.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a wide asphalt road bordered by dry, sparse vegetation and some buildings in the upper right.",
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "priority": 0.9419
+      "track_id": 5,
+      "priority": 0.9341
     },
     {
       "id": "node_001",
-      "priority": 0.8741
+      "track_id": 21,
+      "priority": 0.8772
     },
     {
       "id": "node_002",
-      "priority": 0.8203
-    },
-    {
-      "id": "node_003",
-      "priority": 0.6213
+      "track_id": 13,
+      "priority": 0.8187
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -32,84 +31,55 @@
         "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.587537383652917,
-          0.5290914260606163
+          0.6366302003915747,
+          0.495427344764558
         ],
-        "priority": 0.9419,
-        "track_id": -1,
-        "mask_area": 0.42667100694444443,
-        "frame_id": 20,
-        "confidence": 0.9296875,
-        "source_region_id": "region_000_Roadway",
-        "id": "node_000"
-      },
-      {
-        "label": "Vegetation/Scrubland",
-        "semantic_class": "vegetation",
-        "centroid": [
-          0.259555107117825,
-          0.5634557346744709
-        ],
-        "priority": 0.8741,
-        "track_id": -1,
-        "mask_area": 0.4412109375,
+        "priority": 0.9341,
+        "track_id": 5,
+        "mask_area": 0.2825075954861111,
         "frame_id": 20,
         "confidence": 0.91015625,
-        "source_region_id": "region_001_Vegetation/Scrubland",
-        "id": "node_001"
+        "source_region_id": "region_000_Roadway",
+        "id": "node_000"
       },
       {
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.7495531182805937,
-          0.2992858672676579
+          0.7994849361112326,
+          0.24925404885026745
         ],
-        "priority": 0.8203,
-        "track_id": -1,
-        "mask_area": 0.1852007378472222,
+        "priority": 0.8772,
+        "track_id": 21,
+        "mask_area": 0.14884114583333333,
         "frame_id": 20,
-        "confidence": 0.92578125,
-        "source_region_id": "region_002_Building Complex",
-        "id": "node_002"
+        "confidence": 0.91796875,
+        "source_region_id": "region_001_Building Complex",
+        "id": "node_001"
       },
       {
-        "label": "Road Edge/Curb",
-        "semantic_class": "road",
+        "label": "Vegetation/Dry Land",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.6045455455364616,
-          0.4923362709705828
+          0.2588991652634867,
+          0.5673645715278158
         ],
-        "priority": 0.6213,
-        "track_id": -1,
-        "mask_area": 0.12704210069444444,
+        "priority": 0.8187,
+        "track_id": 13,
+        "mask_area": 0.4359440104166667,
         "frame_id": 20,
-        "confidence": 0.578125,
-        "source_region_id": "region_003_Road Edge/Curb",
-        "id": "node_003"
+        "confidence": 0.921875,
+        "source_region_id": "region_002_Vegetation/Dry Land",
+        "id": "node_002"
       }
     ],
     "links": [
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 1.0,
+        "confidence": 0.862,
         "source": "node_000",
-        "target": "node_002"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_000",
-        "target": "node_003"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_003",
-        "target": "node_000"
+        "target": "node_001"
       }
     ]
   }

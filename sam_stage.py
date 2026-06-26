@@ -98,7 +98,7 @@ class SAMConfig:
     # Confidence threshold: masks below this are discarded.
     mask_confidence_threshold: float = 0.5
     # If True, run tracking (between frames.
-    use_tracking: bool = False
+    use_tracking: bool = True
     # IoU threshold for merging overlapping masks from different prompts.
     merge_iou_threshold: float = 0.8
 
@@ -306,6 +306,10 @@ class SAMStage:
         self._track_id_counter = 0
         self.prompt_filter = PromptFilter(max_prompts=5)
 
+        self._active_tracks: dict[int, dict] = {}
+        self.max_track_age = 5
+        self.track_iou_threshold = 0.3
+
         if config.backend == "sam3":
             # 1. Enable TF32 for Ampere+ GPUs as seen in the working notebook
             torch.backends.cuda.matmul.allow_tf32 = True
@@ -325,10 +329,11 @@ class SAMStage:
                 model,
                 confidence_threshold=0.5,
             )
+
         else:
             self.processor = None
 
-    def run(self, frame: np.ndarray, encoded_prompts: EncodedPrompts,) -> SegmentationOutput:
+    def run(self, frame: np.ndarray, encoded_prompts: EncodedPrompts, prev_seg: Optional[SegmentationOutput] = None,) -> SegmentationOutput:
 
         if self.config.backend == "sam3":
             raw_results = _sam3_segment(
@@ -346,6 +351,9 @@ class SAMStage:
             )
 
         raw_results = self._merge_overlapping(raw_results)
+
+        if self.config.use_tracking:
+            self._assign_track_ids(raw_results, prev_seg, encoded_prompts.frame_id)
 
         masks = [
             self._to_instance_mask(
@@ -366,6 +374,80 @@ class SAMStage:
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _mask_iou(a: np.ndarray, b: np.ndarray) -> float:
+        if a is None or b is None:
+            return 0.0
+        inter = (a & b).sum()
+        union = (a | b).sum()
+        return inter / union if union > 0 else 0.0
+
+    def _assign_track_ids(
+        self,
+        raw_results: list[dict],
+        prev_seg: Optional[SegmentationOutput],
+        frame_id: int,
+    ) -> None:
+        """
+        Mutates raw_results in place, adding a 'track_id' key to each dict.
+        Matches current-frame masks against active tracks using mask IoU
+        (greedy, highest-IoU-first), then ages out stale tracks.
+        """
+        # Seed active tracks from prev_seg the first time we see it
+        # (handles the case where tracker state was reset/restarted).
+        if prev_seg is not None:
+            for m in prev_seg.masks:
+                if m.track_id is not None and m.track_id != -1 and m.track_id not in self._active_tracks:
+                    self._active_tracks[m.track_id] = {
+                        "mask": m.mask_array,
+                        "centroid": m.centroid,
+                        "last_seen": frame_id - 1,
+                    }
+
+        candidates = []  # (iou, track_id, result_idx)
+        for idx, r in enumerate(raw_results):
+            cur_mask = r.get("mask")
+            for tid, track in self._active_tracks.items():
+                iou = self._mask_iou(cur_mask, track["mask"])
+                if iou >= self.track_iou_threshold:
+                    candidates.append((iou, tid, idx))
+
+        candidates.sort(key=lambda c: c[0], reverse=True)
+
+        matched_results: set[int] = set()
+        matched_tracks: set[int] = set()
+        for iou, tid, idx in candidates:
+            if idx in matched_results or tid in matched_tracks:
+                continue
+            raw_results[idx]["track_id"] = tid
+            self._active_tracks[tid] = {
+                "mask": raw_results[idx]["mask"],
+                "centroid": raw_results[idx]["centroid"],
+                "last_seen": frame_id,
+            }
+            matched_results.add(idx)
+            matched_tracks.add(tid)
+
+        # Unmatched detections -> new tracks
+        for idx, r in enumerate(raw_results):
+            if idx in matched_results:
+                continue
+            tid = self._next_track_id()
+            r["track_id"] = tid
+            self._active_tracks[tid] = {
+                "mask": r["mask"],
+                "centroid": r["centroid"],
+                "last_seen": frame_id,
+            }
+
+        # Age out tracks that haven't been matched in a while
+        stale = [
+            tid for tid, t in self._active_tracks.items()
+            if frame_id - t["last_seen"] > self.max_track_age
+        ]
+        for tid in stale:
+            del self._active_tracks[tid]
 
     def _to_instance_mask(
         self,
@@ -392,7 +474,7 @@ class SAMStage:
             bx, by = float(b[0]) / W, float(b[1]) / H
             bw, bh = float(b[2] - b[0]) / W, float(b[3] - b[1]) / H
 
-        track_id = self._next_track_id() if self.config.use_tracking else -1
+        track_id = raw.get("track_id", -1) if self.config.use_tracking else -1
 
         return InstanceMask(
             node_id=f"node_{index:03d}",

@@ -64,32 +64,50 @@ def build_global_graph(frames: list[dict]) -> nx.DiGraph:
 
 def _link_across_frames(G: nx.DiGraph, frames: list[dict]):
     """
-    Link nodes across consecutive frames if they share the same
-    semantic_class and label. This is a simple identity proxy
-    since track_id is -1 throughout.
+    Link nodes across consecutive frames.
+    Primary signal: shared track_id (real identity from the tracker).
+    Fallback: same semantic_class + label, for nodes where track_id == -1
+    (tracking disabled or track lost).
     """
-    # group nodes by (semantic_class, label)
     from collections import defaultdict
-    buckets = defaultdict(list)
+
+    tracked_buckets = defaultdict(list)   # track_id -> [(frame_id, node_id)]
+    untracked_buckets = defaultdict(list) # (semantic_class, label) -> [(frame_id, node_id)]
 
     for node_id, attrs in G.nodes(data=True):
-        key = (attrs.get("semantic_class", ""), attrs.get("label", ""))
-        buckets[key].append((attrs.get("frame_id", -1), node_id))
+        tid = attrs.get("track_id", -1)
+        fid = attrs.get("frame_id", -1)
+        if tid is not None and tid != -1:
+            tracked_buckets[tid].append((fid, node_id))
+        else:
+            key = (attrs.get("semantic_class", ""), attrs.get("label", ""))
+            untracked_buckets[key].append((fid, node_id))
 
-    for key, instances in buckets.items():
-        # sort by frame
+    # --- primary: link same track_id across consecutive frames ---
+    for tid, instances in tracked_buckets.items():
         instances.sort(key=lambda x: x[0])
-
-        # link consecutive appearances
         for i in range(len(instances) - 1):
             fid_a, node_a = instances[i]
             fid_b, node_b = instances[i + 1]
-
-            if fid_b - fid_a <= 1:  # consecutive frames only
+            if fid_b - fid_a <= 1:
                 G.add_edge(node_a, node_b,
                            predicate="same_as",
                            edge_type="temporal",
-                           confidence=0.8)
+                           confidence=0.95,   # higher confidence: real tracker match
+                           via="track_id")
+
+    # --- fallback: label/class match for untracked nodes only ---
+    for key, instances in untracked_buckets.items():
+        instances.sort(key=lambda x: x[0])
+        for i in range(len(instances) - 1):
+            fid_a, node_a = instances[i]
+            fid_b, node_b = instances[i + 1]
+            if fid_b - fid_a <= 1:
+                G.add_edge(node_a, node_b,
+                           predicate="same_as",
+                           edge_type="temporal",
+                           confidence=0.5,    # lower confidence: proxy match only
+                           via="label_match")
 
 
 # ---------------------------------------------------------------------------

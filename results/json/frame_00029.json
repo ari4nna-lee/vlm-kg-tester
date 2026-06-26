@@ -1,90 +1,94 @@
 {
   "frame_id": 29,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a mix of dry, scrubland vegetation, a paved road, and residential buildings in the foreground.",
+  "scene_summary": "An aerial view shows a mix of dry, scrubland, a paved road, and residential buildings.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "priority": 0.8966
+      "track_id": 22,
+      "priority": 0.8341
     },
     {
       "id": "node_001",
-      "priority": 0.8897
+      "track_id": 28,
+      "priority": 0.8694
     },
     {
       "id": "node_002",
-      "priority": 0.825
+      "track_id": 24,
+      "priority": 0.8391
     },
     {
       "id": "node_003",
-      "priority": 0.6834
+      "track_id": 31,
+      "priority": 0.7209
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 13,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Road",
+        "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.5662774348422497,
-          0.6429887795634888
+          0.7155790332524865,
+          0.6715005910647318
         ],
-        "priority": 0.8966,
-        "track_id": -1,
-        "mask_area": 0.320361328125,
+        "priority": 0.8341,
+        "track_id": 22,
+        "mask_area": 0.13309461805555556,
         "frame_id": 28,
-        "confidence": 0.81640625,
-        "source_region_id": "region_000_Road",
+        "confidence": 0.66015625,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
+        "label": "Residential Buildings",
+        "semantic_class": "building",
         "centroid": [
-          0.26831662704930315,
-          0.2769011340382524
+          0.7458072006706699,
+          0.7960629670238335
         ],
-        "priority": 0.8897,
-        "track_id": -1,
-        "mask_area": 0.28969292534722224,
+        "priority": 0.8694,
+        "track_id": 28,
+        "mask_area": 0.10589084201388889,
         "frame_id": 28,
-        "confidence": 0.94921875,
-        "source_region_id": "region_001_Vegetation",
+        "confidence": 0.8984375,
+        "source_region_id": "region_001_Residential Buildings",
         "id": "node_001"
       },
       {
-        "label": "Building",
-        "semantic_class": "building",
+        "label": "Vegetation/Scrubland",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.7984238916061849,
-          0.18646317625609202
+          0.26947629805782075,
+          0.27675612337783834
         ],
-        "priority": 0.825,
-        "track_id": -1,
-        "mask_area": 0.13754340277777777,
+        "priority": 0.8391,
+        "track_id": 24,
+        "mask_area": 0.2867458767361111,
         "frame_id": 28,
-        "confidence": 0.9375,
-        "source_region_id": "region_002_Building",
+        "confidence": 0.97265625,
+        "source_region_id": "region_002_Vegetation/Scrubland",
         "id": "node_002"
       },
       {
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.29958498523009947,
-          0.8743057283029299
+          0.19517509889689202,
+          0.8551023076729178
         ],
-        "priority": 0.6834,
-        "track_id": -1,
-        "mask_area": 0.026171875,
+        "priority": 0.7209,
+        "track_id": 31,
+        "mask_area": 0.019131944444444444,
         "frame_id": 28,
-        "confidence": 0.80859375,
+        "confidence": 0.90234375,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
