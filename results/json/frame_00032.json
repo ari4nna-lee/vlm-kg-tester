@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 33,
+      "track_id": 34,
       "priority": 0.8966
     },
     {
       "id": "node_001",
-      "track_id": 24,
+      "track_id": 27,
       "priority": 0.8928
     },
     {
       "id": "node_002",
-      "track_id": 26,
-      "priority": 0.8344
+      "track_id": 14,
+      "priority": 0.8075
     },
     {
       "id": "node_003",
-      "track_id": 34,
+      "track_id": 35,
       "priority": 0.7475
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 13,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -40,7 +40,7 @@
           0.48503942914735965
         ],
         "priority": 0.8966,
-        "track_id": 33,
+        "track_id": 34,
         "mask_area": 0.17859375,
         "frame_id": 32,
         "confidence": 0.81640625,
@@ -55,7 +55,7 @@
           0.22735430004892557
         ],
         "priority": 0.8928,
-        "track_id": 24,
+        "track_id": 27,
         "mask_area": 0.24100043402777777,
         "frame_id": 32,
         "confidence": 0.95703125,
@@ -66,14 +66,14 @@
         "label": "Vegetation/Ground Cover",
         "semantic_class": "vegetation",
         "centroid": [
-          0.7480129600761163,
-          0.7829576484103175
+          0.7605747728653078,
+          0.7564386368065847
         ],
-        "priority": 0.8344,
-        "track_id": 26,
-        "mask_area": 0.2188205295138889,
+        "priority": 0.8075,
+        "track_id": 14,
+        "mask_area": 0.23939778645833334,
         "frame_id": 32,
-        "confidence": 0.9609375,
+        "confidence": 0.96875,
         "source_region_id": "region_002_Vegetation/Ground Cover",
         "id": "node_002"
       },
@@ -85,7 +85,7 @@
           0.2764689574895997
         ],
         "priority": 0.7475,
-        "track_id": 34,
+        "track_id": 35,
         "mask_area": 0.017504340277777777,
         "frame_id": 32,
         "confidence": 0.96875,

@@ -1,7 +1,7 @@
 {
   "frame_id": 7,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view of a paved intersection with surrounding buildings, roads, and patches of dry vegetation.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some surrounding buildings and patches of dry vegetation.",
   "num_objects": 4,
   "objects": [
     {
@@ -11,22 +11,22 @@
     },
     {
       "id": "node_001",
-      "track_id": 3,
+      "track_id": 2,
       "priority": 0.8834
     },
     {
       "id": "node_002",
-      "track_id": 10,
-      "priority": 0.8156
+      "track_id": 11,
+      "priority": 0.8109
     },
     {
       "id": "node_003",
-      "track_id": 12,
-      "priority": 0.6541
+      "track_id": 13,
+      "priority": 0.7288
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -55,7 +55,7 @@
           0.17704294898182793
         ],
         "priority": 0.8834,
-        "track_id": 3,
+        "track_id": 2,
         "mask_area": 0.11773654513888888,
         "frame_id": 6,
         "confidence": 0.93359375,
@@ -66,30 +66,30 @@
         "label": "Vegetation/Trees",
         "semantic_class": "vegetation",
         "centroid": [
-          0.5398090426795854,
-          0.5169311813304496
+          0.4937906858664631,
+          0.5078563043816899
         ],
-        "priority": 0.8156,
-        "track_id": 10,
-        "mask_area": 0.22375325520833333,
+        "priority": 0.8109,
+        "track_id": 11,
+        "mask_area": 0.21671006944444443,
         "frame_id": 6,
-        "confidence": 0.9140625,
+        "confidence": 0.90234375,
         "source_region_id": "region_002_Vegetation/Trees",
         "id": "node_002"
       },
       {
-        "label": "Road Markings/Crosswalks",
-        "semantic_class": "road",
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
         "centroid": [
-          0.8858183994865719,
-          0.6384187949798139
+          0.5746087903370652,
+          0.5743103367991113
         ],
-        "priority": 0.6541,
-        "track_id": 12,
-        "mask_area": 0.0027473958333333335,
+        "priority": 0.7288,
+        "track_id": 13,
+        "mask_area": 0.018123914930555554,
         "frame_id": 6,
-        "confidence": 0.66015625,
-        "source_region_id": "region_003_Road Markings/Crosswalks",
+        "confidence": 0.921875,
+        "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
     ],
@@ -109,18 +109,18 @@
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_003"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_003",
-        "target": "node_000"
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_003"
       }
     ]
   }

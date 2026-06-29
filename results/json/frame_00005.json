@@ -1,94 +1,94 @@
 {
   "frame_id": 5,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved intersection with surrounding buildings, some sparse vegetation, and a large, dry, undeveloped area.",
+  "scene_summary": "An aerial view shows a paved intersection with some buildings, a road, and a large, dry, undeveloped patch of land.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
-      "priority": 0.9403
+      "track_id": 3,
+      "priority": 0.9341
     },
     {
       "id": "node_001",
-      "track_id": 2,
-      "priority": 0.885
+      "track_id": 7,
+      "priority": 0.8834
     },
     {
       "id": "node_002",
-      "track_id": 8,
+      "track_id": 10,
       "priority": 0.8281
     },
     {
       "id": "node_003",
       "track_id": 9,
-      "priority": 0.7366
+      "priority": 0.7381
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 10,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Paved Intersection",
-        "semantic_class": "road",
+        "label": "Dry undeveloped land",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.4761410612580714,
-          0.23283297171555253
+          0.5336250229801451,
+          0.7210268944915543
         ],
-        "priority": 0.9403,
-        "track_id": 5,
-        "mask_area": 0.31272894965277775,
+        "priority": 0.9341,
+        "track_id": 3,
+        "mask_area": 0.305439453125,
         "frame_id": 4,
-        "confidence": 0.92578125,
-        "source_region_id": "region_000_Paved Intersection",
+        "confidence": 0.91015625,
+        "source_region_id": "region_000_Dry undeveloped land",
         "id": "node_000"
       },
       {
-        "label": "Dry/Sparse Vegetation Area",
-        "semantic_class": "vegetation",
+        "label": "Road intersection",
+        "semantic_class": "road",
         "centroid": [
-          0.5711617572866953,
-          0.7539456041022785
+          0.45395752919393395,
+          0.27304536007095864
         ],
-        "priority": 0.885,
-        "track_id": 2,
-        "mask_area": 0.40514973958333333,
+        "priority": 0.8834,
+        "track_id": 7,
+        "mask_area": 0.3876584201388889,
         "frame_id": 4,
-        "confidence": 0.9375,
-        "source_region_id": "region_001_Dry/Sparse Vegetation Area",
+        "confidence": 0.93359375,
+        "source_region_id": "region_001_Road intersection",
         "id": "node_001"
       },
       {
-        "label": "Building Structures",
+        "label": "Building structures",
         "semantic_class": "building",
         "centroid": [
           0.08215039499210838,
           0.06688998860099084
         ],
         "priority": 0.8281,
-        "track_id": 8,
+        "track_id": 10,
         "mask_area": 0.016499565972222224,
         "frame_id": 4,
         "confidence": 0.9453125,
-        "source_region_id": "region_002_Building Structures",
+        "source_region_id": "region_002_Building structures",
         "id": "node_002"
       },
       {
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.354296875,
-          0.1638888888888889
+          0.34366481863412146,
+          0.26987925478633934
         ],
-        "priority": 0.7366,
+        "priority": 0.7381,
         "track_id": 9,
-        "mask_area": 0.01578125,
+        "mask_area": 0.012758246527777777,
         "frame_id": 4,
-        "confidence": 0.94140625,
+        "confidence": 0.9453125,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
@@ -98,14 +98,14 @@
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_000",
+        "source": "node_001",
         "target": "node_002"
       },
       {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_000",
+        "source": "node_001",
         "target": "node_003"
       }
     ]

@@ -6,22 +6,22 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
+      "track_id": 7,
       "priority": 0.9341
     },
     {
       "id": "node_001",
-      "track_id": 13,
+      "track_id": 14,
       "priority": 0.8991
     },
     {
       "id": "node_002",
-      "track_id": 19,
-      "priority": 0.8266
+      "track_id": 18,
+      "priority": 0.8125
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -35,7 +35,7 @@
           0.5045557440415335
         ],
         "priority": 0.9341,
-        "track_id": 5,
+        "track_id": 7,
         "mask_area": 0.37323025173611113,
         "frame_id": 14,
         "confidence": 0.91015625,
@@ -50,7 +50,7 @@
           0.5043619740988995
         ],
         "priority": 0.8991,
-        "track_id": 13,
+        "track_id": 14,
         "mask_area": 0.7202115885416667,
         "frame_id": 14,
         "confidence": 0.97265625,
@@ -58,18 +58,18 @@
         "id": "node_001"
       },
       {
-        "label": "Structure/Boundary",
+        "label": "Structure/Edge",
         "semantic_class": "building",
         "centroid": [
-          0.06523784214722296,
-          0.07707923642483834
+          0.065234375,
+          0.07708333333333334
         ],
-        "priority": 0.8266,
-        "track_id": 19,
-        "mask_area": 0.02041558159722222,
+        "priority": 0.8125,
+        "track_id": 18,
+        "mask_area": 0.020416666666666666,
         "frame_id": 14,
-        "confidence": 0.94140625,
-        "source_region_id": "region_002_Structure/Boundary",
+        "confidence": 0.90625,
+        "source_region_id": "region_002_Structure/Edge",
         "id": "node_002"
       }
     ],

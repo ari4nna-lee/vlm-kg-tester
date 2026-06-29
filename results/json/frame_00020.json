@@ -1,27 +1,27 @@
 {
   "frame_id": 20,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a wide asphalt road bordered by dry, sparse vegetation and some buildings in the upper right.",
+  "scene_summary": "An aerial view shows a wide road bordered by dry, sparse vegetation on one side and a cluster of buildings on the other.",
   "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
-      "priority": 0.9247
+      "track_id": 7,
+      "priority": 0.9278
     },
     {
       "id": "node_001",
-      "track_id": 21,
-      "priority": 0.8772
+      "track_id": 22,
+      "priority": 0.8834
     },
     {
       "id": "node_002",
-      "track_id": 13,
-      "priority": 0.8328
+      "track_id": 14,
+      "priority": 0.8141
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -31,55 +31,62 @@
         "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.5218882933968197,
-          0.5207791814358305
+          0.6029431231749068,
+          0.46615804607346245
         ],
-        "priority": 0.9247,
-        "track_id": 5,
-        "mask_area": 0.5899934895833333,
+        "priority": 0.9278,
+        "track_id": 7,
+        "mask_area": 0.2693956163194444,
         "frame_id": 20,
-        "confidence": 0.88671875,
+        "confidence": 0.89453125,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Building Complex",
+        "label": "Buildings",
         "semantic_class": "building",
         "centroid": [
-          0.7996078212872982,
-          0.2492779845853488
+          0.7983625664427176,
+          0.23718539204576114
         ],
-        "priority": 0.8772,
-        "track_id": 21,
-        "mask_area": 0.14894965277777777,
+        "priority": 0.8834,
+        "track_id": 22,
+        "mask_area": 0.100537109375,
         "frame_id": 20,
-        "confidence": 0.91796875,
-        "source_region_id": "region_001_Building Complex",
+        "confidence": 0.93359375,
+        "source_region_id": "region_001_Buildings",
         "id": "node_001"
       },
       {
-        "label": "Vegetation/Dry Land",
+        "label": "Vegetation",
         "semantic_class": "vegetation",
         "centroid": [
-          0.2600429893270683,
-          0.5336609672541894
+          0.26062676301469606,
+          0.5324180834086788
         ],
-        "priority": 0.8328,
-        "track_id": 13,
-        "mask_area": 0.4834450954861111,
+        "priority": 0.8141,
+        "track_id": 14,
+        "mask_area": 0.4880425347222222,
         "frame_id": 20,
-        "confidence": 0.95703125,
-        "source_region_id": "region_002_Vegetation/Dry Land",
+        "confidence": 0.91015625,
+        "source_region_id": "region_002_Vegetation",
         "id": "node_002"
       }
     ],
     "links": [
       {
-        "predicate": "contains",
+        "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.862,
+        "confidence": 0.436,
         "source": "node_000",
-        "target": "node_001"
+        "target": "node_002"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.436,
+        "source": "node_002",
+        "target": "node_000"
       }
     ]
   }

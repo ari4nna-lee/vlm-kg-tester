@@ -1,0 +1,106 @@
+{
+  "frame_id": 34,
+  "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
+  "scene_summary": "An aerial view shows a mix of commercial buildings, paved roads, and some sparse vegetation in an arid environment.",
+  "num_objects": 4,
+  "objects": [
+    {
+      "id": "node_000",
+      "track_id": 30,
+      "priority": 0.9481
+    },
+    {
+      "id": "node_001",
+      "track_id": 36,
+      "priority": 0.86
+    },
+    {
+      "id": "node_002",
+      "track_id": 37,
+      "priority": 0.8156
+    },
+    {
+      "id": "node_003",
+      "track_id": 38,
+      "priority": 0.7491
+    }
+  ],
+  "global_graph_nodes": 5,
+  "global_graph_edges": 11,
+  "graph": {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+      {
+        "label": "Road Network",
+        "semantic_class": "road",
+        "centroid": [
+          0.7349742013611638,
+          0.54173417728538
+        ],
+        "priority": 0.9481,
+        "track_id": 30,
+        "mask_area": 0.21742621527777778,
+        "frame_id": 34,
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Road Network",
+        "id": "node_000"
+      },
+      {
+        "label": "Commercial Buildings",
+        "semantic_class": "building",
+        "centroid": [
+          0.33251041061294956,
+          0.3075673204997696
+        ],
+        "priority": 0.86,
+        "track_id": 36,
+        "mask_area": 0.09522135416666666,
+        "frame_id": 34,
+        "confidence": 0.875,
+        "source_region_id": "region_001_Commercial Buildings",
+        "id": "node_001"
+      },
+      {
+        "label": "Vegetation/Ground Cover",
+        "semantic_class": "vegetation",
+        "centroid": [
+          0.1467603875717372,
+          0.7014173473667876
+        ],
+        "priority": 0.8156,
+        "track_id": 37,
+        "mask_area": 0.049725477430555554,
+        "frame_id": 34,
+        "confidence": 0.9140625,
+        "source_region_id": "region_002_Vegetation/Ground Cover",
+        "id": "node_002"
+      },
+      {
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
+        "centroid": [
+          0.8737032702890758,
+          0.6758893492455071
+        ],
+        "priority": 0.7491,
+        "track_id": 38,
+        "mask_area": 0.017153862847222222,
+        "frame_id": 34,
+        "confidence": 0.97265625,
+        "source_region_id": "region_003_Vehicle",
+        "id": "node_003"
+      }
+    ],
+    "links": [
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
+      }
+    ]
+  }
+}

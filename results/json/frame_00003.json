@@ -6,7 +6,7 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
+      "track_id": 7,
       "priority": 0.8756
     },
     {
@@ -15,8 +15,8 @@
       "priority": 0.8266
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -30,7 +30,7 @@
           0.3979981098990745
         ],
         "priority": 0.8756,
-        "track_id": 5,
+        "track_id": 7,
         "mask_area": 0.6526334635416666,
         "frame_id": 2,
         "confidence": 0.9140625,

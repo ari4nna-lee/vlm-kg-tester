@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 13,
+      "track_id": 14,
       "priority": 0.9403
     },
     {
       "id": "node_001",
-      "track_id": 5,
+      "track_id": 7,
       "priority": 0.8819
     },
     {
       "id": "node_002",
       "track_id": 16,
-      "priority": 0.6734
+      "priority": 0.675
     },
     {
       "id": "node_003",
-      "track_id": 18,
-      "priority": 0.6859
+      "track_id": 17,
+      "priority": 0.6625
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 8,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -40,7 +40,7 @@
           0.4923668348220413
         ],
         "priority": 0.9403,
-        "track_id": 13,
+        "track_id": 14,
         "mask_area": 0.4716981336805556,
         "frame_id": 12,
         "confidence": 0.92578125,
@@ -55,7 +55,7 @@
           0.49948709979459954
         ],
         "priority": 0.8819,
-        "track_id": 5,
+        "track_id": 7,
         "mask_area": 0.7299522569444444,
         "frame_id": 12,
         "confidence": 0.9296875,
@@ -66,30 +66,30 @@
         "label": "Road Edge/Shoulder",
         "semantic_class": "road",
         "centroid": [
-          0.24269671530841178,
-          0.769532493519487
+          0.2419164480452675,
+          0.7194914837677184
         ],
-        "priority": 0.6734,
+        "priority": 0.675,
         "track_id": 16,
-        "mask_area": 0.214736328125,
+        "mask_area": 0.263671875,
         "frame_id": 12,
-        "confidence": 0.55859375,
+        "confidence": 0.5625,
         "source_region_id": "region_002_Road Edge/Shoulder",
         "id": "node_002"
       },
       {
-        "label": "Unidentified Structure",
-        "semantic_class": "building",
+        "label": "Unpaved Path",
+        "semantic_class": "road",
         "centroid": [
-          0.8496059038956858,
-          0.07708378049653002
+          0.8839326765421465,
+          0.699172509847775
         ],
-        "priority": 0.6859,
-        "track_id": 18,
-        "mask_area": 0.025276692708333333,
+        "priority": 0.6625,
+        "track_id": 17,
+        "mask_area": 0.07180338541666667,
         "frame_id": 12,
-        "confidence": 0.96484375,
-        "source_region_id": "region_003_Unidentified Structure",
+        "confidence": 0.90625,
+        "source_region_id": "region_003_Unpaved Path",
         "id": "node_003"
       }
     ],
@@ -97,7 +97,7 @@
       {
         "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.455,
+        "confidence": 0.555,
         "source": "node_000",
         "target": "node_002"
       },
@@ -111,7 +111,7 @@
       {
         "predicate": "occluded_by",
         "tier": 1,
-        "confidence": 0.455,
+        "confidence": 0.555,
         "source": "node_002",
         "target": "node_000"
       }

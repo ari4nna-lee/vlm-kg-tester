@@ -2,115 +2,95 @@
   "frame_id": 8,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
   "scene_summary": "An aerial view shows a paved road intersecting with a curved road and some buildings surrounded by dry, vegetated terrain.",
-  "num_objects": 5,
+  "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 13,
-      "priority": 0.9466
+      "track_id": 14,
+      "priority": 0.9481
     },
     {
       "id": "node_001",
-      "track_id": 14,
-      "priority": 0.8928
+      "track_id": 11,
+      "priority": 0.8897
     },
     {
       "id": "node_002",
-      "track_id": 3,
-      "priority": 0.8203
+      "track_id": 15,
+      "priority": 0.8266
     },
     {
       "id": "node_003",
-      "track_id": 5,
-      "priority": 0.7556
-    },
-    {
-      "id": "node_004",
-      "track_id": 15,
-      "priority": 0.7081
+      "track_id": 7,
+      "priority": 0.7744
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 7,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Roadway",
+        "label": "Main Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.28920977338478326,
-          0.5236285267163338
+          0.28759921574006003,
+          0.5258235633359314
         ],
-        "priority": 0.9466,
-        "track_id": 13,
-        "mask_area": 0.20084526909722222,
+        "priority": 0.9481,
+        "track_id": 14,
+        "mask_area": 0.1963009982638889,
         "frame_id": 8,
-        "confidence": 0.94140625,
-        "source_region_id": "region_000_Roadway",
+        "confidence": 0.9453125,
+        "source_region_id": "region_000_Main Roadway",
         "id": "node_000"
       },
       {
-        "label": "Intersection",
+        "label": "Intersection Area",
         "semantic_class": "road",
         "centroid": [
-          0.4673733844755656,
-          0.6672517826476518
+          0.4642813463318385,
+          0.6668446681107298
         ],
-        "priority": 0.8928,
-        "track_id": 14,
-        "mask_area": 0.11625868055555555,
+        "priority": 0.8897,
+        "track_id": 11,
+        "mask_area": 0.14009440104166668,
         "frame_id": 8,
-        "confidence": 0.95703125,
-        "source_region_id": "region_001_Intersection",
+        "confidence": 0.94921875,
+        "source_region_id": "region_001_Intersection Area",
         "id": "node_001"
       },
       {
-        "label": "Building Complex",
+        "label": "Buildings",
         "semantic_class": "building",
         "centroid": [
-          0.1151776795267218,
-          0.17708725933949168
+          0.16747514777970013,
+          0.6134460303729334
         ],
-        "priority": 0.8203,
-        "track_id": 3,
-        "mask_area": 0.08214626736111111,
+        "priority": 0.8266,
+        "track_id": 15,
+        "mask_area": 0.09407552083333333,
         "frame_id": 8,
-        "confidence": 0.92578125,
-        "source_region_id": "region_002_Building Complex",
+        "confidence": 0.94140625,
+        "source_region_id": "region_002_Buildings",
         "id": "node_002"
       },
       {
-        "label": "Vegetation/Hillside",
+        "label": "Vegetation/Hills",
         "semantic_class": "vegetation",
         "centroid": [
-          0.49960287201308384,
-          0.32682435047817354
+          0.6502826267146125,
+          0.2690047769212073
         ],
-        "priority": 0.7556,
-        "track_id": 5,
-        "mask_area": 0.43356770833333336,
+        "priority": 0.7744,
+        "track_id": 7,
+        "mask_area": 0.34821831597222225,
         "frame_id": 8,
-        "confidence": 0.9140625,
-        "source_region_id": "region_003_Vegetation/Hillside",
+        "confidence": 0.9609375,
+        "source_region_id": "region_003_Vegetation/Hills",
         "id": "node_003"
-      },
-      {
-        "label": "Building Structure",
-        "semantic_class": "building",
-        "centroid": [
-          0.6961266540605513,
-          0.626586860012924
-        ],
-        "priority": 0.7081,
-        "track_id": 15,
-        "mask_area": 0.05168077256944444,
-        "frame_id": 8,
-        "confidence": 0.9453125,
-        "source_region_id": "region_004_Building Structure",
-        "id": "node_004"
       }
     ],
     "links": [

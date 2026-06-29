@@ -1,32 +1,27 @@
 {
   "frame_id": 10,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some developed areas.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some residential structures.",
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 13,
-      "priority": 0.9325
+      "track_id": 14,
+      "priority": 0.9341
     },
     {
       "id": "node_001",
-      "track_id": 5,
+      "track_id": 7,
       "priority": 0.8397
     },
     {
       "id": "node_002",
       "track_id": 16,
-      "priority": 0.8281
-    },
-    {
-      "id": "node_003",
-      "track_id": 17,
-      "priority": 0.765
+      "priority": 0.8313
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 8,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,14 +31,14 @@
         "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.2132798439302146,
-          0.5722734480510244
+          0.2036790630557137,
+          0.5290957260543032
         ],
-        "priority": 0.9325,
-        "track_id": 13,
-        "mask_area": 0.17122178819444445,
+        "priority": 0.9341,
+        "track_id": 14,
+        "mask_area": 0.18488389756944446,
         "frame_id": 10,
-        "confidence": 0.90625,
+        "confidence": 0.91015625,
         "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
@@ -55,7 +50,7 @@
           0.4011669673229286
         ],
         "priority": 0.8397,
-        "track_id": 5,
+        "track_id": 7,
         "mask_area": 0.5583930121527778,
         "frame_id": 10,
         "confidence": 0.82421875,
@@ -63,34 +58,19 @@
         "id": "node_001"
       },
       {
-        "label": "Developed Area",
+        "label": "Residential Area",
         "semantic_class": "building",
         "centroid": [
-          0.16526646519263444,
-          0.8207051782461618
+          0.16527145281597633,
+          0.8206659562806392
         ],
-        "priority": 0.8281,
+        "priority": 0.8313,
         "track_id": 16,
-        "mask_area": 0.11814778645833333,
+        "mask_area": 0.11812174479166666,
         "frame_id": 10,
-        "confidence": 0.9453125,
-        "source_region_id": "region_002_Developed Area",
+        "confidence": 0.953125,
+        "source_region_id": "region_002_Residential Area",
         "id": "node_002"
-      },
-      {
-        "label": "Parking Lot",
-        "semantic_class": "road",
-        "centroid": [
-          0.8089120286598179,
-          0.8461935948322826
-        ],
-        "priority": 0.765,
-        "track_id": 17,
-        "mask_area": 0.1161838107638889,
-        "frame_id": 10,
-        "confidence": 0.9375,
-        "source_region_id": "region_003_Parking Lot",
-        "id": "node_003"
       }
     ],
     "links": [
@@ -100,13 +80,6 @@
         "confidence": 1.0,
         "source": "node_000",
         "target": "node_002"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_001",
-        "target": "node_003"
       }
     ]
   }

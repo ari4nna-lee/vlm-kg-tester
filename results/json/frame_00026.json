@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 26,
+      "track_id": 14,
       "priority": 0.9544
     },
     {
       "id": "node_001",
-      "track_id": 28,
+      "track_id": 7,
       "priority": 0.885
     },
     {
       "id": "node_002",
-      "track_id": 24,
-      "priority": 0.8359
+      "track_id": 27,
+      "priority": 0.8297
     },
     {
       "id": "node_003",
-      "track_id": 29,
-      "priority": 0.7209
+      "track_id": 28,
+      "priority": 0.6287
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 13,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -40,7 +40,7 @@
           0.544228130049836
         ],
         "priority": 0.9544,
-        "track_id": 26,
+        "track_id": 14,
         "mask_area": 0.3214876302083333,
         "frame_id": 26,
         "confidence": 0.9609375,
@@ -55,7 +55,7 @@
           0.7483097521153558
         ],
         "priority": 0.885,
-        "track_id": 28,
+        "track_id": 7,
         "mask_area": 0.14650390625,
         "frame_id": 26,
         "confidence": 0.9375,
@@ -66,14 +66,14 @@
         "label": "Vegetation/Scrubland",
         "semantic_class": "vegetation",
         "centroid": [
-          0.2916335036823381,
-          0.22311848742589935
+          0.2609286987113949,
+          0.24599926910455663
         ],
-        "priority": 0.8359,
-        "track_id": 24,
-        "mask_area": 0.2848708767361111,
+        "priority": 0.8297,
+        "track_id": 27,
+        "mask_area": 0.2812445746527778,
         "frame_id": 26,
-        "confidence": 0.96484375,
+        "confidence": 0.94921875,
         "source_region_id": "region_002_Vegetation/Scrubland",
         "id": "node_002"
       },
@@ -81,14 +81,14 @@
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.2671329826451906,
-          0.45020568663036903
+          0.24422814207650273,
+          0.5818139040680024
         ],
-        "priority": 0.7209,
-        "track_id": 29,
-        "mask_area": 0.011957465277777777,
+        "priority": 0.6287,
+        "track_id": 28,
+        "mask_area": 0.0009928385416666666,
         "frame_id": 26,
-        "confidence": 0.90234375,
+        "confidence": 0.671875,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
@@ -104,7 +104,7 @@
       {
         "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.405,
+        "confidence": 0.413,
         "source": "node_000",
         "target": "node_002"
       },
@@ -118,7 +118,7 @@
       {
         "predicate": "occluded_by",
         "tier": 1,
-        "confidence": 0.405,
+        "confidence": 0.413,
         "source": "node_002",
         "target": "node_000"
       },

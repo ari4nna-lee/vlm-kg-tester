@@ -11,12 +11,12 @@
     },
     {
       "id": "node_001",
-      "track_id": 5,
+      "track_id": 7,
       "priority": 0.8803
     }
   ],
-  "global_graph_nodes": 4,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 5,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -45,7 +45,7 @@
           0.3738230402040335
         ],
         "priority": 0.8803,
-        "track_id": 5,
+        "track_id": 7,
         "mask_area": 0.5141297743055555,
         "frame_id": 2,
         "confidence": 0.92578125,
