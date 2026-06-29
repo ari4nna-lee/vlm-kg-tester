@@ -55,6 +55,7 @@ class VLMConfig:
     grpc_endpoint: Optional[str] = None
     # How many regions to request at most.
     max_regions: int = 5
+    vlm_skip_interval: int = 5
 
 
 # ---------------------------------------------------------------------------
@@ -152,7 +153,7 @@ def _call_gemma(frame: np.ndarray,
     response = requests.post(
         f"{cfg.grpc_endpoint}/chat/completions",
         json=payload,
-        timeout=300,
+        timeout=30,
     )
 
     response.raise_for_status()

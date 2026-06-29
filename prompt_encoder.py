@@ -19,6 +19,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 import numpy as np
+import logging
+log = logging.getLogger(__name__)
 
 from structure import (
     BBox, PriorityRegion, VLMSceneOutput, SemanticClass,
@@ -125,6 +127,44 @@ class PromptEncoder:
             frame_id=vlm_output.frame_id,
             skipped_regions=skipped,
         )
+    
+    def encode_from_regions(
+        self,
+        regions: list[dict],
+        frame_id: int = 0,
+    ) -> EncodedPrompts:
+        """
+        Encode SAM prompts directly from KG-derived region dicts, used by kg_refine feedback path
+        """
+        priority_regions = []
+        for i, r in enumerate(regions):
+            try:
+                b = r["bbox"]
+                bbox = BBox(
+                    x=float(b["x"]),
+                    y=float(b["y"]),
+                    w=float(b["w"]),
+                    h=float(b["h"]),
+                )
+                region = PriorityRegion(
+                    label=r["label"],
+                    bbox=bbox,
+                    priority=float(r["priority"]),
+                    semantic_class=SemanticClass(r.get("semantic_class", "unknown")),
+                    reason=r.get("reason", "kg_refine"),
+                    region_id=f"refine_{frame_id}_{i:03d}_{r['label']}",
+                )
+                priority_regions.append(region)
+            except (KeyError, ValueError) as e:
+                log.warning("encode_from_regions: skipping malformed region %d: %s", i, e)
+
+        synthetic_vlm = VLMSceneOutput(
+            task_prompt="kg_refine",
+            scene_summary="",
+            priority_regions=priority_regions,
+            frame_id=frame_id,
+        )
+        return self.encode(synthetic_vlm)
 
     # ------------------------------------------------------------------
     # Helpers

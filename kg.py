@@ -535,7 +535,10 @@ class KGStage:
             edges=edges,
             frame_id=seg_output.frame_id,
         )
-        return KGRunResult(output=kg_output, graph=G, traversability=T)
+
+        refined_prompts = self.get_refined_prompts(KGRunResult(output=kg_output, graph=G, traversability=T))
+
+        return KGRunResult(output=kg_output, graph=G, traversability=T, refined_prompts=refined_prompts)
     
     def update_from_heatmap(self, G, heatmap):
 
@@ -551,6 +554,39 @@ class KGStage:
 
             heat_value = heatmap[iy, ix]
             node.priority = 0.8 * node.priority + 0.2 * heat_value
+
+    def get_refined_prompts(
+        self,
+        kg_result: "KGRunResult",
+        refine_classes: Optional[set] = None,
+        priority_threshold: float = 0.7,
+    ) -> list[dict]:
+        """
+        Inspect the KG and return region dicts for nodes that warrant a deeper SAM pass
+        """
+        if refine_classes is None:
+            refine_classes = {SemanticClass.VEHICLE, SemanticClass.ANOMALY}
+
+        refined = []
+        for node in kg_result.output.nodes:
+            if node.semantic_class not in refine_classes:
+                continue
+            if node.priority < priority_threshold:
+                continue 
+            
+            refined.append({
+                "label": node.label,
+                "bbox": {
+                    "x": node.bbox.x,
+                    "y": node.bbox.y,
+                    "w": node.bbox.w,
+                    "h": node.bbox.h,
+                },
+                "priority": node.priority,
+                "semantic_class": node.semantic_class.value,
+                "reason": "kg_refine: high priority node flagged for detail pass",
+            })
+        return refined 
 
     # ------------------------------------------------------------------
 
@@ -605,3 +641,4 @@ class KGRunResult:
     output: KGOutput
     graph: "nx.DiGraph"           # full scene graph
     traversability: "nx.DiGraph"  # road-only connected_to subgraph
+    refined_prompts: list[dict] = field(default_factory=list)

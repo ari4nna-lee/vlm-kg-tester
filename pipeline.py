@@ -158,7 +158,6 @@ class Pipeline:
         log.info("Building SAM stage...")
         self.kg      = KGStage(self.config.kg)
         log.info("Building KG stage...")
-        self._prev_seg: Optional[SegmentationOutput] = None
         self._frame_counter = 0
         self.threads = []
         log.info("Pipeline init complete.")
@@ -169,10 +168,11 @@ class Pipeline:
         self.output_q = queue.Queue(maxsize=64)
         self.sam_refine_q = queue.Queue(maxsize=32)
 
-        self.latest_output = None
         self._kg_graph = nx.DiGraph()
 
         self._prev_heatmap: Optional[np.ndarray] = None
+
+        self._sam_encoder = self.encoder
 
         self._output_lock = threading.Lock()
         self._graph_lock = threading.Lock()
@@ -181,7 +181,7 @@ class Pipeline:
         self.processed_frames = 0
 
         self._last_vlm_output = None
-        self.vlm_skip_interval = 2  # run VLM every n frame
+        self.vlm_skip_interval = self.config.vlm.vlm_skip_interval  # run VLM every n frame
 
     # ------------------------------------------------------------------
 
@@ -207,18 +207,27 @@ class Pipeline:
                 log.info("vlm_worker received frame %s", fid)
 
                 if fid % self.vlm_skip_interval == 0 or self._last_vlm_output is None:
-                    vlm_output = self.vlm.run(
-                        frame=frame,
-                        task_prompt="describe the scene",
-                        frame_id=fid,
-                        timestamp=0.0,
-                    )
-                    self._last_vlm_output = vlm_output
-                    log.info("vlm_worker ran VLM for frame %s", fid)
-                else:
-                    vlm_output = self._last_vlm_output
-                    log.info("vlm_worker skipped VLM for frame %s, reusing frame %s output",
-                            fid, fid - (fid % self.vlm_skip_interval))
+                    try:
+                        vlm_output = self.vlm.run(
+                            frame=frame,
+                            task_prompt="describe the scene",
+                            frame_id=fid,
+                            timestamp=0.0,
+                        )
+                        self._last_vlm_output = vlm_output
+                        log.info("vlm_worker: fresh VLM output for frame %s (%d regions)", fid, len(vlm_output.priority_regions))
+                    except Exception as e:
+                        log.warning("VLM call failed for frame %s: %s - reusing last output", fid, e)
+                        if self._last_vlm_output is None:
+                            from structure import VLMSceneOutput
+                            vlm_output = VLMSceneOutput(
+                                task_prompt="describe the scene",
+                                scene_summary="",
+                                priority_regions=[],
+                                frame_id=fid
+                            )
+                        else:
+                            vlm_output = self._last_vlm_output
 
                 encoded = self.encoder.encode(vlm_output)
                 self.sam_q.put((fid, frame, vlm_output, encoded))
@@ -232,6 +241,7 @@ class Pipeline:
             self.sam_q.put(None)
 
     def sam_worker(self):
+        prev_seg_local = None
         try:
             while True:
                 # --- get next item, falling back to refine queue ---
@@ -250,16 +260,36 @@ class Pipeline:
 
                 # --- unpack based on item type ---
                 if isinstance(item, dict) and item.get("type") == "kg_refine":
-                    if item["frame"] is None or item.get("fid") is None:
-                        continue
                     fid = item["fid"]
                     frame = item["frame"]
-                    vlm_output = None
-                    encoded = self.encoder.encode_from_text(item["prompts"])
-                else:
-                    fid, frame, vlm_output, encoded = item
+                    if frame is None or fid is None:
+                        log.warning("sam_worker: kg_refine item missing frame/fid, skipping")
+                        continue
+                    encoded = self.encoder.encode_from_regions(
+                        regions=item["prompts"],
+                        frame_id=fid
+                    )
+                    seg_output = self.sam.run(
+                        frame=frame,
+                        encoded_prompts=encoded,
+                        prev_seg=prev_seg_local,
+                    )
+                    self.kg_q.put(KGItem(
+                        fid=fid,
+                        frame=frame,
+                        vlm_output=None,
+                        seg_output=seg_output,
+                        encoded_prompts=encoded,
+                        heatmap=None,
+                        prev_seg=prev_seg_local,
+                        prev_heatmap=None,
+                    ))
+                    log.info("sam_worker: refined seg for frame %s -> kg_q", fid)
+                    continue
 
-                seg_output = self.sam.run(frame=frame, encoded_prompts=encoded, prev_seg=self._prev_seg,)
+                fid, frame, vlm_output, encoded = item
+
+                seg_output = self.sam.run(frame=frame, encoded_prompts=encoded, prev_seg=prev_seg_local,)
 
                 log.info("sam_worker received frame %s", fid)
 
@@ -282,10 +312,10 @@ class Pipeline:
                     seg_output=seg_output,
                     encoded_prompts=encoded,
                     heatmap=heatmap,
-                    prev_seg=self._prev_seg,
+                    prev_seg=prev_seg_local,
                     prev_heatmap=None
                 ))
-                self._prev_seg = seg_output
+                prev_seg_local = seg_output
                 log.info("sam_worker put frame %s onto kg_q", fid)
 
                 if heatmap is not None:
@@ -307,8 +337,8 @@ class Pipeline:
                     continue
 
                 if item is None:
-                    with self._output_lock:
-                        self.latest_output = "DONE"
+                    self.output_q.put(None)
+                    log.info("kg_worker shutting down")
                     return
 
                 # -------------------------
@@ -341,36 +371,24 @@ class Pipeline:
                 # -------------------------
                 # FEEDBACK LOOP (this is what you were missing)
                 # -------------------------
-                refined_prompts = getattr(kg_result, "refined_prompts", None)
-
-                if refined_prompts:
+                if kg_result.refined_prompts:
                     self.sam_refine_q.put({
                         "type": "kg_refine",
                         "fid": fid,
                         "frame": frame,
-                        "prompts": refined_prompts
+                        "prompts": kg_result.refined_prompts,
                     })
+                    log.info("kg_worker: queued %d prompts for frame %s", len(kg_result.refined_prompts), fid)
 
-                    log.info("KG refined prompts for frame %s: %s", fid, refined_prompts)
-
-                # -------------------------
-                # expose latest output
-                # -------------------------
-                with self._output_lock:
-                    self.latest_output = (
-                        fid,
-                        frame,
-                        seg_output,
-                        kg_result,
-                        vlm_output,
-                        heatmap
-                    )
-                    self.processed_frames += 1
+                self.output_q.put((
+                    fid, frame, seg_output, kg_result, vlm_output, heatmap
+                ))
+                self.processed_frames += 1
+                log.info("kg_worker: frame %s -> output_q", fid)
 
         except Exception as e:
             log.exception("kg_worker crashed: %s", e)
-            with self._output_lock:
-                self.latest_output = "DONE"   # or signal failure
+            self.output_q.put(None)
             return
         
     def output_worker(self):
@@ -443,12 +461,6 @@ class Pipeline:
         for t in self.threads:
             t.start()
 
-    def reset(self) -> None:
-        """Clear temporal state (call when starting a new sequence)."""
-        self._prev_seg = None
-        self._frame_counter = 0
-        log.info("Pipeline state reset.")
-
 IMAGE_DIR = Path("/home/arianna/vlm-kg-tester/tests/neighborhood_subset")
 frames = sorted(IMAGE_DIR.glob("*.jpg"))
 
@@ -458,7 +470,8 @@ cfg = PipelineConfig(
         model_name="google/gemma-4-E2B-it",
         grpc_endpoint="http://localhost:8000/v1",
         device="cuda",
-        temperature=0.2
+        temperature=0.2,
+        vlm_skip_interval=2,
     ),
     sam=SAMConfig(
         backend="sam3",
@@ -485,25 +498,12 @@ def feed_frames():
 feed_thread = threading.Thread(target=feed_frames, daemon=True)
 feed_thread.start()
 
-while True:
-    if not hasattr(pipeline, "latest_output") or pipeline.latest_output is None:
-        time.sleep(0.01)
-        continue
+feed_thread.join()
+log.info("Feed thread done, Waiting for pipeline to drain...")
 
-    with pipeline._output_lock:
-        result = pipeline.latest_output
-        pipeline.latest_output = None
-
-    if pipeline.processed_frames >= pipeline.total_frames:
-        break
-
-    if result == "DONE" or pipeline.processed_frames >= pipeline.total_frames:
-        pipeline.output_q.put(None)
-        print("All frames processed.")
-        break
-
-    pipeline.output_q.put(result)
+for t in pipeline.threads:
+    t.join()
 
 cv2.destroyAllWindows()
 writer.release()
-print(f"Done.")
+log.info("All workers finished. Video written.")
