@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 14,
+      "track_id": 13,
       "priority": 0.9403
     },
     {
       "id": "node_001",
-      "track_id": 7,
+      "track_id": 4,
       "priority": 0.8819
     },
     {
       "id": "node_002",
-      "track_id": 16,
+      "track_id": 0,
       "priority": 0.675
     },
     {
       "id": "node_003",
-      "track_id": 17,
-      "priority": 0.6625
+      "track_id": 14,
+      "priority": 0.7444
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 11,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -39,8 +39,8 @@
           0.24395252579551757,
           0.4923668348220413
         ],
-        "priority": 0.9403,
-        "track_id": 14,
+        "priority": 0.8812958576583863,
+        "track_id": 13,
         "mask_area": 0.4716981336805556,
         "frame_id": 12,
         "confidence": 0.92578125,
@@ -54,8 +54,8 @@
           0.6338485570884196,
           0.49948709979459954
         ],
-        "priority": 0.8819,
-        "track_id": 7,
+        "priority": 0.7972506482791901,
+        "track_id": 4,
         "mask_area": 0.7299522569444444,
         "frame_id": 12,
         "confidence": 0.9296875,
@@ -69,8 +69,8 @@
           0.2419164480452675,
           0.7194914837677184
         ],
-        "priority": 0.675,
-        "track_id": 16,
+        "priority": 0.6844129943847657,
+        "track_id": 0,
         "mask_area": 0.263671875,
         "frame_id": 12,
         "confidence": 0.5625,
@@ -78,18 +78,18 @@
         "id": "node_002"
       },
       {
-        "label": "Unpaved Path",
-        "semantic_class": "road",
+        "label": "Unidentified Structure",
+        "semantic_class": "building",
         "centroid": [
-          0.8839326765421465,
-          0.699172509847775
+          0.9089735623195381,
+          0.07706534060528286
         ],
-        "priority": 0.6625,
-        "track_id": 17,
-        "mask_area": 0.07180338541666667,
+        "priority": 0.6717452211570739,
+        "track_id": 14,
+        "mask_area": 0.028184678819444444,
         "frame_id": 12,
-        "confidence": 0.90625,
-        "source_region_id": "region_003_Unpaved Path",
+        "confidence": 0.9609375,
+        "source_region_id": "region_003_Unidentified Structure",
         "id": "node_003"
       }
     ],

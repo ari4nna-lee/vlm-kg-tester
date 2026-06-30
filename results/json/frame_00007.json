@@ -7,74 +7,74 @@
     {
       "id": "node_000",
       "track_id": 0,
-      "priority": 0.9544
+      "priority": 0.9434
     },
     {
       "id": "node_001",
-      "track_id": 2,
-      "priority": 0.8834
+      "track_id": 7,
+      "priority": 0.8866
     },
     {
       "id": "node_002",
-      "track_id": 11,
-      "priority": 0.8109
+      "track_id": 2,
+      "priority": 0.6656
     },
     {
       "id": "node_003",
-      "track_id": 13,
+      "track_id": 9,
       "priority": 0.7288
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 11,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 7,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Intersection/Roadway",
+        "label": "Intersection/Road Network",
         "semantic_class": "road",
         "centroid": [
-          0.4816186228933298,
-          0.5450575899600163
+          0.48499210347290556,
+          0.5466740760184396
         ],
-        "priority": 0.9544,
+        "priority": 0.861829296321869,
         "track_id": 0,
-        "mask_area": 0.36286241319444446,
+        "mask_area": 0.41130967881944447,
         "frame_id": 6,
-        "confidence": 0.9609375,
-        "source_region_id": "region_000_Intersection/Roadway",
+        "confidence": 0.93359375,
+        "source_region_id": "region_000_Intersection/Road Network",
         "id": "node_000"
       },
       {
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.1652072235636739,
-          0.17704294898182793
+          0.1401766252714441,
+          0.17709701109904694
         ],
-        "priority": 0.8834,
-        "track_id": 2,
-        "mask_area": 0.11773654513888888,
+        "priority": 0.8241120198059083,
+        "track_id": 7,
+        "mask_area": 0.09993489583333333,
         "frame_id": 6,
-        "confidence": 0.93359375,
+        "confidence": 0.94140625,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Vegetation/Trees",
+        "label": "Vegetation/Dry Ground",
         "semantic_class": "vegetation",
         "centroid": [
-          0.4937906858664631,
-          0.5078563043816899
+          0.6843069245542617,
+          0.8842634039859056
         ],
-        "priority": 0.8109,
-        "track_id": 11,
-        "mask_area": 0.21671006944444443,
+        "priority": 0.6053655490684509,
+        "track_id": 2,
+        "mask_area": 0.10035481770833334,
         "frame_id": 6,
-        "confidence": 0.90234375,
-        "source_region_id": "region_002_Vegetation/Trees",
+        "confidence": 0.5390625,
+        "source_region_id": "region_002_Vegetation/Dry Ground",
         "id": "node_002"
       },
       {
@@ -84,8 +84,8 @@
           0.5746087903370652,
           0.5743103367991113
         ],
-        "priority": 0.7288,
-        "track_id": 13,
+        "priority": 0.7599288354301452,
+        "track_id": 9,
         "mask_area": 0.018123914930555554,
         "frame_id": 6,
         "confidence": 0.921875,
@@ -113,13 +113,6 @@
         "tier": 1,
         "confidence": 1.0,
         "source": "node_000",
-        "target": "node_003"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_002",
         "target": "node_003"
       }
     ]

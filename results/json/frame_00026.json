@@ -1,31 +1,31 @@
 {
   "frame_id": 26,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road intersection with surrounding dry, scrubland vegetation and some low-rise buildings.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with surrounding dry, vegetated terrain and some low-rise buildings.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 14,
+      "track_id": 13,
       "priority": 0.9544
     },
     {
       "id": "node_001",
-      "track_id": 7,
-      "priority": 0.885
+      "track_id": 20,
+      "priority": 0.8866
     },
     {
       "id": "node_002",
-      "track_id": 27,
-      "priority": 0.8297
+      "track_id": 24,
+      "priority": 0.8391
     },
     {
       "id": "node_003",
-      "track_id": 28,
+      "track_id": 25,
       "priority": 0.6287
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 11,
   "graph": {
     "directed": true,
@@ -39,8 +39,8 @@
           0.4892119295572138,
           0.544228130049836
         ],
-        "priority": 0.9544,
-        "track_id": 14,
+        "priority": 0.856150583047867,
+        "track_id": 13,
         "mask_area": 0.3214876302083333,
         "frame_id": 26,
         "confidence": 0.9609375,
@@ -51,30 +51,30 @@
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.7510577466985884,
-          0.7483097521153558
+          0.7572711100613461,
+          0.7298095390723803
         ],
-        "priority": 0.885,
-        "track_id": 7,
-        "mask_area": 0.14650390625,
+        "priority": 0.8555787780570985,
+        "track_id": 20,
+        "mask_area": 0.14556966145833333,
         "frame_id": 26,
-        "confidence": 0.9375,
+        "confidence": 0.94140625,
         "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Vegetation/Scrubland",
+        "label": "Vegetation/Dry Ground",
         "semantic_class": "vegetation",
         "centroid": [
-          0.2609286987113949,
-          0.24599926910455663
+          0.2609237334668855,
+          0.2458794597841711
         ],
-        "priority": 0.8297,
-        "track_id": 27,
-        "mask_area": 0.2812445746527778,
+        "priority": 0.8446109268951416,
+        "track_id": 24,
+        "mask_area": 0.2809787326388889,
         "frame_id": 26,
-        "confidence": 0.94921875,
-        "source_region_id": "region_002_Vegetation/Scrubland",
+        "confidence": 0.97265625,
+        "source_region_id": "region_002_Vegetation/Dry Ground",
         "id": "node_002"
       },
       {
@@ -84,8 +84,8 @@
           0.24422814207650273,
           0.5818139040680024
         ],
-        "priority": 0.6287,
-        "track_id": 28,
+        "priority": 0.5541046714401245,
+        "track_id": 25,
         "mask_area": 0.0009928385416666666,
         "frame_id": 26,
         "confidence": 0.671875,

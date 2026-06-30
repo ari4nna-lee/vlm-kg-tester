@@ -1,94 +1,94 @@
 {
   "frame_id": 4,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved intersection with some buildings, a road, and a large, dry, undeveloped patch of land.",
+  "scene_summary": "An aerial view shows a paved intersection with some buildings, surrounding dry, scrubland vegetation.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 3,
-      "priority": 0.9637
+      "track_id": 4,
+      "priority": 0.9466
     },
     {
       "id": "node_001",
-      "track_id": 7,
-      "priority": 0.8897
+      "track_id": 2,
+      "priority": 0.8772
     },
     {
       "id": "node_002",
-      "track_id": 8,
-      "priority": 0.825
+      "track_id": 5,
+      "priority": 0.8234
     },
     {
       "id": "node_003",
-      "track_id": 9,
-      "priority": 0.7366
+      "track_id": 6,
+      "priority": 0.6978
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 10,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 5,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Dry undeveloped land",
-        "semantic_class": "vegetation",
+        "label": "Intersection/Roadway",
+        "semantic_class": "road",
         "centroid": [
-          0.49643930041380024,
-          0.6453506612454742
+          0.4696237637596089,
+          0.24200638992022405
         ],
-        "priority": 0.9637,
-        "track_id": 3,
-        "mask_area": 0.42886176215277777,
+        "priority": 0.8325848717975617,
+        "track_id": 4,
+        "mask_area": 0.24899739583333333,
         "frame_id": 4,
-        "confidence": 0.984375,
-        "source_region_id": "region_000_Dry undeveloped land",
+        "confidence": 0.94140625,
+        "source_region_id": "region_000_Intersection/Roadway",
         "id": "node_000"
       },
       {
-        "label": "Road intersection",
-        "semantic_class": "road",
+        "label": "Dry Scrubland",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.46315788676277797,
-          0.2371772640376757
+          0.5288137135265596,
+          0.7056966694542997
         ],
-        "priority": 0.8897,
-        "track_id": 7,
-        "mask_area": 0.27975911458333336,
+        "priority": 0.7910252571201325,
+        "track_id": 2,
+        "mask_area": 0.5263444010416667,
         "frame_id": 4,
-        "confidence": 0.94921875,
-        "source_region_id": "region_001_Road intersection",
+        "confidence": 0.91796875,
+        "source_region_id": "region_001_Dry Scrubland",
         "id": "node_001"
       },
       {
-        "label": "Building structures",
+        "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.08997067504831033,
-          0.15831074924196006
+          0.11492209386173466,
+          0.12736897989441393
         ],
-        "priority": 0.825,
-        "track_id": 8,
-        "mask_area": 0.02302191840277778,
+        "priority": 0.7626081778717042,
+        "track_id": 5,
+        "mask_area": 0.05887369791666667,
         "frame_id": 4,
-        "confidence": 0.9375,
-        "source_region_id": "region_002_Building structures",
+        "confidence": 0.93359375,
+        "source_region_id": "region_002_Building Complex",
         "id": "node_002"
       },
       {
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.3446852939386563,
-          0.2637874607811317
+          0.37421875,
+          0.2638888888888889
         ],
-        "priority": 0.7366,
-        "track_id": 9,
-        "mask_area": 0.015601128472222222,
+        "priority": 0.7579351937675476,
+        "track_id": 6,
+        "mask_area": 0.01567165798611111,
         "frame_id": 4,
-        "confidence": 0.94140625,
+        "confidence": 0.76953125,
         "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
@@ -98,14 +98,14 @@
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_001",
+        "source": "node_000",
         "target": "node_002"
       },
       {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_001",
+        "source": "node_000",
         "target": "node_003"
       }
     ]

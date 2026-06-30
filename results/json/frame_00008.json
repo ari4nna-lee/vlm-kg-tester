@@ -1,103 +1,103 @@
 {
   "frame_id": 8,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road intersecting with a curved road and some buildings surrounded by dry, vegetated terrain.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some surrounding buildings and patches of dry vegetation.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 14,
-      "priority": 0.9481
+      "track_id": 0,
+      "priority": 0.9325
     },
     {
       "id": "node_001",
-      "track_id": 11,
-      "priority": 0.8897
+      "track_id": 7,
+      "priority": 0.8741
     },
     {
       "id": "node_002",
-      "track_id": 15,
-      "priority": 0.8266
+      "track_id": 10,
+      "priority": 0.6734
     },
     {
       "id": "node_003",
-      "track_id": 7,
-      "priority": 0.7744
+      "track_id": 9,
+      "priority": 0.7288
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 11,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 7,
   "graph": {
     "directed": true,
     "multigraph": false,
     "graph": {},
     "nodes": [
       {
-        "label": "Main Roadway",
+        "label": "Intersection/Road Network",
         "semantic_class": "road",
         "centroid": [
-          0.28759921574006003,
-          0.5258235633359314
+          0.41663632349317103,
+          0.6092541619314131
         ],
-        "priority": 0.9481,
-        "track_id": 14,
-        "mask_area": 0.1963009982638889,
-        "frame_id": 8,
-        "confidence": 0.9453125,
-        "source_region_id": "region_000_Main Roadway",
+        "priority": 0.8024627945423126,
+        "track_id": 0,
+        "mask_area": 0.5327669270833333,
+        "frame_id": 6,
+        "confidence": 0.90625,
+        "source_region_id": "region_000_Intersection/Road Network",
         "id": "node_000"
       },
       {
-        "label": "Intersection Area",
-        "semantic_class": "road",
+        "label": "Building Complex",
+        "semantic_class": "building",
         "centroid": [
-          0.4642813463318385,
-          0.6668446681107298
+          0.14019056036588676,
+          0.17702109307613895
         ],
-        "priority": 0.8897,
-        "track_id": 11,
-        "mask_area": 0.14009440104166668,
-        "frame_id": 8,
-        "confidence": 0.94921875,
-        "source_region_id": "region_001_Intersection Area",
+        "priority": 0.8895628812599182,
+        "track_id": 7,
+        "mask_area": 0.09994032118055556,
+        "frame_id": 6,
+        "confidence": 0.91015625,
+        "source_region_id": "region_001_Building Complex",
         "id": "node_001"
       },
       {
-        "label": "Buildings",
-        "semantic_class": "building",
+        "label": "Vegetation/Dry Ground",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.16747514777970013,
-          0.6134460303729334
+          0.762339366248069,
+          0.9420228346151504
         ],
-        "priority": 0.8266,
-        "track_id": 15,
-        "mask_area": 0.09407552083333333,
-        "frame_id": 8,
-        "confidence": 0.94140625,
-        "source_region_id": "region_002_Buildings",
+        "priority": 0.6132143737983703,
+        "track_id": 10,
+        "mask_area": 0.021774088541666667,
+        "frame_id": 6,
+        "confidence": 0.55859375,
+        "source_region_id": "region_002_Vegetation/Dry Ground",
         "id": "node_002"
       },
       {
-        "label": "Vegetation/Hills",
-        "semantic_class": "vegetation",
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
         "centroid": [
-          0.6502826267146125,
-          0.2690047769212073
+          0.574606030728013,
+          0.5743017721367418
         ],
-        "priority": 0.7744,
-        "track_id": 7,
-        "mask_area": 0.34821831597222225,
-        "frame_id": 8,
-        "confidence": 0.9609375,
-        "source_region_id": "region_003_Vegetation/Hills",
+        "priority": 0.6708518634223938,
+        "track_id": 9,
+        "mask_area": 0.018123914930555554,
+        "frame_id": 6,
+        "confidence": 0.921875,
+        "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_001"
       },
@@ -109,11 +109,11 @@
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_001",
-        "target": "node_000"
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_003"
       }
     ]
   }

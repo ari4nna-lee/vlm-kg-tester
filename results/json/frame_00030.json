@@ -1,31 +1,31 @@
 {
   "frame_id": 30,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a mix of residential buildings, paved roads, and undeveloped, arid terrain.",
+  "scene_summary": "An aerial view shows a mix of dry, scrubland, a paved road, and residential buildings.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 27,
-      "priority": 0.9372
+      "track_id": 13,
+      "priority": 0.9294
     },
     {
       "id": "node_001",
-      "track_id": 32,
-      "priority": 0.7288
+      "track_id": 20,
+      "priority": 0.8803
     },
     {
       "id": "node_002",
-      "track_id": 14,
-      "priority": 0.8328
+      "track_id": 24,
+      "priority": 0.6875
     },
     {
       "id": "node_003",
-      "track_id": 33,
-      "priority": 0.6525
+      "track_id": 29,
+      "priority": 0.735
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 11,
   "graph": {
     "directed": true,
@@ -33,81 +33,66 @@
     "graph": {},
     "nodes": [
       {
-        "label": "Residential Buildings",
-        "semantic_class": "building",
+        "label": "Roadway",
+        "semantic_class": "road",
         "centroid": [
-          0.18989772116926132,
-          0.1762442932593322
+          0.5499751383086406,
+          0.6485989834862982
         ],
-        "priority": 0.9372,
-        "track_id": 27,
-        "mask_area": 0.13333441840277777,
-        "frame_id": 30,
-        "confidence": 0.91796875,
-        "source_region_id": "region_000_Residential Buildings",
+        "priority": 0.883510508556366,
+        "track_id": 13,
+        "mask_area": 0.31140842013888886,
+        "frame_id": 28,
+        "confidence": 0.8984375,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Road Network",
-        "semantic_class": "road",
+        "label": "Residential Area",
+        "semantic_class": "building",
         "centroid": [
-          0.30681566463051807,
-          0.26980930175219664
+          0.7840280258708509,
+          0.82032359786638
         ],
-        "priority": 0.7288,
-        "track_id": 32,
-        "mask_area": 0.087529296875,
-        "frame_id": 30,
-        "confidence": 0.546875,
-        "source_region_id": "region_001_Road Network",
+        "priority": 0.8833354589843749,
+        "track_id": 20,
+        "mask_area": 0.1533810763888889,
+        "frame_id": 28,
+        "confidence": 0.92578125,
+        "source_region_id": "region_001_Residential Area",
         "id": "node_001"
       },
       {
-        "label": "Arid Vegetation/Ground",
+        "label": "Scrubland/Dry Vegetation",
         "semantic_class": "vegetation",
         "centroid": [
-          0.6872031689217664,
-          0.6414809864228451
+          0.33758912342477315,
+          0.29027793093803367
         ],
-        "priority": 0.8328,
-        "track_id": 14,
-        "mask_area": 0.4531749131944444,
-        "frame_id": 30,
-        "confidence": 0.95703125,
-        "source_region_id": "region_002_Arid Vegetation/Ground",
+        "priority": 0.6035853385925294,
+        "track_id": 24,
+        "mask_area": 0.2853493923611111,
+        "frame_id": 28,
+        "confidence": 0.59375,
+        "source_region_id": "region_002_Scrubland/Dry Vegetation",
         "id": "node_002"
       },
       {
-        "label": "Paved Road (Upper)",
-        "semantic_class": "road",
+        "label": "Vehicle",
+        "semantic_class": "vehicle",
         "centroid": [
-          0.43305177368565867,
-          0.1448312793477067
+          0.1996101524921214,
+          0.8742934036416579
         ],
-        "priority": 0.6525,
-        "track_id": 33,
-        "mask_area": 0.10647677951388888,
-        "frame_id": 30,
-        "confidence": 0.65625,
-        "source_region_id": "region_003_Paved Road (Upper)",
+        "priority": 0.6932748084068299,
+        "track_id": 29,
+        "mask_area": 0.026167534722222222,
+        "frame_id": 28,
+        "confidence": 0.9375,
+        "source_region_id": "region_003_Vehicle",
         "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_001",
-        "target": "node_003"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_003",
-        "target": "node_001"
-      }
-    ]
+    "links": []
   }
 }

@@ -37,8 +37,9 @@ import numpy as np
 from vlm_reasoning import VLMReasoningPass, VLMConfig
 from prompt_encoder import PromptEncoder, EncoderConfig, EncodedPrompts
 from sam_stage import SAMStage, SAMConfig
-from kg import KGStage, KGConfig, KGRunResult
+from kg import KGStage, KGConfig, KGRunResult, spatial_merge
 from structure import VLMSceneOutput, SegmentationOutput
+from mosaic import MosaicConfig, MosaicTracker
 
 from visualization.render_frame import overlay_masks
 from visualization.render_graph import render_graph
@@ -120,6 +121,7 @@ class KGItem:
     heatmap: np.ndarray | None
     prev_seg: object | None
     prev_heatmap: np.ndarray | None
+    is_refine: bool = False
 
 # ---------------------------------------------------------------------------
 # Pipeline
@@ -177,11 +179,12 @@ class Pipeline:
         self._output_lock = threading.Lock()
         self._graph_lock = threading.Lock()
 
-        self.total_frames = len(frames)
         self.processed_frames = 0
 
         self._last_vlm_output = None
         self.vlm_skip_interval = self.config.vlm.vlm_skip_interval  # run VLM every n frame
+
+        self.mosaic = MosaicTracker((TARGET_H, TARGET_W))
 
     # ------------------------------------------------------------------
 
@@ -283,6 +286,7 @@ class Pipeline:
                         heatmap=None,
                         prev_seg=prev_seg_local,
                         prev_heatmap=None,
+                        is_refine=True,
                     ))
                     log.info("sam_worker: refined seg for frame %s -> kg_q", fid)
                     continue
@@ -350,6 +354,7 @@ class Pipeline:
                 seg_output = item.seg_output
                 encoded_prompts = item.encoded_prompts
                 prev_seg = item.prev_seg
+                H_global = self.mosaic.update(fid, frame)   # idempotent per fid, handles kg_refine re-delivery
 
                 log.info("kg_worker received frame %s", fid)
 
@@ -359,14 +364,15 @@ class Pipeline:
                 # KG reasoning step
                 # -------------------------
                 kg_result = self.kg.run(
-                    seg_output,
-                    prev_seg_output=prev_seg,
-                    heatmap=heatmap,
-                    vlm_output=vlm_output
+                    seg_output, prev_seg_output=prev_seg, heatmap=heatmap,
+                    vlm_output=vlm_output, H_global=H_global,
                 )
                 with self._graph_lock:
-                    self._kg_graph = nx.compose(self._kg_graph, kg_result.graph)
+                    self._kg_graph = spatial_merge(self._kg_graph, kg_result.graph)
                     log.info("kg_worker finished frame %s, setting latest_output", fid)
+
+                if heatmap is not None:
+                    self.mosaic.accumulate_heatmap(fid, heatmap)
 
                 # -------------------------
                 # FEEDBACK LOOP (this is what you were missing)
@@ -383,8 +389,14 @@ class Pipeline:
                 self.output_q.put((
                     fid, frame, seg_output, kg_result, vlm_output, heatmap
                 ))
-                self.processed_frames += 1
-                log.info("kg_worker: frame %s -> output_q", fid)
+                if not item.is_refine:
+                    self.output_q.put((
+                        fid, frame, seg_output, kg_result, vlm_output, heatmap
+                    ))
+                    self.processed_frames += 1    # moved inside the gate
+                    log.info("kg_worker: frame %s -> output_q", fid)
+                else:
+                    log.info("kg_worker: frame %s refine pass merged into graph, no output_q write", fid)
 
         except Exception as e:
             log.exception("kg_worker crashed: %s", e)
@@ -503,6 +515,16 @@ log.info("Feed thread done, Waiting for pipeline to drain...")
 
 for t in pipeline.threads:
     t.join()
+
+global_canvas = pipeline.mosaic.get_canvas()
+if global_canvas is not None:
+    cv2.imwrite(str(OUTPUT_DIR / "global_mosaic.png"), cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR))
+
+global_heat = pipeline.mosaic.get_global_heatmap()
+if global_heat is not None:
+    vis = cv2.normalize(global_heat, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    vis = cv2.applyColorMap(vis, cv2.COLORMAP_JET)
+    cv2.imwrite(str(OUTPUT_DIR / "global_heatmap.png"), vis)
 
 cv2.destroyAllWindows()
 writer.release()

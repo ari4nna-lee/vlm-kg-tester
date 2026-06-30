@@ -1,31 +1,26 @@
 {
   "frame_id": 31,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a mix of residential buildings, paved roads, and undeveloped, arid terrain.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a mix of dry, scrubland, a paved road, and residential buildings.",
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 27,
-      "priority": 0.9481
+      "track_id": 13,
+      "priority": 0.9263
     },
     {
       "id": "node_001",
-      "track_id": 32,
-      "priority": 0.7663
+      "track_id": 20,
+      "priority": 0.8913
     },
     {
       "id": "node_002",
-      "track_id": 14,
-      "priority": 0.8141
-    },
-    {
-      "id": "node_003",
-      "track_id": 26,
-      "priority": 0.5994
+      "track_id": 29,
+      "priority": 0.7178
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 11,
   "graph": {
     "directed": true,
@@ -33,81 +28,51 @@
     "graph": {},
     "nodes": [
       {
-        "label": "Residential Buildings",
-        "semantic_class": "building",
+        "label": "Roadway",
+        "semantic_class": "road",
         "centroid": [
-          0.19094365242734276,
-          0.1773956281108892
+          0.5507593043459654,
+          0.6483403822401705
         ],
-        "priority": 0.9481,
-        "track_id": 27,
-        "mask_area": 0.13310004340277778,
-        "frame_id": 30,
-        "confidence": 0.9453125,
-        "source_region_id": "region_000_Residential Buildings",
+        "priority": 0.881058391609192,
+        "track_id": 13,
+        "mask_area": 0.31060546875,
+        "frame_id": 28,
+        "confidence": 0.890625,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Road Network",
-        "semantic_class": "road",
+        "label": "Residential Area",
+        "semantic_class": "building",
         "centroid": [
-          0.3606065619253534,
-          0.29841128174922427
+          0.7839759604671153,
+          0.8203085686123315
         ],
-        "priority": 0.7663,
-        "track_id": 32,
-        "mask_area": 0.07552951388888889,
-        "frame_id": 30,
-        "confidence": 0.640625,
-        "source_region_id": "region_001_Road Network",
+        "priority": 0.8924563584709168,
+        "track_id": 20,
+        "mask_area": 0.15338216145833333,
+        "frame_id": 28,
+        "confidence": 0.953125,
+        "source_region_id": "region_001_Residential Area",
         "id": "node_001"
       },
       {
-        "label": "Arid Vegetation/Ground",
+        "label": "Scrubland/Dry Vegetation",
         "semantic_class": "vegetation",
         "centroid": [
-          0.7330390474735755,
-          0.6691486541552052
+          0.1996144615161317,
+          0.8743313013187359
         ],
-        "priority": 0.8141,
-        "track_id": 14,
-        "mask_area": 0.36895182291666667,
-        "frame_id": 30,
-        "confidence": 0.91015625,
-        "source_region_id": "region_002_Arid Vegetation/Ground",
+        "priority": 0.6763068506622314,
+        "track_id": 29,
+        "mask_area": 0.026165364583333333,
+        "frame_id": 28,
+        "confidence": 0.89453125,
+        "source_region_id": "region_002_Scrubland/Dry Vegetation",
         "id": "node_002"
-      },
-      {
-        "label": "Paved Road (Upper)",
-        "semantic_class": "road",
-        "centroid": [
-          0.7383328599091026,
-          0.15338725776089748
-        ],
-        "priority": 0.5994,
-        "track_id": 26,
-        "mask_area": 0.076279296875,
-        "frame_id": 30,
-        "confidence": 0.5234375,
-        "source_region_id": "region_003_Paved Road (Upper)",
-        "id": "node_003"
       }
     ],
-    "links": [
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_001",
-        "target": "node_003"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
-        "source": "node_003",
-        "target": "node_001"
-      }
-    ]
+    "links": []
   }
 }

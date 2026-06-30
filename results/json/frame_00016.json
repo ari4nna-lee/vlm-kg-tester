@@ -1,26 +1,31 @@
 {
   "frame_id": 16,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a dry, sparsely vegetated terrain with a paved road running parallel to a dry creek bed.",
-  "num_objects": 3,
+  "scene_summary": "An aerial view shows a dry, sparsely vegetated landscape bordered by a paved road and railway lines.",
+  "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 7,
-      "priority": 0.9497
+      "track_id": 4,
+      "priority": 0.9434
     },
     {
       "id": "node_001",
-      "track_id": 14,
-      "priority": 0.885
+      "track_id": 16,
+      "priority": 0.89
     },
     {
       "id": "node_002",
-      "track_id": 19,
-      "priority": 0.7294
+      "track_id": 13,
+      "priority": 0.8281
+    },
+    {
+      "id": "node_003",
+      "track_id": 0,
+      "priority": 0.735
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 11,
   "graph": {
     "directed": true,
@@ -28,58 +33,115 @@
     "graph": {},
     "nodes": [
       {
-        "label": "Road",
+        "label": "Roadway",
         "semantic_class": "road",
         "centroid": [
-          0.7304858169991985,
-          0.5031431456739259
+          0.722614564603488,
+          0.5228537420469017
         ],
-        "priority": 0.9497,
-        "track_id": 7,
-        "mask_area": 0.5225238715277778,
+        "priority": 0.7994728928518295,
+        "track_id": 4,
+        "mask_area": 0.4918240017361111,
         "frame_id": 16,
-        "confidence": 0.94921875,
-        "source_region_id": "region_000_Road",
+        "confidence": 0.93359375,
+        "source_region_id": "region_000_Roadway",
         "id": "node_000"
       },
       {
-        "label": "Vegetation",
-        "semantic_class": "vegetation",
+        "label": "Railway Tracks",
+        "semantic_class": "road",
         "centroid": [
-          0.2658187794474184,
-          0.49943651266966244
+          0.4993111634542182,
+          0.49932996645655015
         ],
-        "priority": 0.885,
-        "track_id": 14,
-        "mask_area": 0.5294552951388889,
+        "priority": 0.8894595618247987,
+        "track_id": 16,
+        "mask_area": 0.46178819444444447,
         "frame_id": 16,
-        "confidence": 0.9375,
-        "source_region_id": "region_001_Vegetation",
+        "confidence": 0.875,
+        "source_region_id": "region_001_Railway Tracks",
         "id": "node_001"
       },
       {
-        "label": "Anomaly",
-        "semantic_class": "anomaly",
+        "label": "Dry Vegetation",
+        "semantic_class": "vegetation",
         "centroid": [
-          0.249609375,
-          0.34930555555555554
+          0.2665194464850814,
+          0.49943878774179407
         ],
-        "priority": 0.7294,
-        "track_id": 19,
-        "mask_area": 0.034305555555555554,
+        "priority": 0.8164376530456543,
+        "track_id": 13,
+        "mask_area": 0.5280381944444444,
         "frame_id": 16,
-        "confidence": 0.7734375,
-        "source_region_id": "region_002_Anomaly",
+        "confidence": 0.9453125,
+        "source_region_id": "region_002_Dry Vegetation",
         "id": "node_002"
+      },
+      {
+        "label": "Dirt Path",
+        "semantic_class": "road",
+        "centroid": [
+          0.349518177788494,
+          0.5480180834869458
+        ],
+        "priority": 0.7835160498619079,
+        "track_id": 0,
+        "mask_area": 0.14794487847222224,
+        "frame_id": 16,
+        "confidence": 0.9375,
+        "source_region_id": "region_003_Dirt Path",
+        "id": "node_003"
       }
     ],
     "links": [
       {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_001",
+        "target": "node_003"
+      },
+      {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_001",
-        "target": "node_002"
+        "source": "node_002",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_003",
+        "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.9,
+        "source": "node_003",
+        "target": "node_001"
       }
     ]
   }

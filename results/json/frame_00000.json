@@ -1,37 +1,32 @@
 {
   "frame_id": 0,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road intersection with some parking areas and a single vehicle in a dry, sparsely vegetated landscape.",
-  "num_objects": 5,
+  "scene_summary": "An aerial view shows a paved road intersection in a dry, sparsely vegetated landscape with a single vehicle.",
+  "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
       "track_id": 0,
-      "priority": 0.9512
+      "priority": 0.9497
     },
     {
       "id": "node_001",
       "track_id": 1,
-      "priority": 0.8803
+      "priority": 0.8788
     },
     {
       "id": "node_002",
       "track_id": 2,
-      "priority": 0.8219
+      "priority": 0.7953
     },
     {
       "id": "node_003",
       "track_id": 3,
-      "priority": 0.7509
-    },
-    {
-      "id": "node_004",
-      "track_id": 4,
-      "priority": 0.6828
+      "priority": 0.7381
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 7,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 3,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -41,14 +36,14 @@
         "label": "Road Intersection",
         "semantic_class": "road",
         "centroid": [
-          0.5068512927125555,
-          0.3657703603784942
+          0.4558219717334636,
+          0.2857304840519894
         ],
-        "priority": 0.9512,
+        "priority": 0.8376456456279755,
         "track_id": 0,
-        "mask_area": 0.49953776041666664,
+        "mask_area": 0.416259765625,
         "frame_id": 0,
-        "confidence": 0.953125,
+        "confidence": 0.94921875,
         "source_region_id": "region_000_Road Intersection",
         "id": "node_000"
       },
@@ -56,111 +51,68 @@
         "label": "Vehicle",
         "semantic_class": "vehicle",
         "centroid": [
-          0.7292901719099726,
-          0.5743008349682684
+          0.7292801151908966,
+          0.6034674146849249
         ],
-        "priority": 0.8803,
+        "priority": 0.8878786645317078,
         "track_id": 1,
-        "mask_area": 0.02617838541666667,
+        "mask_area": 0.026175130208333335,
         "frame_id": 0,
-        "confidence": 0.92578125,
+        "confidence": 0.921875,
         "source_region_id": "region_001_Vehicle",
         "id": "node_001"
-      },
-      {
-        "label": "Parking Area",
-        "semantic_class": "road",
-        "centroid": [
-          0.1746368378983723,
-          0.19605770441582915
-        ],
-        "priority": 0.8219,
-        "track_id": 2,
-        "mask_area": 0.11106119791666667,
-        "frame_id": 0,
-        "confidence": 0.9296875,
-        "source_region_id": "region_002_Parking Area",
-        "id": "node_002"
       },
       {
         "label": "Vegetation",
         "semantic_class": "vegetation",
         "centroid": [
-          0.5221024250937832,
-          0.7389774301096966
+          0.4960059655649913,
+          0.7784103923872429
         ],
-        "priority": 0.7509,
-        "track_id": 3,
-        "mask_area": 0.47321180555555553,
+        "priority": 0.7297411923313142,
+        "track_id": 2,
+        "mask_area": 0.39864908854166664,
         "frame_id": 0,
-        "confidence": 0.90234375,
-        "source_region_id": "region_003_Vegetation",
-        "id": "node_003"
+        "confidence": 0.86328125,
+        "source_region_id": "region_002_Vegetation",
+        "id": "node_002"
       },
       {
-        "label": "Building Structure",
+        "label": "Building/Structure",
         "semantic_class": "building",
         "centroid": [
-          0.39635087952831294,
-          0.34179551977629274
+          0.42440602120195237,
+          0.39723276388041484
         ],
-        "priority": 0.6828,
-        "track_id": 4,
-        "mask_area": 0.02776584201388889,
+        "priority": 0.698589724521637,
+        "track_id": 3,
+        "mask_area": 0.04446072048611111,
         "frame_id": 0,
-        "confidence": 0.95703125,
-        "source_region_id": "region_004_Building Structure",
-        "id": "node_004"
+        "confidence": 0.9453125,
+        "source_region_id": "region_003_Building/Structure",
+        "id": "node_003"
       }
     ],
     "links": [
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 1.0,
+        "confidence": 0.817,
         "source": "node_000",
         "target": "node_001"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.9,
-        "source": "node_000",
-        "target": "node_002"
-      },
-      {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 0.555,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_003"
       },
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_004"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.9,
+        "confidence": 0.87,
         "source": "node_002",
-        "target": "node_000"
-      },
-      {
-        "predicate": "occluded_by",
-        "tier": 1,
-        "confidence": 0.555,
-        "source": "node_003",
-        "target": "node_000"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_003",
         "target": "node_001"
       }
     ]

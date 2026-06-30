@@ -146,6 +146,7 @@ class InstanceMask:
     track_id: int                      # -1 if tracking not active
     source_region_id: str              # which PriorityRegion prompted this mask
     priority: float                    # inherited from VLM
+    attributes: dict = field(default_factory=dict)
 
 
 @dataclass
