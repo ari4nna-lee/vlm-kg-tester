@@ -11,22 +11,22 @@
     },
     {
       "id": "node_001",
-      "track_id": 4,
+      "track_id": 9,
       "priority": 0.8678
     },
     {
       "id": "node_002",
-      "track_id": 3,
+      "track_id": 12,
       "priority": 0.8219
     },
     {
       "id": "node_003",
-      "track_id": 9,
+      "track_id": 13,
       "priority": 0.7619
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -39,7 +39,7 @@
           0.4309526912963239,
           0.6096777739848616
         ],
-        "priority": 0.7513084641809464,
+        "priority": 0.7600218496437073,
         "confidence": 0.8984375,
         "track_id": 5,
         "mask_area": 0.3560080295138889,
@@ -82,9 +82,9 @@
           0.16522743848300353,
           0.17694003710365963
         ],
-        "priority": 0.5794635723533631,
+        "priority": 0.618026919216156,
         "confidence": 0.89453125,
-        "track_id": 4,
+        "track_id": 9,
         "mask_area": 0.117626953125,
         "frame_id": 8,
         "global_pose": {
@@ -125,9 +125,9 @@
           0.6484031198037749,
           0.2964635624986245
         ],
-        "priority": 0.5000570190544128,
+        "priority": 0.5260805380935668,
         "confidence": 0.9296875,
-        "track_id": 3,
+        "track_id": 12,
         "mask_area": 0.4163324652777778,
         "frame_id": 8,
         "global_pose": {
@@ -168,9 +168,9 @@
           0.22483858283776925,
           0.6106803799593342
         ],
-        "priority": 0.7239424673194885,
+        "priority": 0.7633748618240357,
         "confidence": 0.9296875,
-        "track_id": 9,
+        "track_id": 13,
         "mask_area": 0.04488606770833333,
         "frame_id": 8,
         "global_pose": {

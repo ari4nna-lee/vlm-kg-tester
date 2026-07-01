@@ -2,11 +2,11 @@
   "frame_id": 17,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
   "scene_summary": "An aerial view shows a dry, sparsely vegetated landscape with a paved road running alongside a dry streambed or drainage channel.",
-  "num_objects": 3,
+  "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 12,
+      "track_id": 16,
       "priority": 0.9341
     },
     {
@@ -16,11 +16,16 @@
     },
     {
       "id": "node_002",
-      "track_id": 13,
-      "priority": 0.8313
+      "track_id": 17,
+      "priority": 0.8297
+    },
+    {
+      "id": "node_003",
+      "track_id": 18,
+      "priority": 0.765
     }
   ],
-  "global_graph_nodes": 5,
+  "global_graph_nodes": 4,
   "global_graph_edges": 12,
   "graph": {
     "directed": true,
@@ -34,9 +39,9 @@
           0.8114184314661127,
           0.4685916008464359
         ],
-        "priority": 0.7680476060800554,
+        "priority": 0.7926578542881013,
         "confidence": 0.91015625,
-        "track_id": 12,
+        "track_id": 16,
         "mask_area": 0.20579210069444445,
         "frame_id": 16,
         "global_pose": {
@@ -77,7 +82,7 @@
           0.2658195015951994,
           0.498406498283366
         ],
-        "priority": 0.6689123705329895,
+        "priority": 0.670544,
         "confidence": 0.92578125,
         "track_id": 5,
         "mask_area": 0.5281825086805556,
@@ -117,44 +122,87 @@
         "label": "Dirt Road/Drainage",
         "semantic_class": "dirt_road",
         "centroid": [
-          0.39826593832421847,
-          0.44989482326170716
+          0.21851668581767264,
+          0.5467360354766106
         ],
-        "priority": 0.7368153908958435,
-        "confidence": 0.953125,
-        "track_id": 13,
-        "mask_area": 0.27975260416666664,
+        "priority": 0.8062560000000001,
+        "confidence": 0.94921875,
+        "track_id": 17,
+        "mask_area": 0.2580327690972222,
         "frame_id": 16,
         "global_pose": {
           "centroid": [
-            243.65496826171875,
-            198.52352905273438
+            11.642498970031738,
+            269.2525634765625
           ],
           "bbox_xyxy": [
-            -61.54102325439453,
-            -19.77128028869629,
-            550.6128540039062,
-            416.22296142578125
+            -279.4629211425781,
+            54.328468322753906,
+            292.138671875,
+            489.47344970703125
           ]
         },
         "observation_history": [
           {
             "frame_id": 16,
-            "priority": 0.75878,
+            "priority": 0.7578199999999999,
             "centroid": [
-              0.39826593832421847,
-              0.44989482326170716
+              0.21851668581767264,
+              0.5467360354766106
             ],
-            "confidence": 0.953125,
+            "confidence": 0.94921875,
             "global_centroid": [
-              243.65496826171875,
-              198.52352905273438
+              11.642498970031738,
+              269.2525634765625
             ],
             "timestamp": 0.0
           }
         ],
         "source_region_id": "region_002_Dirt Road/Drainage",
         "id": "node_002"
+      },
+      {
+        "label": "Grassland",
+        "semantic_class": "grassland",
+        "centroid": [
+          0.2652142596243712,
+          0.17647339079398777
+        ],
+        "priority": 0.6508063585281372,
+        "confidence": 0.9375,
+        "track_id": 18,
+        "mask_area": 0.18808159722222223,
+        "frame_id": 16,
+        "global_pose": {
+          "centroid": [
+            87.27701568603516,
+            11.391850471496582
+          ],
+          "bbox_xyxy": [
+            -249.02076721191406,
+            -116.1376724243164,
+            426.7183837890625,
+            138.5673370361328
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 16,
+            "priority": 0.579,
+            "centroid": [
+              0.2652142596243712,
+              0.17647339079398777
+            ],
+            "confidence": 0.9375,
+            "global_centroid": [
+              87.27701568603516,
+              11.391850471496582
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_003_Grassland",
+        "id": "node_003"
       }
     ],
     "links": [
@@ -163,21 +211,49 @@
         "tier": 1,
         "confidence": 0.91,
         "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.495,
+        "source": "node_001",
         "target": "node_002"
       },
       {
         "predicate": "contains",
         "tier": 1,
-        "confidence": 0.783,
+        "confidence": 1.0,
         "source": "node_001",
-        "target": "node_002"
+        "target": "node_003"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.495,
+        "source": "node_002",
+        "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.938,
+        "source": "node_002",
+        "target": "node_003"
       },
       {
         "predicate": "connected_to",
         "tier": 1,
         "confidence": 0.91,
-        "source": "node_002",
+        "source": "node_003",
         "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.938,
+        "source": "node_003",
+        "target": "node_002"
       }
     ]
   }

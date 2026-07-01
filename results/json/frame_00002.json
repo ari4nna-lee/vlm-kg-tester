@@ -6,22 +6,22 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 0,
+      "track_id": 4,
       "priority": 0.9263
     },
     {
       "id": "node_001",
-      "track_id": 3,
+      "track_id": 2,
       "priority": 0.8756
     },
     {
       "id": "node_002",
-      "track_id": 4,
-      "priority": 0.8156
+      "track_id": 5,
+      "priority": 0.825
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 9,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 8,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,9 +34,9 @@
           0.3410613098492427,
           0.5822859796637947
         ],
-        "priority": 0.8260675930252076,
+        "priority": 0.8803050421943666,
         "confidence": 0.890625,
-        "track_id": 0,
+        "track_id": 4,
         "mask_area": 0.37311631944444446,
         "frame_id": 2,
         "global_pose": {
@@ -77,9 +77,9 @@
           0.4992711362292339,
           0.49801943136342935
         ],
-        "priority": 0.6158022598152162,
+        "priority": 0.6682880000000001,
         "confidence": 0.9140625,
-        "track_id": 3,
+        "track_id": 2,
         "mask_area": 0.9953993055555556,
         "frame_id": 2,
         "global_pose": {
@@ -114,46 +114,46 @@
         "id": "node_001"
       },
       {
-        "label": "Dirt Road",
+        "label": "Dirt Road/Terrain",
         "semantic_class": "dirt_road",
         "centroid": [
-          0.16882424152848213,
-          0.17507538416244042
+          0.6112932699849372,
+          0.4382125595666192
         ],
-        "priority": 0.7482126870994568,
-        "confidence": 0.9140625,
-        "track_id": 4,
-        "mask_area": 0.11425130208333334,
+        "priority": 0.804,
+        "confidence": 0.9375,
+        "track_id": 5,
+        "mask_area": 0.5914149305555556,
         "frame_id": 2,
         "global_pose": {
           "centroid": [
-            210.74542236328125,
-            -143.49520874023438
+            770.5375366210938,
+            53.350914001464844
           ],
           "bbox_xyxy": [
-            -5.791082382202148,
+            -10.314101219177246,
             -272.2377014160156,
-            417.08819580078125,
-            -12.286938667297363
+            1259.2900390625,
+            459.36260986328125
           ]
         },
         "observation_history": [
           {
             "frame_id": 2,
-            "priority": 0.74936,
+            "priority": 0.7549999999999999,
             "centroid": [
-              0.16882424152848213,
-              0.17507538416244042
+              0.6112932699849372,
+              0.4382125595666192
             ],
-            "confidence": 0.9140625,
+            "confidence": 0.9375,
             "global_centroid": [
-              210.74542236328125,
-              -143.49520874023438
+              770.5375366210938,
+              53.350914001464844
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_002_Dirt Road",
+        "source_region_id": "region_002_Dirt Road/Terrain",
         "id": "node_002"
       }
     ],
@@ -166,9 +166,9 @@
         "target": "node_001"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.891,
+        "confidence": 0.818,
         "source": "node_000",
         "target": "node_002"
       },
@@ -180,18 +180,25 @@
         "target": "node_000"
       },
       {
-        "predicate": "contains",
+        "predicate": "occluded_by",
         "tier": 1,
         "confidence": 1.0,
         "source": "node_001",
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "occluded_by",
         "tier": 1,
-        "confidence": 0.891,
+        "confidence": 0.818,
         "source": "node_002",
         "target": "node_000"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_002",
+        "target": "node_001"
       }
     ]
   }

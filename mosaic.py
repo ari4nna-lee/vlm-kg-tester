@@ -98,11 +98,11 @@ class MosaicTracker:
                 H_step = self._estimate_step(self._keyframe_gray, gray)
                 H_global = self._keyframe_H @ H_step
 
-                if not self._is_valid_homography(H_global):
+                if not self._is_valid_homography(H_step):
                     log.warning("mosaic: fid %s keyframe match failed, trying frame-to-frame", fid)
                     H_step = self._estimate_step(self._prev_gray, gray)
                     H_global = self._H_cumulative @ H_step
-                    if not self._is_valid_homography(H_global):
+                    if not self._is_valid_homography(H_step):
                         log.warning("mosaic: fid %s both mathes failed, holding position", fid)
                         H_global = self._H_cumulative.copy()
 
@@ -285,7 +285,16 @@ class MosaicTracker:
                     continue
                 priority = float(data.get("priority", 0.0))
                 confidence = float(data.get("confidence", 1.0))
-                radius = max(10, int(data.get("mask_area", 0.01) * min(h, w)))
+
+                mask_area_frac = float(data.get("mask_area", 0.0001))
+                frame_area = self.frame_h * self.frame_w
+                object_px_area = mask_area_frac * frame_area
+                approx_radius = (object_px_area / np.pi) ** 0.5
+
+                H_node = data.get("global_pose", {}).get("H", np.eye(3))
+                scale = float(np.sqrt(abs(np.linalg.det(H_node[:2, :2]))))
+                radius = max(3, int(approx_radius * scale)) 
+
                 cv2.circle(kg_layer, (cx, cy), radius,
                         float(priority * confidence), thickness=-1)
 

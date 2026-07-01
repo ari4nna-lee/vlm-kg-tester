@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 17,
+      "track_id": 23,
       "priority": 0.9403
     },
     {
       "id": "node_001",
-      "track_id": 18,
+      "track_id": 5,
       "priority": 0.8506
     },
     {
       "id": "node_002",
-      "track_id": 14,
+      "track_id": 19,
       "priority": 0.8503
     },
     {
       "id": "node_003",
-      "track_id": 20,
-      "priority": 0.8141
+      "track_id": 26,
+      "priority": 0.7841
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 12,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -39,9 +39,9 @@
           0.6284648760983921,
           0.7268858469968394
         ],
-        "priority": 0.7797524529876709,
+        "priority": 0.807617886680603,
         "confidence": 0.92578125,
-        "track_id": 17,
+        "track_id": 23,
         "mask_area": 0.14583441840277778,
         "frame_id": 28,
         "global_pose": {
@@ -73,7 +73,7 @@
           },
           {
             "frame_id": 28,
-            "priority": 0.82846,
+            "priority": 0.81046,
             "centroid": [
               0.5069231184671884,
               0.8288400030096401
@@ -96,9 +96,9 @@
           0.21852166164873021,
           0.2277901150210682
         ],
-        "priority": 0.47749944618988044,
+        "priority": 0.5100577264194489,
         "confidence": 0.8515625,
-        "track_id": 18,
+        "track_id": 5,
         "mask_area": 0.19055989583333333,
         "frame_id": 28,
         "global_pose": {
@@ -139,9 +139,9 @@
           0.7839878192324155,
           0.17675871102233637
         ],
-        "priority": 0.5167126180591584,
+        "priority": 0.564695507472992,
         "confidence": 0.92578125,
-        "track_id": 14,
+        "track_id": 19,
         "mask_area": 0.15210503472222223,
         "frame_id": 28,
         "global_pose": {
@@ -182,9 +182,9 @@
           0.5069231184671884,
           0.8288400030096401
         ],
-        "priority": 0.7032271858386994,
+        "priority": 0.7084861030273438,
         "confidence": 0.91015625,
-        "track_id": 20,
+        "track_id": 26,
         "mask_area": 0.13059244791666666,
         "frame_id": 28,
         "global_pose": {
@@ -202,7 +202,7 @@
         "observation_history": [
           {
             "frame_id": 28,
-            "priority": 0.82846,
+            "priority": 0.81046,
             "centroid": [
               0.5069231184671884,
               0.8288400030096401

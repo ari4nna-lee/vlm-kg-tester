@@ -1,32 +1,32 @@
 {
   "frame_id": 27,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in the surrounding arid landscape.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in a dry, arid environment.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 13,
+      "track_id": 17,
       "priority": 0.9278
     },
     {
       "id": "node_001",
-      "track_id": 17,
+      "track_id": 23,
       "priority": 0.8788
     },
     {
       "id": "node_002",
-      "track_id": 18,
+      "track_id": 5,
       "priority": 0.8297
     },
     {
       "id": "node_003",
-      "track_id": 5,
-      "priority": 0.7319
+      "track_id": 25,
+      "priority": 0.6119
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 12,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -39,9 +39,9 @@
           0.5374694758888173,
           0.6453217300102868
         ],
-        "priority": 0.7837383886756897,
+        "priority": 0.7694223543586731,
         "confidence": 0.89453125,
-        "track_id": 13,
+        "track_id": 17,
         "mask_area": 0.2544455295138889,
         "frame_id": 26,
         "global_pose": {
@@ -82,9 +82,9 @@
           0.7495318116224506,
           0.7482864249588016
         ],
-        "priority": 0.5534563432922364,
+        "priority": 0.6045913230171204,
         "confidence": 0.921875,
-        "track_id": 17,
+        "track_id": 23,
         "mask_area": 0.14822265625,
         "frame_id": 26,
         "global_pose": {
@@ -125,9 +125,9 @@
           0.26210551758108086,
           0.27300138077533614
         ],
-        "priority": 0.5924451055107116,
+        "priority": 0.5759125532684326,
         "confidence": 0.94921875,
-        "track_id": 18,
+        "track_id": 5,
         "mask_area": 0.2867881944444444,
         "frame_id": 26,
         "global_pose": {
@@ -165,22 +165,22 @@
         "label": "Dirt Road/Ground",
         "semantic_class": "dirt_road",
         "centroid": [
-          0.45057630034893925,
-          0.49002421327411017
+          0.9344243058109599,
+          0.9475041886314414
         ],
-        "priority": 0.6692792317504883,
-        "confidence": 0.9296875,
-        "track_id": 5,
-        "mask_area": 0.8579448784722222,
+        "priority": 0.5890517111892701,
+        "confidence": 0.5546875,
+        "track_id": 25,
+        "mask_area": 0.014751519097222223,
         "frame_id": 26,
         "global_pose": {
           "centroid": [
-            315.06390380859375,
-            246.08216857910156
+            942.3553466796875,
+            570.7013549804688
           ],
           "bbox_xyxy": [
-            -291.9353942871094,
-            -93.3275146484375,
+            763.3516845703125,
+            496.3913879394531,
             1034.193603515625,
             610.3640747070312
           ]
@@ -188,15 +188,15 @@
         "observation_history": [
           {
             "frame_id": 26,
-            "priority": 0.69914,
+            "priority": 0.62714,
             "centroid": [
-              0.45057630034893925,
-              0.49002421327411017
+              0.9344243058109599,
+              0.9475041886314414
             ],
-            "confidence": 0.9296875,
+            "confidence": 0.5546875,
             "global_centroid": [
-              315.06390380859375,
-              246.08216857910156
+              942.3553466796875,
+              570.7013549804688
             ],
             "timestamp": 0.0
           }
@@ -221,32 +221,18 @@
         "target": "node_002"
       },
       {
-        "predicate": "occludes",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.918,
+        "confidence": 0.555,
         "source": "node_000",
         "target": "node_003"
       },
       {
-        "predicate": "occluded_by",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.918,
+        "confidence": 0.555,
         "source": "node_003",
         "target": "node_000"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_003",
-        "target": "node_001"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_003",
-        "target": "node_002"
       }
     ]
   }

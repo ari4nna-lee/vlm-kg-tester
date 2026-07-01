@@ -728,7 +728,9 @@ def spatial_merge(global_graph: "nx.DiGraph", new_graph: "nx.DiGraph", dist_thre
             if len(history) > max_history:
                 history = history[-max_history:]
             existing["observation_history"] = history
-            existing["priority"] = float(np.mean([o.priority for o in history[-5:]]))
+            raw_priority = float(np.mean([o.priority for o in history[-5:]]))
+            existing["raw_priority"] = raw_priority
+            existing["priority"] = max(existing.get("priority", raw_priority), raw_priority)
             n_obs = len(history)
             existing["confidence"] = n_obs / (n_obs + 3.0)
             existing["centroid"] = d["centroid"]

@@ -6,17 +6,17 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 19,
-      "priority": 0.9481
+      "track_id": 22,
+      "priority": 0.9512
     },
     {
       "id": "node_001",
-      "track_id": 14,
+      "track_id": 19,
       "priority": 0.8866
     },
     {
       "id": "node_002",
-      "track_id": 13,
+      "track_id": 17,
       "priority": 0.8141
     },
     {
@@ -25,8 +25,8 @@
       "priority": 0.7775
     }
   ],
-  "global_graph_nodes": 5,
-  "global_graph_edges": 13,
+  "global_graph_nodes": 4,
+  "global_graph_edges": 12,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,38 +36,38 @@
         "label": "Paved Road",
         "semantic_class": "paved_road",
         "centroid": [
-          0.5464746195649057,
-          0.5970658645252447
+          0.5566472245768932,
+          0.6198396520061389
         ],
-        "priority": 0.7368696601395608,
-        "confidence": 0.9453125,
-        "track_id": 19,
-        "mask_area": 0.18925998263888888,
+        "priority": 0.7455839499483109,
+        "confidence": 0.953125,
+        "track_id": 22,
+        "mask_area": 0.14784505208333334,
         "frame_id": 22,
         "global_pose": {
           "centroid": [
-            435.46246337890625,
-            574.7998657226562
+            448.1039733886719,
+            591.7246704101562
           ],
           "bbox_xyxy": [
-            -193.623046875,
-            312.0182800292969,
-            956.627197265625,
-            855.5869750976562
+            -69.23384094238281,
+            313.9033508300781,
+            821.725341796875,
+            885.1680908203125
           ]
         },
         "observation_history": [
           {
             "frame_id": 22,
-            "priority": 0.90886,
+            "priority": 0.91072,
             "centroid": [
-              0.5464746195649057,
-              0.5970658645252447
+              0.5566472245768932,
+              0.6198396520061389
             ],
-            "confidence": 0.9453125,
+            "confidence": 0.953125,
             "global_centroid": [
-              435.46246337890625,
-              574.7998657226562
+              448.1039733886719,
+              591.7246704101562
             ],
             "timestamp": 0.0
           }
@@ -79,24 +79,24 @@
         "label": "Building Complex",
         "semantic_class": "building",
         "centroid": [
-          0.6847453167097289,
-          0.24298794019629227
+          0.7496169475150509,
+          0.3492735942920831
         ],
-        "priority": 0.5102178761177063,
+        "priority": 0.6120980927162171,
         "confidence": 0.94140625,
-        "track_id": 14,
-        "mask_area": 0.1276681857638889,
+        "track_id": 19,
+        "mask_area": 0.2359255642361111,
         "frame_id": 22,
         "global_pose": {
           "centroid": [
-            627.862060546875,
-            322.9187316894531
+            711.2646484375,
+            400.9461669921875
           ],
           "bbox_xyxy": [
-            403.8496398925781,
-            179.46881103515625,
-            892.640380859375,
-            480.9676513671875
+            398.8693542480469,
+            214.606689453125,
+            1026.7740478515625,
+            595.256103515625
           ]
         },
         "observation_history": [
@@ -104,13 +104,13 @@
             "frame_id": 22,
             "priority": 0.55196,
             "centroid": [
-              0.6847453167097289,
-              0.24298794019629227
+              0.7496169475150509,
+              0.3492735942920831
             ],
             "confidence": 0.94140625,
             "global_centroid": [
-              627.862060546875,
-              322.9187316894531
+              711.2646484375,
+              400.9461669921875
             ],
             "timestamp": 0.0
           }
@@ -125,9 +125,9 @@
           0.27183382230182146,
           0.6569074519018426
         ],
-        "priority": 0.5712588971786499,
+        "priority": 0.5879802888565063,
         "confidence": 0.91015625,
-        "track_id": 13,
+        "track_id": 17,
         "mask_area": 0.30709092881944444,
         "frame_id": 22,
         "global_pose": {
@@ -168,7 +168,7 @@
           0.20019761774709433,
           0.14262808961768328
         ],
-        "priority": 0.6347271305143833,
+        "priority": 0.6354246974557638,
         "confidence": 0.96875,
         "track_id": 18,
         "mask_area": 0.04817274305555556,
@@ -207,30 +207,16 @@
     ],
     "links": [
       {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 0.43,
-        "source": "node_000",
-        "target": "node_002"
-      },
-      {
         "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.945,
+        "confidence": 0.953,
         "source": "node_000",
         "target": "node_003"
       },
       {
-        "predicate": "occluded_by",
-        "tier": 1,
-        "confidence": 0.43,
-        "source": "node_002",
-        "target": "node_000"
-      },
-      {
         "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.945,
+        "confidence": 0.953,
         "source": "node_003",
         "target": "node_000"
       }
