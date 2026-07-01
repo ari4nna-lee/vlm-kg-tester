@@ -2,21 +2,26 @@
   "frame_id": 3,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
   "scene_summary": "An aerial view shows a paved road intersection in a dry, sparsely vegetated, and hilly landscape.",
-  "num_objects": 2,
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
+      "track_id": 0,
       "priority": 0.9294
     },
     {
       "id": "node_001",
       "track_id": 3,
       "priority": 0.8741
+    },
+    {
+      "id": "node_002",
+      "track_id": 4,
+      "priority": 0.8141
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 11,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -31,7 +36,7 @@
         ],
         "priority": 0.8139876864070893,
         "confidence": 0.8984375,
-        "track_id": 5,
+        "track_id": 0,
         "mask_area": 0.3522417534722222,
         "frame_id": 2,
         "global_pose": {
@@ -107,6 +112,49 @@
         ],
         "source_region_id": "region_001_Sparse Vegetation",
         "id": "node_001"
+      },
+      {
+        "label": "Dirt Road",
+        "semantic_class": "dirt_road",
+        "centroid": [
+          0.20519072319649506,
+          0.16541161137994717
+        ],
+        "priority": 0.7450894397430421,
+        "confidence": 0.91015625,
+        "track_id": 4,
+        "mask_area": 0.08767469618055555,
+        "frame_id": 2,
+        "global_pose": {
+          "centroid": [
+            252.49977111816406,
+            -266.816162109375
+          ],
+          "bbox_xyxy": [
+            -15.0525484085083,
+            -392.0352783203125,
+            415.1310729980469,
+            -126.71224975585938
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 2,
+            "priority": 0.74846,
+            "centroid": [
+              0.20519072319649506,
+              0.16541161137994717
+            ],
+            "confidence": 0.91015625,
+            "global_centroid": [
+              252.49977111816406,
+              -266.816162109375
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_002_Dirt Road",
+        "id": "node_002"
       }
     ],
     "links": [
@@ -118,10 +166,31 @@
         "target": "node_001"
       },
       {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.898,
+        "source": "node_000",
+        "target": "node_002"
+      },
+      {
         "predicate": "occluded_by",
         "tier": 1,
         "confidence": 0.952,
         "source": "node_001",
+        "target": "node_000"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_002"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.898,
+        "source": "node_002",
         "target": "node_000"
       }
     ]

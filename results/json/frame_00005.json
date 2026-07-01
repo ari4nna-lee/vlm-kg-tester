@@ -1,32 +1,27 @@
 {
   "frame_id": 5,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads, some buildings, and a large, undeveloped, dry, and sparsely vegetated area.",
-  "num_objects": 4,
+  "scene_summary": "An aerial view shows a paved road intersection in a dry, sparsely vegetated, and hilly landscape.",
+  "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 7,
-      "priority": 0.8903
+      "track_id": 5,
+      "priority": 0.9341
     },
     {
       "id": "node_001",
       "track_id": 3,
-      "priority": 0.8694
+      "priority": 0.8756
     },
     {
       "id": "node_002",
-      "track_id": 2,
-      "priority": 0.8266
-    },
-    {
-      "id": "node_003",
-      "track_id": 9,
-      "priority": 0.7603
+      "track_id": 4,
+      "priority": 0.8031
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 12,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,38 +31,38 @@
         "label": "Paved Road Intersection",
         "semantic_class": "paved_road",
         "centroid": [
-          0.49028621040391274,
-          0.23138807897350738
+          0.4813114126658674,
+          0.36831325617325994
         ],
-        "priority": 0.802068838256836,
-        "confidence": 0.80078125,
-        "track_id": 7,
-        "mask_area": 0.29883463541666666,
-        "frame_id": 4,
+        "priority": 0.8307836374931337,
+        "confidence": 0.91015625,
+        "track_id": 5,
+        "mask_area": 0.358408203125,
+        "frame_id": 2,
         "global_pose": {
           "centroid": [
-            374.34893798828125,
-            310.8494567871094
+            358.0892639160156,
+            408.06103515625
           ],
           "bbox_xyxy": [
-            -253.5526123046875,
+            -280.27679443359375,
             143.21331787109375,
-            1037.6265869140625,
-            483.0940246582031
+            1053.517822265625,
+            865.4982299804688
           ]
         },
         "observation_history": [
           {
-            "frame_id": 4,
-            "priority": 0.87418,
+            "frame_id": 2,
+            "priority": 0.90046,
             "centroid": [
-              0.49028621040391274,
-              0.23138807897350738
+              0.4813114126658674,
+              0.36831325617325994
             ],
-            "confidence": 0.80078125,
+            "confidence": 0.91015625,
             "global_centroid": [
-              374.34893798828125,
-              310.8494567871094
+              358.0892639160156,
+              408.06103515625
             ],
             "timestamp": 0.0
           }
@@ -76,149 +71,127 @@
         "id": "node_000"
       },
       {
-        "label": "Dry/Sparse Vegetation Area",
+        "label": "Sparse Vegetation",
         "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.5735972039779733,
-          0.7232105129625717
+          0.49968666455207894,
+          0.4987496505138202
         ],
-        "priority": 0.59452342578125,
-        "confidence": 0.8984375,
+        "priority": 0.5572072700386048,
+        "confidence": 0.9140625,
         "track_id": 3,
-        "mask_area": 0.3440440538194444,
-        "frame_id": 4,
+        "mask_area": 0.9978342013888889,
+        "frame_id": 2,
         "global_pose": {
           "centroid": [
-            467.185546875,
-            667.9353637695312
+            377.5126647949219,
+            502.1396179199219
           ],
           "bbox_xyxy": [
-            -193.623046875,
-            312.0182800292969,
-            956.627197265625,
-            855.5869750976562
+            -282.28094482421875,
+            143.21331787109375,
+            1053.517822265625,
+            894.17724609375
           ]
         },
         "observation_history": [
           {
-            "frame_id": 4,
-            "priority": 0.5816399999999999,
+            "frame_id": 2,
+            "priority": 0.5853600000000001,
             "centroid": [
-              0.5735972039779733,
-              0.7232105129625717
+              0.49968666455207894,
+              0.4987496505138202
             ],
-            "confidence": 0.8984375,
+            "confidence": 0.9140625,
             "global_centroid": [
-              467.185546875,
-              667.9353637695312
+              377.5126647949219,
+              502.1396179199219
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_001_Dry/Sparse Vegetation Area",
+        "source_region_id": "region_001_Sparse Vegetation",
         "id": "node_001"
       },
       {
-        "label": "Building",
-        "semantic_class": "building",
+        "label": "Dirt Road",
+        "semantic_class": "dirt_road",
         "centroid": [
-          0.091039464628889,
-          0.07933705858250086
+          0.16650796625347125,
+          0.17595143388649648
         ],
-        "priority": 0.45913041197586063,
-        "confidence": 0.94140625,
-        "track_id": 2,
-        "mask_area": 0.02089084201388889,
-        "frame_id": 4,
+        "priority": 0.6801747899894715,
+        "confidence": 0.8828125,
+        "track_id": 4,
+        "mask_area": 0.10784288194444444,
+        "frame_id": 2,
         "global_pose": {
           "centroid": [
-            -122.87737274169922,
-            198.46066284179688
+            -33.93409729003906,
+            266.2474060058594
           ],
           "bbox_xyxy": [
-            -243.3305206298828,
+            -248.46218872070312,
             143.21331787109375,
-            53.47663116455078,
-            321.8751220703125
+            178.86093139648438,
+            394.3756408691406
           ]
         },
         "observation_history": [
           {
-            "frame_id": 4,
-            "priority": 0.51596,
+            "frame_id": 2,
+            "priority": 0.74186,
             "centroid": [
-              0.091039464628889,
-              0.07933705858250086
+              0.16650796625347125,
+              0.17595143388649648
             ],
-            "confidence": 0.94140625,
+            "confidence": 0.8828125,
             "global_centroid": [
-              -122.87737274169922,
-              198.46066284179688
+              -33.93409729003906,
+              266.2474060058594
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_002_Building",
+        "source_region_id": "region_002_Dirt Road",
         "id": "node_002"
-      },
-      {
-        "label": "Vehicle",
-        "semantic_class": "car",
-        "centroid": [
-          0.37421875,
-          0.17430555555555555
-        ],
-        "priority": 0.6183566653671264,
-        "confidence": 0.92578125,
-        "track_id": 9,
-        "mask_area": 0.017999131944444444,
-        "frame_id": 4,
-        "global_pose": {
-          "centroid": [
-            227.58265686035156,
-            268.52593994140625
-          ],
-          "bbox_xyxy": [
-            153.9977569580078,
-            211.87832641601562,
-            301.2567443847656,
-            325.7928466796875
-          ]
-        },
-        "observation_history": [
-          {
-            "frame_id": 4,
-            "priority": 0.53618,
-            "centroid": [
-              0.37421875,
-              0.17430555555555555
-            ],
-            "confidence": 0.92578125,
-            "global_centroid": [
-              227.58265686035156,
-              268.52593994140625
-            ],
-            "timestamp": 0.0
-          }
-        ],
-        "source_region_id": "region_003_Vehicle",
-        "id": "node_003"
       }
     ],
     "links": [
       {
-        "predicate": "contains",
+        "predicate": "occludes",
         "tier": 1,
-        "confidence": 1.0,
+        "confidence": 0.962,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.883,
         "source": "node_000",
         "target": "node_002"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.962,
+        "source": "node_001",
+        "target": "node_000"
       },
       {
         "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
-        "source": "node_000",
-        "target": "node_003"
+        "source": "node_001",
+        "target": "node_002"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.883,
+        "source": "node_002",
+        "target": "node_000"
       }
     ]
   }

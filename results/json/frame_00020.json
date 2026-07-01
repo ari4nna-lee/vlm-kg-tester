@@ -2,26 +2,31 @@
   "frame_id": 20,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
   "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated area with some buildings in the upper right.",
-  "num_objects": 3,
+  "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 20,
+      "track_id": 15,
       "priority": 0.9169
     },
     {
       "id": "node_001",
-      "track_id": 7,
+      "track_id": 5,
       "priority": 0.885
     },
     {
       "id": "node_002",
-      "track_id": 19,
+      "track_id": 14,
       "priority": 0.8281
+    },
+    {
+      "id": "node_003",
+      "track_id": 13,
+      "priority": 0.7381
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 16,
+  "global_graph_edges": 13,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,7 +41,7 @@
         ],
         "priority": 0.8505140924568176,
         "confidence": 0.8671875,
-        "track_id": 20,
+        "track_id": 15,
         "mask_area": 0.16145724826388888,
         "frame_id": 20,
         "global_pose": {
@@ -77,9 +82,9 @@
           0.285853611176303,
           0.5523739097867308
         ],
-        "priority": 0.563285155582428,
+        "priority": 0.6526309326171875,
         "confidence": 0.9375,
-        "track_id": 7,
+        "track_id": 5,
         "mask_area": 0.5293793402777778,
         "frame_id": 20,
         "global_pose": {
@@ -122,7 +127,7 @@
         ],
         "priority": 0.5371785097961426,
         "confidence": 0.9453125,
-        "track_id": 19,
+        "track_id": 14,
         "mask_area": 0.18626085069444445,
         "frame_id": 20,
         "global_pose": {
@@ -155,6 +160,49 @@
         ],
         "source_region_id": "region_002_Building",
         "id": "node_002"
+      },
+      {
+        "label": "Dirt Road",
+        "semantic_class": "dirt_road",
+        "centroid": [
+          0.21523643351875252,
+          0.5480598357764834
+        ],
+        "priority": 0.7608456629638672,
+        "confidence": 0.9453125,
+        "track_id": 13,
+        "mask_area": 0.17604709201388888,
+        "frame_id": 20,
+        "global_pose": {
+          "centroid": [
+            10.49300479888916,
+            528.7991333007812
+          ],
+          "bbox_xyxy": [
+            -269.22515869140625,
+            379.9684143066406,
+            293.2859802246094,
+            683.8678588867188
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 20,
+            "priority": 0.70286,
+            "centroid": [
+              0.21523643351875252,
+              0.5480598357764834
+            ],
+            "confidence": 0.9453125,
+            "global_centroid": [
+              10.49300479888916,
+              528.7991333007812
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_003_Dirt Road",
+        "id": "node_003"
       }
     ],
     "links": [
@@ -166,10 +214,31 @@
         "target": "node_002"
       },
       {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.867,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
+        "source": "node_001",
+        "target": "node_003"
+      },
+      {
         "predicate": "occluded_by",
         "tier": 1,
         "confidence": 0.43,
         "source": "node_002",
+        "target": "node_000"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.867,
+        "source": "node_003",
         "target": "node_000"
       }
     ]

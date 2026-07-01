@@ -1,37 +1,37 @@
 {
   "frame_id": 1,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road intersection with a pedestrian crossing, some parking areas, and surrounding dry, sparsely vegetated terrain.",
+  "scene_summary": "An aerial view shows a paved road intersection with a small building and a parked car in a dry, sparsely vegetated landscape.",
   "num_objects": 5,
   "objects": [
     {
       "id": "node_000",
       "track_id": 0,
-      "priority": 0.8872
+      "priority": 0.9278
     },
     {
       "id": "node_001",
       "track_id": 1,
-      "priority": 0.8694
+      "priority": 0.8803
     },
     {
       "id": "node_002",
       "track_id": 2,
-      "priority": 0.8203
+      "priority": 0.8187
     },
     {
       "id": "node_003",
       "track_id": 3,
-      "priority": 0.7588
+      "priority": 0.7194
     },
     {
       "id": "node_004",
       "track_id": 4,
-      "priority": 0.6797
+      "priority": 0.6516
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 7,
+  "global_graph_edges": 6,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -41,38 +41,38 @@
         "label": "Paved Road Intersection",
         "semantic_class": "paved_road",
         "centroid": [
-          0.35530325888432024,
-          0.33112880202179246
+          0.36253853342464915,
+          0.4581797161557572
         ],
-        "priority": 0.7085876181063653,
-        "confidence": 0.79296875,
+        "priority": 0.8387220164718627,
+        "confidence": 0.89453125,
         "track_id": 0,
-        "mask_area": 0.266005859375,
+        "mask_area": 0.3544976128472222,
         "frame_id": 0,
         "global_pose": {
           "centroid": [
-            450.7697448730469,
-            101.9210205078125
+            459.475830078125,
+            192.50347900390625
           ],
           "bbox_xyxy": [
-            -1.174817681312561,
+            -5.455282211303711,
             -135.98155212402344,
-            1266.9920654296875,
-            267.0514221191406
+            1091.6861572265625,
+            585.47021484375
           ]
         },
         "observation_history": [
           {
             "frame_id": 0,
-            "priority": 0.87232,
+            "priority": 0.8966799999999999,
             "centroid": [
-              0.35530325888432024,
-              0.33112880202179246
+              0.36253853342464915,
+              0.4581797161557572
             ],
-            "confidence": 0.79296875,
+            "confidence": 0.89453125,
             "global_centroid": [
-              450.7697448730469,
-              101.9210205078125
+              459.475830078125,
+              192.50347900390625
             ],
             "timestamp": 0.0
           }
@@ -81,107 +81,107 @@
         "id": "node_000"
       },
       {
-        "label": "Vehicle",
-        "semantic_class": "car",
+        "label": "Building",
+        "semantic_class": "building",
         "centroid": [
-          0.779296875,
-          0.59375
+          0.4270070682138735,
+          0.4018790870624439
         ],
-        "priority": 0.6436927430267334,
-        "confidence": 0.8984375,
-        "track_id": 1,
-        "mask_area": 0.026180555555555554,
-        "frame_id": 0,
-        "global_pose": {
-          "centroid": [
-            988.1488647460938,
-            293.3178405761719
-          ],
-          "bbox_xyxy": [
-            885.345458984375,
-            235.43911743164062,
-            1091.1558837890625,
-            351.31121826171875
-          ]
-        },
-        "observation_history": [
-          {
-            "frame_id": 0,
-            "priority": 0.60164,
-            "centroid": [
-              0.779296875,
-              0.59375
-            ],
-            "confidence": 0.8984375,
-            "global_centroid": [
-              988.1488647460938,
-              293.3178405761719
-            ],
-            "timestamp": 0.0
-          }
-        ],
-        "source_region_id": "region_001_Vehicle",
-        "id": "node_001"
-      },
-      {
-        "label": "Parking Lot",
-        "semantic_class": "parking_lot",
-        "centroid": [
-          0.12348889165452799,
-          0.2178678795016426
-        ],
-        "priority": 0.7673237224044801,
+        "priority": 0.555025626033783,
         "confidence": 0.92578125,
-        "track_id": 2,
-        "mask_area": 0.07002170138888889,
+        "track_id": 1,
+        "mask_area": 0.04231228298611111,
         "frame_id": 0,
         "global_pose": {
           "centroid": [
-            158.1619110107422,
-            19.283143997192383
+            541.3458251953125,
+            152.96424865722656
           ],
           "bbox_xyxy": [
-            0.7352403998374939,
-            -104.61771392822266,
-            420.5003356933594,
-            118.07711029052734
+            403.7681579589844,
+            74.50898742675781,
+            672.4838256835938,
+            225.92417907714844
           ]
         },
         "observation_history": [
           {
             "frame_id": 0,
-            "priority": 0.8121800000000001,
+            "priority": 0.54818,
             "centroid": [
-              0.12348889165452799,
-              0.2178678795016426
+              0.4270070682138735,
+              0.4018790870624439
             ],
             "confidence": 0.92578125,
             "global_centroid": [
-              158.1619110107422,
-              19.283143997192383
+              541.3458251953125,
+              152.96424865722656
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_002_Parking Lot",
-        "id": "node_002"
+        "source_region_id": "region_001_Building",
+        "id": "node_001"
       },
       {
-        "label": "Sparse Vegetation",
-        "semantic_class": "sparse_vegetation",
+        "label": "Vehicle",
+        "semantic_class": "car",
         "centroid": [
-          0.5869524211902193,
-          0.78084228778357
+          0.7691372735938989,
+          0.574307081047973
         ],
-        "priority": 0.48042354514503477,
+        "priority": 0.618383470703125,
         "confidence": 0.921875,
-        "track_id": 3,
-        "mask_area": 0.3207476128472222,
+        "track_id": 2,
+        "mask_area": 0.02617947048611111,
         "frame_id": 0,
         "global_pose": {
           "centroid": [
-            743.992431640625,
-            425.81396484375
+            975.1912231445312,
+            279.3053894042969
+          ],
+          "bbox_xyxy": [
+            872.43017578125,
+            221.4537353515625,
+            1078.1641845703125,
+            337.2695007324219
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 0,
+            "priority": 0.5712200000000001,
+            "centroid": [
+              0.7691372735938989,
+              0.574307081047973
+            ],
+            "confidence": 0.921875,
+            "global_centroid": [
+              975.1912231445312,
+              279.3053894042969
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_002_Vehicle",
+        "id": "node_002"
+      },
+      {
+        "label": "Grassland",
+        "semantic_class": "grassland",
+        "centroid": [
+          0.5880726319151706,
+          0.7822030847422433
+        ],
+        "priority": 0.4564994199509621,
+        "confidence": 0.8984375,
+        "track_id": 3,
+        "mask_area": 0.30425130208333334,
+        "frame_id": 0,
+        "global_pose": {
+          "centroid": [
+            745.41845703125,
+            426.8035888671875
           ],
           "bbox_xyxy": [
             -5.44182825088501,
@@ -193,86 +193,100 @@
         "observation_history": [
           {
             "frame_id": 0,
-            "priority": 0.51528,
+            "priority": 0.55164,
             "centroid": [
-              0.5869524211902193,
-              0.78084228778357
+              0.5880726319151706,
+              0.7822030847422433
             ],
-            "confidence": 0.921875,
+            "confidence": 0.8984375,
             "global_centroid": [
-              743.992431640625,
-              425.81396484375
+              745.41845703125,
+              426.8035888671875
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_003_Sparse Vegetation",
+        "source_region_id": "region_003_Grassland",
         "id": "node_003"
       },
       {
-        "label": "Dirt Road",
-        "semantic_class": "dirt_road",
+        "label": "Sparse Vegetation",
+        "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.8230489205416154,
-          0.6549987308093675
+          0.16509112764663442,
+          0.17663566914461845
         ],
-        "priority": 0.6611822671470642,
-        "confidence": 0.94921875,
+        "priority": 0.5118120826416015,
+        "confidence": 0.87890625,
         "track_id": 4,
-        "mask_area": 0.11541558159722222,
+        "mask_area": 0.11730577256944444,
         "frame_id": 0,
         "global_pose": {
           "centroid": [
-            1043.9326171875,
-            337.6146240234375
+            211.03468322753906,
+            -9.54919147491455
           ],
           "bbox_xyxy": [
-            720.8130493164062,
-            184.64410400390625,
-            1269.0892333984375,
-            482.44586181640625
+            0.7352403998374939,
+            -135.98155212402344,
+            420.6800842285156,
+            118.07711029052734
           ]
         },
         "observation_history": [
           {
             "frame_id": 0,
-            "priority": 0.66782,
+            "priority": 0.45095999999999997,
             "centroid": [
-              0.8230489205416154,
-              0.6549987308093675
+              0.16509112764663442,
+              0.17663566914461845
             ],
-            "confidence": 0.94921875,
+            "confidence": 0.87890625,
             "global_centroid": [
-              1043.9326171875,
-              337.6146240234375
+              211.03468322753906,
+              -9.54919147491455
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_004_Dirt Road",
+        "source_region_id": "region_004_Sparse Vegetation",
         "id": "node_004"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.793,
+        "confidence": 1.0,
+        "source": "node_000",
+        "target": "node_001"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_002"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "occludes",
         "tier": 1,
-        "confidence": 0.793,
+        "confidence": 0.508,
+        "source": "node_000",
+        "target": "node_003"
+      },
+      {
+        "predicate": "contains",
+        "tier": 1,
+        "confidence": 1.0,
         "source": "node_000",
         "target": "node_004"
       },
       {
-        "predicate": "connected_to",
+        "predicate": "occluded_by",
         "tier": 1,
-        "confidence": 0.793,
-        "source": "node_002",
+        "confidence": 0.508,
+        "source": "node_003",
         "target": "node_000"
       },
       {
@@ -280,28 +294,7 @@
         "tier": 1,
         "confidence": 1.0,
         "source": "node_003",
-        "target": "node_001"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_003",
-        "target": "node_004"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.793,
-        "source": "node_004",
-        "target": "node_000"
-      },
-      {
-        "predicate": "contains",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_004",
-        "target": "node_001"
+        "target": "node_002"
       }
     ]
   }

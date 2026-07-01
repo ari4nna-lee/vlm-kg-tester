@@ -6,22 +6,22 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
+      "track_id": 0,
       "priority": 0.9263
     },
     {
       "id": "node_001",
       "track_id": 3,
-      "priority": 0.8187
+      "priority": 0.8756
     },
     {
       "id": "node_002",
-      "track_id": 6,
-      "priority": 0.7006
+      "track_id": 4,
+      "priority": 0.8156
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 11,
+  "global_graph_edges": 9,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -34,9 +34,9 @@
           0.3410613098492427,
           0.5822859796637947
         ],
-        "priority": 0.7794820629825593,
+        "priority": 0.8260675930252076,
         "confidence": 0.890625,
-        "track_id": 5,
+        "track_id": 0,
         "mask_area": 0.37311631944444446,
         "frame_id": 2,
         "global_pose": {
@@ -74,18 +74,18 @@
         "label": "Sparse Vegetation",
         "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.5087895400732314,
-          0.4939989861805336
+          0.4992711362292339,
+          0.49801943136342935
         ],
-        "priority": 0.5137821139583588,
-        "confidence": 0.921875,
+        "priority": 0.6158022598152162,
+        "confidence": 0.9140625,
         "track_id": 3,
-        "mask_area": 0.9638454861111111,
+        "mask_area": 0.9953993055555556,
         "frame_id": 2,
         "global_pose": {
           "centroid": [
-            640.6975708007812,
-            91.0325927734375
+            628.62890625,
+            93.70982360839844
           ],
           "bbox_xyxy": [
             -10.314101219177246,
@@ -97,15 +97,15 @@
         "observation_history": [
           {
             "frame_id": 2,
-            "priority": 0.55122,
+            "priority": 0.5853600000000001,
             "centroid": [
-              0.5087895400732314,
-              0.4939989861805336
+              0.4992711362292339,
+              0.49801943136342935
             ],
-            "confidence": 0.921875,
+            "confidence": 0.9140625,
             "global_centroid": [
-              640.6975708007812,
-              91.0325927734375
+              628.62890625,
+              93.70982360839844
             ],
             "timestamp": 0.0
           }
@@ -117,38 +117,38 @@
         "label": "Dirt Road",
         "semantic_class": "dirt_road",
         "centroid": [
-          0.5815521645013195,
-          0.4561017635086952
+          0.16882424152848213,
+          0.17507538416244042
         ],
-        "priority": 0.6302004779701234,
-        "confidence": 0.8515625,
-        "track_id": 6,
-        "mask_area": 0.6948676215277778,
+        "priority": 0.7482126870994568,
+        "confidence": 0.9140625,
+        "track_id": 4,
+        "mask_area": 0.11425130208333334,
         "frame_id": 2,
         "global_pose": {
           "centroid": [
-            732.8925170898438,
-            65.4867172241211
+            210.74542236328125,
+            -143.49520874023438
           ],
           "bbox_xyxy": [
-            -10.314101219177246,
+            -5.791082382202148,
             -272.2377014160156,
-            1259.2900390625,
-            459.36260986328125
+            417.08819580078125,
+            -12.286938667297363
           ]
         },
         "observation_history": [
           {
             "frame_id": 2,
-            "priority": 0.6803600000000001,
+            "priority": 0.74936,
             "centroid": [
-              0.5815521645013195,
-              0.4561017635086952
+              0.16882424152848213,
+              0.17507538416244042
             ],
-            "confidence": 0.8515625,
+            "confidence": 0.9140625,
             "global_centroid": [
-              732.8925170898438,
-              65.4867172241211
+              210.74542236328125,
+              -143.49520874023438
             ],
             "timestamp": 0.0
           }
@@ -166,9 +166,9 @@
         "target": "node_001"
       },
       {
-        "predicate": "occludes",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.818,
+        "confidence": 0.891,
         "source": "node_000",
         "target": "node_002"
       },
@@ -180,25 +180,18 @@
         "target": "node_000"
       },
       {
-        "predicate": "occluded_by",
+        "predicate": "contains",
         "tier": 1,
         "confidence": 1.0,
         "source": "node_001",
         "target": "node_002"
       },
       {
-        "predicate": "occluded_by",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.818,
+        "confidence": 0.891,
         "source": "node_002",
         "target": "node_000"
-      },
-      {
-        "predicate": "occludes",
-        "tier": 1,
-        "confidence": 1.0,
-        "source": "node_002",
-        "target": "node_001"
       }
     ]
   }

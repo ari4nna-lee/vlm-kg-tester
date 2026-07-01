@@ -1,32 +1,32 @@
 {
   "frame_id": 27,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in a dry, arid landscape.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in the surrounding arid landscape.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 12,
+      "track_id": 13,
       "priority": 0.9278
     },
     {
       "id": "node_001",
-      "track_id": 24,
+      "track_id": 17,
       "priority": 0.8788
     },
     {
       "id": "node_002",
-      "track_id": 25,
+      "track_id": 18,
       "priority": 0.8297
     },
     {
       "id": "node_003",
-      "track_id": 7,
+      "track_id": 5,
       "priority": 0.7319
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 16,
+  "global_graph_edges": 14,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -41,7 +41,7 @@
         ],
         "priority": 0.7837383886756897,
         "confidence": 0.89453125,
-        "track_id": 12,
+        "track_id": 13,
         "mask_area": 0.2544455295138889,
         "frame_id": 26,
         "global_pose": {
@@ -84,7 +84,7 @@
         ],
         "priority": 0.5534563432922364,
         "confidence": 0.921875,
-        "track_id": 24,
+        "track_id": 17,
         "mask_area": 0.14822265625,
         "frame_id": 26,
         "global_pose": {
@@ -127,7 +127,7 @@
         ],
         "priority": 0.5924451055107116,
         "confidence": 0.94921875,
-        "track_id": 25,
+        "track_id": 18,
         "mask_area": 0.2867881944444444,
         "frame_id": 26,
         "global_pose": {
@@ -163,14 +163,14 @@
       },
       {
         "label": "Dirt Road/Ground",
-        "semantic_class": "bare_earth",
+        "semantic_class": "dirt_road",
         "centroid": [
           0.45057630034893925,
           0.49002421327411017
         ],
-        "priority": 0.5732792317504882,
+        "priority": 0.6692792317504883,
         "confidence": 0.9296875,
-        "track_id": 7,
+        "track_id": 5,
         "mask_area": 0.8579448784722222,
         "frame_id": 26,
         "global_pose": {
@@ -188,7 +188,7 @@
         "observation_history": [
           {
             "frame_id": 26,
-            "priority": 0.57914,
+            "priority": 0.69914,
             "centroid": [
               0.45057630034893925,
               0.49002421327411017

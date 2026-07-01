@@ -6,22 +6,22 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 7,
-      "priority": 0.9278
+      "track_id": 5,
+      "priority": 0.9372
     },
     {
       "id": "node_001",
-      "track_id": 6,
-      "priority": 0.8881
+      "track_id": 3,
+      "priority": 0.885
     },
     {
       "id": "node_002",
-      "track_id": 15,
-      "priority": 0.725
+      "track_id": 7,
+      "priority": 0.7778
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -31,38 +31,38 @@
         "label": "Paved Road",
         "semantic_class": "paved_road",
         "centroid": [
-          0.12184650317732973,
-          0.6271792581328794
+          0.24472472627551084,
+          0.49603130409551827
         ],
-        "priority": 0.7498107364358901,
-        "confidence": 0.89453125,
-        "track_id": 7,
-        "mask_area": 0.1733984375,
+        "priority": 0.8023136098918915,
+        "confidence": 0.91796875,
+        "track_id": 5,
+        "mask_area": 0.452080078125,
         "frame_id": 12,
         "global_pose": {
           "centroid": [
-            -83.33726501464844,
-            317.26837158203125
+            76.55537414550781,
+            231.09442138671875
           ],
           "bbox_xyxy": [
             -256.16192626953125,
             -111.3045425415039,
-            261.9324035644531,
-            595.2543334960938
+            391.9302978515625,
+            601.4348754882812
           ]
         },
         "observation_history": [
           {
             "frame_id": 12,
-            "priority": 0.8966799999999999,
+            "priority": 0.90232,
             "centroid": [
-              0.12184650317732973,
-              0.6271792581328794
+              0.24472472627551084,
+              0.49603130409551827
             ],
-            "confidence": 0.89453125,
+            "confidence": 0.91796875,
             "global_centroid": [
-              -83.33726501464844,
-              317.26837158203125
+              76.55537414550781,
+              231.09442138671875
             ],
             "timestamp": 0.0
           }
@@ -74,22 +74,22 @@
         "label": "Dry Hillside",
         "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.6376419805320597,
-          0.4923776757561281
+          0.6060932136785391,
+          0.4776472772742291
         ],
-        "priority": 0.6673511160736084,
-        "confidence": 0.9453125,
-        "track_id": 6,
-        "mask_area": 0.716962890625,
+        "priority": 0.5926351621627808,
+        "confidence": 0.9375,
+        "track_id": 3,
+        "mask_area": 0.7732302517361112,
         "frame_id": 12,
         "global_pose": {
           "centroid": [
-            578.986328125,
-            244.1491241455078
+            538.3019409179688,
+            232.45948791503906
           ],
           "bbox_xyxy": [
-            83.68107604980469,
-            -105.60093688964844,
+            -43.87445068359375,
+            -107.74095153808594,
             1061.8154296875,
             633.328369140625
           ]
@@ -97,15 +97,15 @@
         "observation_history": [
           {
             "frame_id": 12,
-            "priority": 0.5928599999999999,
+            "priority": 0.591,
             "centroid": [
-              0.6376419805320597,
-              0.4923776757561281
+              0.6060932136785391,
+              0.4776472772742291
             ],
-            "confidence": 0.9453125,
+            "confidence": 0.9375,
             "global_centroid": [
-              578.986328125,
-              244.1491241455078
+              538.3019409179688,
+              232.45948791503906
             ],
             "timestamp": 0.0
           }
@@ -114,63 +114,56 @@
         "id": "node_001"
       },
       {
-        "label": "Road Edge/Drainage",
+        "label": "Dirt Road/Trail",
         "semantic_class": "dirt_road",
         "centroid": [
-          0.23660601265822784,
-          0.7170376230661041
+          0.8598796396508286,
+          0.7161592720075386
         ],
-        "priority": 0.6488755044937135,
-        "confidence": 0.6875,
-        "track_id": 15,
-        "mask_area": 0.0008572048611111111,
+        "priority": 0.7564290796699524,
+        "confidence": 0.89453125,
+        "track_id": 7,
+        "mask_area": 0.15289171006944444,
         "frame_id": 12,
         "global_pose": {
           "centroid": [
-            56.02444839477539,
-            385.5561218261719
+            869.3402099609375,
+            415.3565673828125
           ],
           "bbox_xyxy": [
-            -128.89761352539062,
-            190.0610809326172,
-            202.381591796875,
-            581.1369018554688
+            674.4660034179688,
+            213.3987579345703,
+            1059.810302734375,
+            633.328369140625
           ]
         },
         "observation_history": [
           {
             "frame_id": 12,
-            "priority": 0.6950000000000001,
+            "priority": 0.72668,
             "centroid": [
-              0.23660601265822784,
-              0.7170376230661041
+              0.8598796396508286,
+              0.7161592720075386
             ],
-            "confidence": 0.6875,
+            "confidence": 0.89453125,
             "global_centroid": [
-              56.02444839477539,
-              385.5561218261719
+              869.3402099609375,
+              415.3565673828125
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_002_Road Edge/Drainage",
+        "source_region_id": "region_002_Dirt Road/Trail",
         "id": "node_002"
       }
     ],
     "links": [
       {
-        "predicate": "connected_to",
+        "predicate": "contains",
         "tier": 1,
-        "confidence": 0.688,
-        "source": "node_000",
+        "confidence": 1.0,
+        "source": "node_001",
         "target": "node_002"
-      },
-      {
-        "predicate": "connected_to",
-        "tier": 1,
-        "confidence": 0.688,
-        "source": "node_002",
-        "target": "node_000"
       }
     ]
   }

@@ -1,27 +1,27 @@
 {
   "frame_id": 18,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated area with some buildings in the upper right.",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, sparsely vegetated, and somewhat arid landscape with some buildings in the upper right.",
   "num_objects": 3,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 17,
+      "track_id": 12,
       "priority": 0.9278
     },
     {
       "id": "node_001",
-      "track_id": 7,
-      "priority": 0.8725
+      "track_id": 5,
+      "priority": 0.8772
     },
     {
       "id": "node_002",
-      "track_id": 19,
+      "track_id": 14,
       "priority": 0.8313
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 16,
+  "global_graph_edges": 12,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,7 +36,7 @@
         ],
         "priority": 0.8647877117576599,
         "confidence": 0.89453125,
-        "track_id": 17,
+        "track_id": 12,
         "mask_area": 0.22353407118055554,
         "frame_id": 18,
         "global_pose": {
@@ -71,21 +71,21 @@
         "id": "node_000"
       },
       {
-        "label": "Dense Vegetation",
-        "semantic_class": "dense_vegetation",
+        "label": "Sparse Vegetation",
+        "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.2169339587476729,
-          0.49587763199241314
+          0.2154875572857208,
+          0.49842700963240605
         ],
-        "priority": 0.5677346374511719,
-        "confidence": 0.90625,
-        "track_id": 7,
-        "mask_area": 0.4266449652777778,
+        "priority": 0.5871408240852356,
+        "confidence": 0.91796875,
+        "track_id": 5,
+        "mask_area": 0.42961371527777775,
         "frame_id": 18,
         "global_pose": {
           "centroid": [
-            13.610482215881348,
-            122.08660125732422
+            11.683270454406738,
+            123.90973663330078
           ],
           "bbox_xyxy": [
             -287.1257629394531,
@@ -97,20 +97,20 @@
         "observation_history": [
           {
             "frame_id": 18,
-            "priority": 0.5315,
+            "priority": 0.58632,
             "centroid": [
-              0.2169339587476729,
-              0.49587763199241314
+              0.2154875572857208,
+              0.49842700963240605
             ],
-            "confidence": 0.90625,
+            "confidence": 0.91796875,
             "global_centroid": [
-              13.610482215881348,
-              122.08660125732422
+              11.683270454406738,
+              123.90973663330078
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_001_Dense Vegetation",
+        "source_region_id": "region_001_Sparse Vegetation",
         "id": "node_001"
       },
       {
@@ -122,7 +122,7 @@
         ],
         "priority": 0.5037250097503663,
         "confidence": 0.953125,
-        "track_id": 19,
+        "track_id": 14,
         "mask_area": 0.1476193576388889,
         "frame_id": 18,
         "global_pose": {

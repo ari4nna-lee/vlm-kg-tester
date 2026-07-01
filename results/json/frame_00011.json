@@ -6,27 +6,27 @@
   "objects": [
     {
       "id": "node_000",
-      "track_id": 7,
-      "priority": 0.9278
+      "track_id": 5,
+      "priority": 0.9372
     },
     {
       "id": "node_001",
-      "track_id": 6,
+      "track_id": 3,
       "priority": 0.8788
     },
     {
       "id": "node_002",
-      "track_id": 12,
+      "track_id": 10,
       "priority": 0.8234
     },
     {
       "id": "node_003",
-      "track_id": 14,
-      "priority": 0.6819
+      "track_id": 11,
+      "priority": 0.7712
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 14,
+  "global_graph_edges": 11,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,38 +36,52 @@
         "label": "Paved Road",
         "semantic_class": "paved_road",
         "centroid": [
-          0.16041426196337838,
-          0.5751581687556769
+          0.15731203361741303,
+          0.5834180733910697
         ],
-        "priority": 0.7572776010217667,
-        "confidence": 0.89453125,
-        "track_id": 7,
-        "mask_area": 0.20693033854166668,
+        "priority": 0.7768160362777711,
+        "confidence": 0.91796875,
+        "track_id": 5,
+        "mask_area": 0.22923936631944444,
         "frame_id": 10,
         "global_pose": {
           "centroid": [
-            -52.8674430847168,
-            412.1206970214844
+            -57.15219497680664,
+            417.8397216796875
           ],
           "bbox_xyxy": [
             -275.4584045410156,
-            42.59597396850586,
-            290.96990966796875,
-            729.197265625
+            12.715202331542969,
+            438.70123291015625,
+            735.5673217773438
           ]
         },
         "observation_history": [
           {
             "frame_id": 10,
-            "priority": 0.8966799999999999,
+            "priority": 0.90232,
             "centroid": [
-              0.16041426196337838,
-              0.5751581687556769
+              0.15731203361741303,
+              0.5834180733910697
             ],
-            "confidence": 0.89453125,
+            "confidence": 0.91796875,
             "global_centroid": [
-              -52.8674430847168,
-              412.1206970214844
+              -57.15219497680664,
+              417.8397216796875
+            ],
+            "timestamp": 0.0
+          },
+          {
+            "frame_id": 10,
+            "priority": 0.80272,
+            "centroid": [
+              0.17153364046472355,
+              0.7325690100909016
+            ],
+            "confidence": 0.953125,
+            "global_centroid": [
+              -46.6750373840332,
+              524.2391357421875
             ],
             "timestamp": 0.0
           }
@@ -79,24 +93,24 @@
         "label": "Dense Vegetation",
         "semantic_class": "dense_vegetation",
         "centroid": [
-          0.6415173414853607,
-          0.4148102629391124
+          0.6435868652959513,
+          0.467098764038461
         ],
-        "priority": 0.5500512209167481,
+        "priority": 0.5098367896308899,
         "confidence": 0.921875,
-        "track_id": 6,
-        "mask_area": 0.6035611979166666,
+        "track_id": 3,
+        "mask_area": 0.6728537326388889,
         "frame_id": 10,
         "global_pose": {
           "centroid": [
-            570.493896484375,
-            313.5322570800781
+            571.7669677734375,
+            351.2190246582031
           ],
           "bbox_xyxy": [
-            70.83238983154297,
+            64.21526336669922,
             15.722002983093262,
             1056.051025390625,
-            652.3267822265625
+            762.519775390625
           ]
         },
         "observation_history": [
@@ -104,13 +118,13 @@
             "frame_id": 10,
             "priority": 0.53528,
             "centroid": [
-              0.6415173414853607,
-              0.4148102629391124
+              0.6435868652959513,
+              0.467098764038461
             ],
             "confidence": 0.921875,
             "global_centroid": [
-              570.493896484375,
-              313.5322570800781
+              571.7669677734375,
+              351.2190246582031
             ],
             "timestamp": 0.0
           }
@@ -125,9 +139,9 @@
           0.16874453026803238,
           0.7968794791505877
         ],
-        "priority": 0.5606237465209961,
+        "priority": 0.5514051371879578,
         "confidence": 0.93359375,
-        "track_id": 12,
+        "track_id": 10,
         "mask_area": 0.09841362847222222,
         "frame_id": 10,
         "global_pose": {
@@ -165,38 +179,38 @@
         "label": "Paved Road",
         "semantic_class": "paved_road",
         "centroid": [
-          0.8582717765090813,
-          0.7539076411146723
+          0.17153364046472355,
+          0.7325690100909016
         ],
-        "priority": 0.6338893518085479,
-        "confidence": 0.8046875,
-        "track_id": 14,
-        "mask_area": 0.01625,
+        "priority": 0.831986872077942,
+        "confidence": 0.953125,
+        "track_id": 11,
+        "mask_area": 0.08674045138888889,
         "frame_id": 10,
         "global_pose": {
           "centroid": [
-            853.5546264648438,
-            569.9638061523438
+            -46.6750373840332,
+            524.2391357421875
           ],
           "bbox_xyxy": [
-            524.7809448242188,
-            406.25701904296875,
-            1048.165283203125,
-            726.2743530273438
+            -272.832275390625,
+            385.1559143066406,
+            163.13827514648438,
+            690.9103393554688
           ]
         },
         "observation_history": [
           {
             "frame_id": 10,
-            "priority": 0.7491399999999999,
+            "priority": 0.80272,
             "centroid": [
-              0.8582717765090813,
-              0.7539076411146723
+              0.17153364046472355,
+              0.7325690100909016
             ],
-            "confidence": 0.8046875,
+            "confidence": 0.953125,
             "global_centroid": [
-              853.5546264648438,
-              569.9638061523438
+              -46.6750373840332,
+              524.2391357421875
             ],
             "timestamp": 0.0
           }
@@ -214,11 +228,32 @@
         "target": "node_002"
       },
       {
-        "predicate": "contains",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 0.761,
-        "source": "node_001",
+        "confidence": 0.918,
+        "source": "node_000",
         "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.759,
+        "source": "node_002",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.918,
+        "source": "node_003",
+        "target": "node_000"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.759,
+        "source": "node_003",
+        "target": "node_002"
       }
     ]
   }
