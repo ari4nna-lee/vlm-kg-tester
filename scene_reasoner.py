@@ -921,8 +921,6 @@ if __name__ == "__main__":
 
     questions = [
         "Identify vehicles and areas where you would most likely find a truck",
-        "Which regions would appear to be most traversable?",
-        "Are there any objects that appeared and then disappeared?",
     ]
     for q in questions:
         print(f"\nQ: {q}")
