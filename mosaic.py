@@ -52,7 +52,7 @@ class MosaicTracker:
         self._orb = cv2.ORB_create(self.cfg.orb_features)
         self._bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
 
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
         self._prev_gray: Optional[np.ndarray] = None
         self._prev_kp = None
@@ -324,3 +324,22 @@ class MosaicTracker:
         if abs(tx) > max_translation or abs(ty) > max_translation:
             return False
         return True
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+
+        # OpenCV objects cannot be pickled
+        state["_orb"] = None
+        state["_bf"] = None
+        state["_lock"] = None
+
+        return state
+
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
+        # Recreate runtime-only objects
+        self._orb = cv2.ORB_create(self.cfg.orb_features)
+        self._bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+        self._lock = threading.RLock()

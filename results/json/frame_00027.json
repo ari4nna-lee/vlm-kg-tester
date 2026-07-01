@@ -1,32 +1,32 @@
 {
   "frame_id": 27,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in the surrounding arid landscape.",
+  "scene_summary": "An aerial view shows an intersection of paved roads with some buildings and sparse vegetation in a dry, arid landscape.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 18,
+      "track_id": 12,
       "priority": 0.9278
     },
     {
       "id": "node_001",
-      "track_id": 17,
+      "track_id": 24,
       "priority": 0.8788
     },
     {
       "id": "node_002",
-      "track_id": 3,
+      "track_id": 25,
       "priority": 0.8297
     },
     {
       "id": "node_003",
-      "track_id": 24,
-      "priority": 0.7666
+      "track_id": 7,
+      "priority": 0.7319
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 12,
+  "global_graph_edges": 16,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -39,21 +39,21 @@
           0.5374694758888173,
           0.6453217300102868
         ],
-        "priority": 0.8308016201438904,
+        "priority": 0.7837383886756897,
         "confidence": 0.89453125,
-        "track_id": 18,
+        "track_id": 12,
         "mask_area": 0.2544455295138889,
         "frame_id": 26,
         "global_pose": {
           "centroid": [
-            687.9609375,
-            464.63165283203125
+            416.89068603515625,
+            351.6613464355469
           ],
           "bbox_xyxy": [
-            0.0,
-            59.0,
-            1279.0,
-            719.0
+            -291.9353942871094,
+            -40.67806625366211,
+            1034.193603515625,
+            610.3640747070312
           ]
         },
         "observation_history": [
@@ -66,8 +66,8 @@
             ],
             "confidence": 0.89453125,
             "global_centroid": [
-              687.9609375,
-              464.63165283203125
+              416.89068603515625,
+              351.6613464355469
             ],
             "timestamp": 0.0
           }
@@ -82,21 +82,21 @@
           0.7495318116224506,
           0.7482864249588016
         ],
-        "priority": 0.6084729443778991,
+        "priority": 0.5534563432922364,
         "confidence": 0.921875,
-        "track_id": 17,
+        "track_id": 24,
         "mask_area": 0.14822265625,
         "frame_id": 26,
         "global_pose": {
           "centroid": [
-            959.4006958007812,
-            538.7662353515625
+            691.4005737304688,
+            422.7474670410156
           ],
           "bbox_xyxy": [
-            728.0,
-            392.0,
-            1191.0,
-            686.0
+            442.3776550292969,
+            274.1159362792969,
+            936.8125,
+            574.743408203125
           ]
         },
         "observation_history": [
@@ -109,8 +109,8 @@
             ],
             "confidence": 0.921875,
             "global_centroid": [
-              959.4006958007812,
-              538.7662353515625
+              691.4005737304688,
+              422.7474670410156
             ],
             "timestamp": 0.0
           }
@@ -125,21 +125,21 @@
           0.26210551758108086,
           0.27300138077533614
         ],
-        "priority": 0.5833081545410156,
+        "priority": 0.5924451055107116,
         "confidence": 0.94921875,
-        "track_id": 3,
+        "track_id": 25,
         "mask_area": 0.2867881944444444,
         "frame_id": 26,
         "global_pose": {
           "centroid": [
-            335.49505615234375,
-            196.5609893798828
+            98.87556457519531,
+            107.60619354248047
           ],
           "bbox_xyxy": [
-            0.0,
-            0.0,
-            679.0,
-            399.0
+            -240.63621520996094,
+            -73.97694396972656,
+            439.21307373046875,
+            297.56292724609375
           ]
         },
         "observation_history": [
@@ -152,8 +152,8 @@
             ],
             "confidence": 0.94921875,
             "global_centroid": [
-              335.49505615234375,
-              196.5609893798828
+              98.87556457519531,
+              107.60619354248047
             ],
             "timestamp": 0.0
           }
@@ -162,46 +162,46 @@
         "id": "node_002"
       },
       {
-        "label": "Dirt Road/Arid Terrain",
+        "label": "Dirt Road/Ground",
         "semantic_class": "bare_earth",
         "centroid": [
-          0.499367583889164,
-          0.49908768095950806
+          0.45057630034893925,
+          0.49002421327411017
         ],
-        "priority": 0.5868151312522888,
-        "confidence": 0.94140625,
-        "track_id": 24,
-        "mask_area": 0.9990169270833333,
+        "priority": 0.5732792317504882,
+        "confidence": 0.9296875,
+        "track_id": 7,
+        "mask_area": 0.8579448784722222,
         "frame_id": 26,
         "global_pose": {
           "centroid": [
-            639.1904907226562,
-            359.3431396484375
+            315.06390380859375,
+            246.08216857910156
           ],
           "bbox_xyxy": [
-            0.0,
-            0.0,
-            1279.0,
-            719.0
+            -291.9353942871094,
+            -93.3275146484375,
+            1034.193603515625,
+            610.3640747070312
           ]
         },
         "observation_history": [
           {
             "frame_id": 26,
-            "priority": 0.5999599999999999,
+            "priority": 0.57914,
             "centroid": [
-              0.499367583889164,
-              0.49908768095950806
+              0.45057630034893925,
+              0.49002421327411017
             ],
-            "confidence": 0.94140625,
+            "confidence": 0.9296875,
             "global_centroid": [
-              639.1904907226562,
-              359.3431396484375
+              315.06390380859375,
+              246.08216857910156
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_003_Dirt Road/Arid Terrain",
+        "source_region_id": "region_003_Dirt Road/Ground",
         "id": "node_003"
       }
     ],

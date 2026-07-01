@@ -59,6 +59,7 @@ import networkx as nx
 
 import json
 from networkx.readwrite import json_graph
+import pickle 
 
 OUTPUT_DIR = Path("./results")
 JSON_DIR = OUTPUT_DIR / "json"
@@ -373,9 +374,9 @@ class Pipeline:
                     is_refine=item.is_refine,
                 )
                 with self._graph_lock:
-                    self._kg_graph = spatial_merge(self._kg_graph, kg_result.graph)
-                    propagate_priority(self._kg_graph)
-                    log.info("kg_worker finished frame %s", fid)
+                    self._kg_graph, touched = spatial_merge(self._kg_graph, kg_result.graph)
+                    propagate_priority(self._kg_graph, touched)
+                    log.info("kg_worker finished frame %s (touched=%d, total_nodes=%d)", fid, len(touched), self._kg_graph.number_of_nodes())
 
                 if heatmap is not None:
                     self.mosaic.accumulate_heatmap(fid, heatmap)
@@ -516,38 +517,13 @@ log.info("Feed thread done, waiting for pipeline to drain...")
 for t in pipeline.threads:
     t.join()
 
-# --- global outputs ---
-global_canvas = pipeline.mosaic.get_canvas()
-if global_canvas is not None:
-    cv2.imwrite(
-        str(OUTPUT_DIR / "global_mosaic.png"),
-        cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR)
-    )
-    log.info("global_mosaic.png written")
-
-priority_map = pipeline.mosaic.get_priority_map(pipeline._kg_graph)
-if priority_map is not None:
-    vis = cv2.normalize(priority_map, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-    vis = cv2.applyColorMap(vis, cv2.COLORMAP_JET)
-    cv2.imwrite(str(OUTPUT_DIR / "global_priority_map.png"), vis)
-    log.info("global_priority_map.png written")
-
-# --- search waypoints ---
-from search_planner import extract_search_waypoints
 with pipeline._graph_lock:
-    waypoints = extract_search_waypoints(pipeline._kg_graph, top_k=5)
-
-if global_canvas is not None and waypoints:
-    viz = cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR)
-    for i, w in enumerate(waypoints):
-        cx = int(w.global_x - pipeline.mosaic._canvas_origin[0])
-        cy = int(w.global_y - pipeline.mosaic._canvas_origin[1])
-        cv2.circle(viz, (cx, cy), 20, (0, 0, 255), 3)
-        cv2.putText(viz, f"W{i+1} p={w.priority:.2f}",
-                    (cx + 5, cy - 5), cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5, (0, 0, 255), 1)
-    cv2.imwrite(str(OUTPUT_DIR / "global_mosaic_waypoints.png"), viz)
-    log.info("global_mosaic_waypoints.png written")
+    with open(OUTPUT_DIR / "pipeline_state.pkl", "wb") as f:
+        pickle.dump({
+            "kg_graph": pipeline._kg_graph,
+            "mosaic": pipeline.mosaic,
+        }, f)
+log.info("pipeline_state.pkl written (%d nodes)", pipeline._kg_graph.number_of_nodes())
 
 cv2.destroyAllWindows()
 writer.release()

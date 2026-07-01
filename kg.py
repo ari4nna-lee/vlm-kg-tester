@@ -34,6 +34,7 @@ import logging
 import time
 from dataclasses import dataclass, field
 from typing import Optional
+from scipy.spatial import cKDTree
 
 import numpy as np
 
@@ -680,17 +681,25 @@ class KGRunResult:
     traversability: "nx.DiGraph"  # road-only connected_to subgraph
     refined_prompts: list[dict] = field(default_factory=list)
 
-def spatial_merge(
-    global_graph: "nx.DiGraph",
-    new_graph: "nx.DiGraph",
-    dist_threshold: float = 60.0,
-    max_history: int = 20,
-) -> "nx.DiGraph":
+def spatial_merge(global_graph: "nx.DiGraph", new_graph: "nx.DiGraph", dist_threshold: float = 60.0, max_history: int = 20,) -> "nx.DiGraph":
     by_class: dict[str, list[str]] = {}
     for nid, d in global_graph.nodes(data=True):
         by_class.setdefault(d.get("semantic_class"), []).append(nid)
 
+    trees: dict[str, tuple[cKDTree, list[str]]] = {}
+    for cls, ids in by_class.items():
+        pts = []
+        valid_ids = []
+        for nid in ids:
+            gp = global_graph.nodes[nid].get("global_pose")
+            if gp is not None:
+                pts.append(gp["centroid"])
+                valid_ids.append(nid)
+        if pts:
+            trees[cls] = (cKDTree(pts), valid_ids)
+
     id_remap: dict[str, str] = {}
+    touched: set[str] = set()
 
     for nid, d in new_graph.nodes(data=True):
         gp = d.get("global_pose")
@@ -698,21 +707,18 @@ def spatial_merge(
             id_remap[nid] = nid
             if nid not in global_graph:
                 global_graph.add_node(nid, **d)
+            touched.add(nid)
             continue
 
+        cls = d.get("semantic_class")
         gx, gy = gp["centroid"]
-        candidates = by_class.get(d.get("semantic_class"), [])
-        best_id, best_dist = None, dist_threshold
+        best_id = None
 
-        for cand_id in candidates:
-            cd = global_graph.nodes[cand_id]
-            cand_gp = cd.get("global_pose")
-            if cand_gp is None:
-                continue
-            cgx, cgy = cand_gp["centroid"]
-            dist = ((gx - cgx) ** 2 + (gy - cgy) ** 2) ** 0.5
-            if dist < best_dist:
-                best_dist, best_id = dist, cand_id
+        if cls in trees:
+            tree, valid_ids = trees[cls]
+            dist, idx = tree.query([gx, gy], k=1)
+            if dist < dist_threshold:
+                best_id = valid_ids[idx]
 
         if best_id is not None:
             existing = global_graph.nodes[best_id]
@@ -722,8 +728,7 @@ def spatial_merge(
             if len(history) > max_history:
                 history = history[-max_history:]
             existing["observation_history"] = history
-            recent_priorities = [o.priority for o in history[-5:]]
-            existing["priority"] = float(np.mean(recent_priorities))
+            existing["priority"] = float(np.mean([o.priority for o in history[-5:]]))
             n_obs = len(history)
             existing["confidence"] = n_obs / (n_obs + 3.0)
             existing["centroid"] = d["centroid"]
@@ -731,10 +736,11 @@ def spatial_merge(
             existing["frame_id"] = d["frame_id"]
             existing["_last_seen_track_id"] = d.get("track_id", -1)
             id_remap[nid] = best_id
+            touched.add(best_id)
         else:
             global_graph.add_node(nid, **d)
-            by_class.setdefault(d.get("semantic_class"), []).append(nid)
             id_remap[nid] = nid
+            touched.add(nid)
 
     for u, v, ed in new_graph.edges(data=True):
         mapped_u = id_remap.get(u, u)
@@ -742,7 +748,7 @@ def spatial_merge(
         if mapped_u in global_graph and mapped_v in global_graph:
             global_graph.add_edge(mapped_u, mapped_v, **ed)
 
-    return global_graph
+    return global_graph, touched
 
 _PROPAGATION_WEIGHTS: dict[str, float] = {
     EdgePredicate.SPATIALLY_ADJACENT.value:   0.4,
@@ -774,18 +780,17 @@ _CLASS_SEARCH_BOOST: dict[str, float] = {
     SemanticClass.UNKNOWN.value:          0.0,
 }
 
-def propagate_priority(
-    G: "nx.DiGraph",
-    damping: float = 0.3,
-    iterations: int = 2,
-    confidence_weight: bool = True,
-) -> None:
+def propagate_priority(G: "nx.DiGraph", touched_nodes: set[str], damping: float = 0.3, iterations: int = 2, confidence_weight: bool = True,) -> None:
+    frontier = set(touched_nodes)
     for _ in range(iterations):
+        expanded = set(frontier)
+        for nid in frontier:
+            expanded.update(G.predecessors(nid))
         updates: dict[str, float] = {}
-        for node_id, data in G.nodes(data=True):
+        for node_id in expanded:
+            data = G.nodes[node_id]
             current_priority = data.get("priority", 0.0)
-            semantic_class = data.get("semantic_class", SemanticClass.UNKNOWN.value)
-            class_boost = _CLASS_SEARCH_BOOST.get(semantic_class, 0.0)
+            class_boost = _CLASS_SEARCH_BOOST.get(data.get("semantic_class"), 0.0)
             neighbor_boost = 0.0
             for pred_id in G.predecessors(node_id):
                 edge_data = G.edges[pred_id, node_id]
@@ -793,8 +798,8 @@ def propagate_priority(
                 weight = _PROPAGATION_WEIGHTS.get(predicate, 0.0)
                 if confidence_weight:
                     weight *= edge_data.get("confidence", 1.0)
-                pred_priority = G.nodes[pred_id].get("priority", 0.0)
-                neighbor_boost += pred_priority * weight * damping
+                neighbor_boost += G.nodes[pred_id].get("priority", 0.0) * weight * damping
             updates[node_id] = min(1.0, current_priority + neighbor_boost + class_boost)
         for node_id, val in updates.items():
             G.nodes[node_id]["priority"] = val
+        frontier = expanded

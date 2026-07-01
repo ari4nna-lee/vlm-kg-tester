@@ -1,32 +1,32 @@
 {
   "frame_id": 5,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows an intersection of paved roads, some buildings, and a large area of dry, sparse vegetation.",
+  "scene_summary": "An aerial view shows an intersection of paved roads, some buildings, and a large, undeveloped, dry, and sparsely vegetated area.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 5,
-      "priority": 0.9091
+      "track_id": 7,
+      "priority": 0.8903
     },
     {
       "id": "node_001",
       "track_id": 3,
-      "priority": 0.885
+      "priority": 0.8694
     },
     {
       "id": "node_002",
-      "track_id": 4,
+      "track_id": 2,
       "priority": 0.8266
     },
     {
       "id": "node_003",
-      "track_id": 7,
-      "priority": 0.7619
+      "track_id": 9,
+      "priority": 0.7603
     }
   ],
   "global_graph_nodes": 5,
-  "global_graph_edges": 6,
+  "global_graph_edges": 12,
   "graph": {
     "directed": true,
     "multigraph": false,
@@ -36,38 +36,38 @@
         "label": "Paved Road Intersection",
         "semantic_class": "paved_road",
         "centroid": [
-          0.5134424294529198,
-          0.27600750090638865
+          0.49028621040391274,
+          0.23138807897350738
         ],
-        "priority": 0.7476527687005997,
-        "confidence": 0.84765625,
-        "track_id": 5,
-        "mask_area": 0.29296549479166667,
+        "priority": 0.802068838256836,
+        "confidence": 0.80078125,
+        "track_id": 7,
+        "mask_area": 0.29883463541666666,
         "frame_id": 4,
         "global_pose": {
           "centroid": [
-            403.3222961425781,
-            202.0601806640625
+            374.34893798828125,
+            310.8494567871094
           ],
           "bbox_xyxy": [
-            -266.7052001953125,
-            -13.936716079711914,
-            1029.9930419921875,
-            421.9290771484375
+            -253.5526123046875,
+            143.21331787109375,
+            1037.6265869140625,
+            483.0940246582031
           ]
         },
         "observation_history": [
           {
             "frame_id": 4,
-            "priority": 0.8854599999999999,
+            "priority": 0.87418,
             "centroid": [
-              0.5134424294529198,
-              0.27600750090638865
+              0.49028621040391274,
+              0.23138807897350738
             ],
-            "confidence": 0.84765625,
+            "confidence": 0.80078125,
             "global_centroid": [
-              403.3222961425781,
-              202.0601806640625
+              374.34893798828125,
+              310.8494567871094
             ],
             "timestamp": 0.0
           }
@@ -76,46 +76,46 @@
         "id": "node_000"
       },
       {
-        "label": "Dry/Sparse Vegetation Field",
+        "label": "Dry/Sparse Vegetation Area",
         "semantic_class": "sparse_vegetation",
         "centroid": [
-          0.5674145523361382,
-          0.7544468082863953
+          0.5735972039779733,
+          0.7232105129625717
         ],
-        "priority": 0.5971135571479798,
-        "confidence": 0.9375,
+        "priority": 0.59452342578125,
+        "confidence": 0.8984375,
         "track_id": 3,
-        "mask_area": 0.40037434895833335,
+        "mask_area": 0.3440440538194444,
         "frame_id": 4,
         "global_pose": {
           "centroid": [
-            460.0805358886719,
-            549.8724975585938
+            467.185546875,
+            667.9353637695312
           ],
           "bbox_xyxy": [
-            -278.94622802734375,
-            232.6151885986328,
-            1039.6468505859375,
-            746.25244140625
+            -193.623046875,
+            312.0182800292969,
+            956.627197265625,
+            855.5869750976562
           ]
         },
         "observation_history": [
           {
             "frame_id": 4,
-            "priority": 0.591,
+            "priority": 0.5816399999999999,
             "centroid": [
-              0.5674145523361382,
-              0.7544468082863953
+              0.5735972039779733,
+              0.7232105129625717
             ],
-            "confidence": 0.9375,
+            "confidence": 0.8984375,
             "global_centroid": [
-              460.0805358886719,
-              549.8724975585938
+              467.185546875,
+              667.9353637695312
             ],
             "timestamp": 0.0
           }
         ],
-        "source_region_id": "region_001_Dry/Sparse Vegetation Field",
+        "source_region_id": "region_001_Dry/Sparse Vegetation Area",
         "id": "node_001"
       },
       {
@@ -125,21 +125,21 @@
           0.091039464628889,
           0.07933705858250086
         ],
-        "priority": 0.44102122151184087,
+        "priority": 0.45913041197586063,
         "confidence": 0.94140625,
-        "track_id": 4,
+        "track_id": 2,
         "mask_area": 0.02089084201388889,
         "frame_id": 4,
         "global_pose": {
           "centroid": [
-            -137.05352783203125,
-            45.871337890625
+            -122.87737274169922,
+            198.46066284179688
           ],
           "bbox_xyxy": [
-            -258.4377136230469,
-            -13.936716079711914,
-            44.43758773803711,
-            176.16751098632812
+            -243.3305206298828,
+            143.21331787109375,
+            53.47663116455078,
+            321.8751220703125
           ]
         },
         "observation_history": [
@@ -152,8 +152,8 @@
             ],
             "confidence": 0.94140625,
             "global_centroid": [
-              -137.05352783203125,
-              45.871337890625
+              -122.87737274169922,
+              198.46066284179688
             ],
             "timestamp": 0.0
           }
@@ -165,38 +165,38 @@
         "label": "Vehicle",
         "semantic_class": "car",
         "centroid": [
-          0.39932036226529,
-          0.17463321860934167
+          0.37421875,
+          0.17430555555555555
         ],
-        "priority": 0.6281475449676514,
-        "confidence": 0.9296875,
-        "track_id": 7,
-        "mask_area": 0.026062282986111112,
+        "priority": 0.6183566653671264,
+        "confidence": 0.92578125,
+        "track_id": 9,
+        "mask_area": 0.017999131944444444,
         "frame_id": 4,
         "global_pose": {
           "centroid": [
-            257.8748474121094,
-            124.84656524658203
+            227.58265686035156,
+            268.52593994140625
           ],
           "bbox_xyxy": [
-            151.30335998535156,
-            64.3154296875,
-            365.54656982421875,
-            185.09732055664062
+            153.9977569580078,
+            211.87832641601562,
+            301.2567443847656,
+            325.7928466796875
           ]
         },
         "observation_history": [
           {
             "frame_id": 4,
-            "priority": 0.53714,
+            "priority": 0.53618,
             "centroid": [
-              0.39932036226529,
-              0.17463321860934167
+              0.37421875,
+              0.17430555555555555
             ],
-            "confidence": 0.9296875,
+            "confidence": 0.92578125,
             "global_centroid": [
-              257.8748474121094,
-              124.84656524658203
+              227.58265686035156,
+              268.52593994140625
             ],
             "timestamp": 0.0
           }

@@ -13,6 +13,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from typing import Optional, TYPE_CHECKING
+from scipy.spatial import cKDTree
 
 import numpy as np
 
@@ -65,30 +66,6 @@ def extract_search_waypoints(
     min_priority: float = 0.4,
     top_k: int = 5,
 ) -> list[SearchWaypoint]:
-    """
-    Cluster high-priority nodes by global_pose and return ranked waypoints.
-
-    Parameters
-    ----------
-    G : nx.DiGraph
-        The global priority-propagated KG (self._kg_graph in pipeline).
-    cluster_radius : float
-        Distance threshold in global canvas pixels for merging nodes into
-        one cluster. Tune alongside spatial_merge's dist_threshold —
-        cluster_radius should be larger (you want nearby objects grouped
-        into one waypoint, not split across several).
-        At 1280x720 source frames a value of 80-150px is reasonable.
-    min_priority : float
-        Nodes below this priority are excluded entirely before clustering.
-        Keeps low-confidence background objects from diluting clusters.
-    top_k : int
-        Number of waypoints to return, ranked by aggregate priority.
-
-    Returns
-    -------
-    list[SearchWaypoint]
-        Ranked from highest to lowest aggregate priority.
-    """
     # --- collect nodes that have global_pose and meet priority threshold ---
     candidates = []
     for node_id, data in G.nodes(data=True):
@@ -109,30 +86,23 @@ def extract_search_waypoints(
     if not candidates:
         log.info("search_planner: no candidates above priority threshold %.2f", min_priority)
         return []
-
-    # --- greedy spatial clustering ---
-    # Simple and fast at this node count. Start from the highest-priority
-    # node, absorb all nodes within cluster_radius, repeat on remainder.
-    # Not k-means — you don't know k ahead of time, and you don't want
-    # clusters of equal size, you want density-weighted natural groupings.
+    
+    log.info("search_planner: %d candidates entering clustering", len(candidates))
     candidates.sort(key=lambda c: c["priority"], reverse=True)
-    assigned = [False] * len(candidates)
-    clusters: list[list[dict]] = []
+    points = np.array([[c["gx"], c["gy"]] for c in candidates])
+    tree = cKDTree(points)
 
-    for i, seed in enumerate(candidates):
+    assigned = np.zeros(len(candidates), dtype=bool)
+    clusters:list[list[dict]] = []
+
+    for i in range(len(candidates)):
         if assigned[i]:
             continue
-        cluster = [seed]
-        assigned[i] = True
-        for j, other in enumerate(candidates):
-            if assigned[j]:
-                continue
-            dist = ((seed["gx"] - other["gx"]) ** 2 +
-                    (seed["gy"] - other["gy"]) ** 2) ** 0.5
-            if dist <= cluster_radius:
-                cluster.append(other)
-                assigned[j] = True
-        clusters.append(cluster)
+        neighbor_idx = tree.query_ball_point(points[i], r=cluster_radius)
+        unassigned_neighbors = [idx for idx in neighbor_idx if not assigned[idx]]
+        for j in unassigned_neighbors:
+            assigned[j] = True
+        clusters.append([candidates[j] for j in unassigned_neighbors]) 
 
     # --- score each cluster and build waypoints ---
     waypoints = []
