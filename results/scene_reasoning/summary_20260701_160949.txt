@@ -1,0 +1,28 @@
+============================================================
+ARCADIA SCENE REASONING SUMMARY
+============================================================
+
+Scene Narrative:
+The scene primarily features a network of roads, encompassing both paved and dirt segments, as depicted in the aerial mosaic. These roads represent the most probable locations for vehicle traffic, including trucks. The priority heatmap highlights these road areas, particularly intersections and main thoroughfares, as regions of high interest.
+
+Search Strategy:
+The search strategy will prioritize thorough investigation of all identified road segments. Drones should conduct detailed scans along the full length of each road, with particular emphasis on intersections, turns, and any areas showing increased priority on the heatmap. Special attention should be given to the paved roads (node_000, node_003, node_001) due to their higher likelihood of accommodating larger vehicles like trucks, followed by the dirt road (node_002) which may indicate industrial or rural truck activity.
+
+Key Findings:
+  1. Four distinct road segments have been identified: three paved roads and one dirt road/drainage.
+  2. Roads are the primary infrastructure for vehicle movement, making them high-probability areas for locating trucks.
+  3. The highest priority areas on the heatmap directly correspond to the identified road network, reinforcing their importance for investigation.
+
+Search Directives (4):
+  1. (100, 136) priority=0.898 — High-priority paved road segment, a primary location for truck movement.
+  2. (-47, 524) priority=0.842 — Paved road segment, likely to have truck traffic.
+  3. (13, 402) priority=0.808 — Dirt road/drainage, potential for utility or off-road trucks.
+  4. (-4, -46) priority=0.826 — Paved road segment, likely to have truck traffic.
+
+Priority Overrides (4):
+  node_000: → 0.898 (Paved road, highly relevant for truck presence.)
+  node_003: → 0.842 (Paved road, highly relevant for truck presence.)
+  node_002: → 0.808 (Dirt road/drainage, relevant for certain types of trucks (e.g., utility, construction).)
+  node_001: → 0.826 (Paved road, highly relevant for truck presence.)
+
+Temporal Anomalies (0):

@@ -67,7 +67,7 @@ class SceneReasonerConfig:
     vllm_model: str = "google/gemma-4-E2B-it"
 
     # Reasoning params
-    max_tokens: int = 2048
+    max_tokens: int = 4096 
     temperature: float = 0.3          # slightly higher than VLM — want creative reasoning
 
     # KG compression params
@@ -360,7 +360,54 @@ def _encode_image_b64(image_path: Path) -> Optional[str]:
         return None
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
-
+    
+RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "scene_narrative": {"type": "string"},
+        "key_findings": {"type": "array", "items": {"type": "string"}},
+        "search_strategy": {"type": "string"},
+        "priority_overrides": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "node_id": {"type": "string"},
+                    "new_priority": {"type": "number"},
+                    "reason": {"type": "string"},
+                },
+                "required": ["node_id", "new_priority"],
+            },
+        },
+        "search_directives": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "global_x": {"type": "number"},
+                    "global_y": {"type": "number"},
+                    "priority": {"type": "number"},
+                    "reasoning": {"type": "string"},
+                    "supporting_nodes": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["global_x", "global_y", "priority"],
+            },
+        },
+        "temporal_anomalies": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "node_id": {"type": "string"},
+                    "label": {"type": "string"},
+                    "anomaly_type": {"type": "string"},
+                    "description": {"type": "string"},
+                },
+            },
+        },
+    },
+    "required": ["scene_narrative", "priority_overrides", "search_directives", "temporal_anomalies"],
+}
 
 def _build_gemini_request(
     kg_summary: dict,
@@ -447,16 +494,13 @@ Return concise reasoning and reference node IDs if possible.
             "system_instruction": system_instruction,
             "temperature": cfg.temperature,
             "max_output_tokens": cfg.max_tokens,
+            "response_mime_type": "application/json",
         },
     )
 
     return response.text
 
 def _call_gemini_raw(system_instruction: str, contents: list, cfg: SceneReasonerConfig) -> str:
-    """
-    Low-level Gemini call using an already-built system_instruction and
-    contents list (may include base64 image blocks for mosaic/priority map).
-    """
     from google import genai
 
     client = genai.Client(api_key=cfg.gemini_api_key)
@@ -467,6 +511,8 @@ def _call_gemini_raw(system_instruction: str, contents: list, cfg: SceneReasoner
             "system_instruction": system_instruction,
             "temperature": cfg.temperature,
             "max_output_tokens": cfg.max_tokens,
+            "response_mime_type": "application/json",
+            "response_schema": RESPONSE_SCHEMA,
         },
     )
     return response.text
@@ -499,6 +545,15 @@ def _parse_response(raw: str) -> dict:
     except json.JSONDecodeError as e:
         log.warning("scene_reasoner: JSON parse failed: %s", e)
         return {}
+
+def _safe_float(value, default: float = 0.0) -> float:
+    """Coerce a value to float, treating None/missing/unparsable as default."""
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
 
 
 # ---------------------------------------------------------------------------
@@ -684,21 +739,22 @@ class SceneReasoner:
             priority_overrides=[
                 PriorityOverride(
                     node_id=p["node_id"],
-                    new_priority=float(p["new_priority"]),
+                    new_priority=_safe_float(p.get("new_priority"), 0.0),
                     reason=p.get("reason", ""),
                 )
                 for p in parsed.get("priority_overrides", [])
-                if "node_id" in p and "new_priority" in p
+                if isinstance(p, dict) and "node_id" in p and "new_priority" in p
             ],
             search_directives=[
                 SearchDirective(
-                    global_x=float(d.get("global_x", 0)),
-                    global_y=float(d.get("global_y", 0)),
-                    priority=float(d.get("priority", 0)),
+                    global_x=_safe_float(d.get("global_x"), 0.0),
+                    global_y=_safe_float(d.get("global_y"), 0.0),
+                    priority=_safe_float(d.get("priority"), 0.0),
                     reasoning=d.get("reasoning", ""),
                     supporting_nodes=d.get("supporting_nodes", []),
                 )
                 for d in parsed.get("search_directives", [])
+                if isinstance(d, dict)
             ],
             temporal_anomalies=[
                 TemporalAnomaly(
@@ -784,6 +840,7 @@ Answer questions concisely and specifically. Reference node IDs and locations wh
             "search_directives": [dataclasses.asdict(d) for d in result.search_directives],
             "temporal_anomalies": [dataclasses.asdict(a) for a in result.temporal_anomalies],
             "compressed_kg_summary": result.compressed_kg_summary,
+            "raw_llm_response": result.raw_llm_response,
         }
         out_path = OUTPUT_DIR / f"reasoning_{timestamp_str}.json"
         with open(out_path, "w") as f:
@@ -842,7 +899,7 @@ if __name__ == "__main__":
         # backend="vllm",
         # vllm_model="google/gemma-4-E2B-it",
         # grpc_endpoint="http://localhost:8000/v1",
-        task_prompt="Find a truck in the search area",
+        task_prompt="Identify vehicles and areas where you would most likely find a truck",
         top_n_nodes=25,
         top_n_edges=40,
     )
@@ -863,8 +920,8 @@ if __name__ == "__main__":
     kg = reasoner._load_kg_from_json_dir()
 
     questions = [
-        "Where is the most likely location of the truck based on the scene?",
-        "Which regions should the drone avoid entirely?",
+        "Identify vehicles and areas where you would most likely find a truck",
+        "Which regions would appear to be most traversable?",
         "Are there any objects that appeared and then disappeared?",
     ]
     for q in questions:
