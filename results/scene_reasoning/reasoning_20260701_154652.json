@@ -1,0 +1,199 @@
+{
+  "timestamp": 1782935212.8398485,
+  "scene_narrative": "",
+  "search_strategy": "",
+  "key_findings": [],
+  "priority_overrides": [],
+  "search_directives": [],
+  "temporal_anomalies": [],
+  "compressed_kg_summary": {
+    "graph_stats": {
+      "total_nodes": 4,
+      "total_edges": 11,
+      "nodes_shown": 4,
+      "edges_shown": 11
+    },
+    "class_overview": {
+      "paved_road": {
+        "count": 3,
+        "avg_priority": 0.855,
+        "max_priority": 0.898
+      },
+      "dirt_road": {
+        "count": 1,
+        "avg_priority": 0.808,
+        "max_priority": 0.808
+      }
+    },
+    "top_nodes": [
+      {
+        "node_id": "node_000",
+        "label": "Paved Road",
+        "semantic_class": "paved_road",
+        "priority": 0.898,
+        "confidence": 0.93,
+        "observation_count": 1,
+        "global_centroid": [
+          100.5,
+          136.4
+        ],
+        "mask_area_pct": 47.21,
+        "observation_summary": {
+          "count": 1,
+          "first_seen_frame": 12,
+          "last_seen_frame": 12,
+          "priority_mean": 0.905,
+          "priority_max": 0.905,
+          "priority_min": 0.905,
+          "priority_trend": "stable"
+        }
+      },
+      {
+        "node_id": "node_003",
+        "label": "Paved Road",
+        "semantic_class": "paved_road",
+        "priority": 0.842,
+        "confidence": 0.953,
+        "observation_count": 1,
+        "global_centroid": [
+          -46.7,
+          524.2
+        ],
+        "mask_area_pct": 8.67,
+        "observation_summary": {
+          "count": 1,
+          "first_seen_frame": 10,
+          "last_seen_frame": 10,
+          "priority_mean": 0.803,
+          "priority_max": 0.803,
+          "priority_min": 0.803,
+          "priority_trend": "stable"
+        }
+      },
+      {
+        "node_id": "node_002",
+        "label": "Dirt Road/Drainage",
+        "semantic_class": "dirt_road",
+        "priority": 0.808,
+        "confidence": 0.957,
+        "observation_count": 1,
+        "global_centroid": [
+          12.9,
+          402.2
+        ],
+        "mask_area_pct": 25.88,
+        "observation_summary": {
+          "count": 1,
+          "first_seen_frame": 16,
+          "last_seen_frame": 16,
+          "priority_mean": 0.76,
+          "priority_max": 0.76,
+          "priority_min": 0.76,
+          "priority_trend": "stable"
+        }
+      },
+      {
+        "node_id": "node_001",
+        "label": "Paved road",
+        "semantic_class": "paved_road",
+        "priority": 0.826,
+        "confidence": 0.57,
+        "observation_count": 1,
+        "global_centroid": [
+          -4.0,
+          -46.2
+        ],
+        "mask_area_pct": 3.21,
+        "observation_summary": {
+          "count": 1,
+          "first_seen_frame": 30,
+          "last_seen_frame": 30,
+          "priority_mean": 0.801,
+          "priority_max": 0.801,
+          "priority_min": 0.801,
+          "priority_trend": "stable"
+        }
+      }
+    ],
+    "top_edges": [
+      {
+        "from": "node_000",
+        "to": "node_003",
+        "predicate": "contains",
+        "confidence": 1.0,
+        "tier": 1
+      },
+      {
+        "from": "node_001",
+        "to": "node_002",
+        "predicate": "occluded_by",
+        "confidence": 1.0,
+        "tier": 1
+      },
+      {
+        "from": "node_001",
+        "to": "node_003",
+        "predicate": "contains",
+        "confidence": 1.0,
+        "tier": 1
+      },
+      {
+        "from": "node_002",
+        "to": "node_001",
+        "predicate": "contains",
+        "confidence": 1.0,
+        "tier": 1
+      },
+      {
+        "from": "node_003",
+        "to": "node_000",
+        "predicate": "connected_to",
+        "confidence": 0.93,
+        "tier": 1
+      },
+      {
+        "from": "node_000",
+        "to": "node_001",
+        "predicate": "occludes",
+        "confidence": 0.818,
+        "tier": 1
+      },
+      {
+        "from": "node_000",
+        "to": "node_002",
+        "predicate": "occludes",
+        "confidence": 0.818,
+        "tier": 1
+      },
+      {
+        "from": "node_001",
+        "to": "node_000",
+        "predicate": "occluded_by",
+        "confidence": 0.818,
+        "tier": 1
+      },
+      {
+        "from": "node_002",
+        "to": "node_000",
+        "predicate": "occluded_by",
+        "confidence": 0.818,
+        "tier": 1
+      },
+      {
+        "from": "node_002",
+        "to": "node_003",
+        "predicate": "occluded_by",
+        "confidence": 0.639,
+        "tier": 1
+      },
+      {
+        "from": "node_003",
+        "to": "node_002",
+        "predicate": "occludes",
+        "confidence": 0.639,
+        "tier": 1
+      }
+    ],
+    "temporal_anomalies": []
+  }
+}
