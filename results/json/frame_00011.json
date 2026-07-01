@@ -1,31 +1,31 @@
 {
   "frame_id": 11,
   "task_prompt": "Identify vehicles and areas where you would most likely find a truck",
-  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some residential structures.",
+  "scene_summary": "An aerial view shows a paved road running alongside a dry, vegetated embankment and some developed areas.",
   "num_objects": 4,
   "objects": [
     {
       "id": "node_000",
-      "track_id": 0,
-      "priority": 0.9341
+      "track_id": 3,
+      "priority": 0.9372
     },
     {
       "id": "node_001",
-      "track_id": 4,
-      "priority": 0.8444
+      "track_id": 11,
+      "priority": 0.8788
     },
     {
       "id": "node_002",
-      "track_id": 12,
-      "priority": 0.8328
+      "track_id": 14,
+      "priority": 0.8266
     },
     {
       "id": "node_003",
-      "track_id": 2,
-      "priority": 0.7428
+      "track_id": 15,
+      "priority": 0.7681
     }
   ],
-  "global_graph_nodes": 4,
+  "global_graph_nodes": 5,
   "global_graph_edges": 8,
   "graph": {
     "directed": true,
@@ -33,63 +33,175 @@
     "graph": {},
     "nodes": [
       {
-        "label": "Roadway",
-        "semantic_class": "road",
+        "label": "Paved Road",
+        "semantic_class": "paved_road",
         "centroid": [
-          0.17321976921966814,
-          0.6098007782079977
+          0.15731203361741303,
+          0.5834180733910697
         ],
-        "priority": 0.7846531970787048,
-        "track_id": 0,
-        "mask_area": 0.199248046875,
+        "priority": 0.8077360888061524,
+        "confidence": 0.91796875,
+        "track_id": 3,
+        "mask_area": 0.22923936631944444,
         "frame_id": 10,
-        "confidence": 0.91015625,
-        "source_region_id": "region_000_Roadway",
+        "global_pose": {
+          "centroid": [
+            199.51235961914062,
+            283.2642822265625
+          ],
+          "bbox_xyxy": [
+            -3.367496967315674,
+            -138.88604736328125,
+            678.0890502929688,
+            588.7501831054688
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 10,
+            "priority": 0.90232,
+            "centroid": [
+              0.15731203361741303,
+              0.5834180733910697
+            ],
+            "confidence": 0.91796875,
+            "global_centroid": [
+              199.51235961914062,
+              283.2642822265625
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_000_Paved Road",
         "id": "node_000"
       },
       {
-        "label": "Embankment/Terrain",
-        "semantic_class": "vegetation",
+        "label": "Dense Vegetation",
+        "semantic_class": "dense_vegetation",
         "centroid": [
-          0.6408485259990429,
-          0.45295118393349826
+          0.6435868652959513,
+          0.467098764038461
         ],
-        "priority": 0.7883375377845765,
-        "track_id": 4,
-        "mask_area": 0.6507421875,
+        "priority": 0.5039794233074189,
+        "confidence": 0.921875,
+        "track_id": 11,
+        "mask_area": 0.6728537326388889,
         "frame_id": 10,
-        "confidence": 0.8359375,
-        "source_region_id": "region_001_Embankment/Terrain",
+        "global_pose": {
+          "centroid": [
+            823.0473022460938,
+            204.24342346191406
+          ],
+          "bbox_xyxy": [
+            341.25189208984375,
+            -136.4695587158203,
+            1281.8193359375,
+            594.4154052734375
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 10,
+            "priority": 0.53528,
+            "centroid": [
+              0.6435868652959513,
+              0.467098764038461
+            ],
+            "confidence": 0.921875,
+            "global_centroid": [
+              823.0473022460938,
+              204.24342346191406
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_001_Dense Vegetation",
         "id": "node_001"
       },
       {
-        "label": "Residential Area",
+        "label": "Building",
         "semantic_class": "building",
         "centroid": [
-          0.16520052501721366,
-          0.820789279065616
+          0.163743942134587,
+          0.7521026196712827
         ],
-        "priority": 0.8332622043991089,
-        "track_id": 12,
-        "mask_area": 0.1181911892361111,
+        "priority": 0.5814999159507752,
+        "confidence": 0.94140625,
+        "track_id": 14,
+        "mask_area": 0.12717339409722223,
         "frame_id": 10,
-        "confidence": 0.95703125,
-        "source_region_id": "region_002_Residential Area",
+        "global_pose": {
+          "centroid": [
+            207.24359130859375,
+            405.46539306640625
+          ],
+          "bbox_xyxy": [
+            -3.1806931495666504,
+            253.40542602539062,
+            421.341552734375,
+            553.0242919921875
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 10,
+            "priority": 0.51596,
+            "centroid": [
+              0.163743942134587,
+              0.7521026196712827
+            ],
+            "confidence": 0.94140625,
+            "global_centroid": [
+              207.24359130859375,
+              405.46539306640625
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_002_Building",
         "id": "node_002"
       },
       {
-        "label": "Parking Area",
-        "semantic_class": "road",
+        "label": "Paved Road",
+        "semantic_class": "paved_road",
         "centroid": [
-          0.8125003714512719,
-          0.8261191153429621
+          0.1867942140637085,
+          0.74825327597786
         ],
-        "priority": 0.5970726923027635,
-        "track_id": 2,
-        "mask_area": 0.08672200520833333,
+        "priority": 0.7909094908599854,
+        "confidence": 0.9453125,
+        "track_id": 15,
+        "mask_area": 0.11363606770833333,
         "frame_id": 10,
-        "confidence": 0.95703125,
-        "source_region_id": "region_003_Parking Area",
+        "global_pose": {
+          "centroid": [
+            236.78367614746094,
+            402.93548583984375
+          ],
+          "bbox_xyxy": [
+            -3.1806931495666504,
+            253.40542602539062,
+            513.46435546875,
+            553.8799438476562
+          ]
+        },
+        "observation_history": [
+          {
+            "frame_id": 10,
+            "priority": 0.80086,
+            "centroid": [
+              0.1867942140637085,
+              0.74825327597786
+            ],
+            "confidence": 0.9453125,
+            "global_centroid": [
+              236.78367614746094,
+              402.93548583984375
+            ],
+            "timestamp": 0.0
+          }
+        ],
+        "source_region_id": "region_003_Paved Road",
         "id": "node_003"
       }
     ],
@@ -102,11 +214,32 @@
         "target": "node_002"
       },
       {
-        "predicate": "contains",
+        "predicate": "connected_to",
         "tier": 1,
-        "confidence": 1.0,
-        "source": "node_001",
+        "confidence": 0.918,
+        "source": "node_000",
         "target": "node_003"
+      },
+      {
+        "predicate": "occluded_by",
+        "tier": 1,
+        "confidence": 0.821,
+        "source": "node_002",
+        "target": "node_003"
+      },
+      {
+        "predicate": "connected_to",
+        "tier": 1,
+        "confidence": 0.918,
+        "source": "node_003",
+        "target": "node_000"
+      },
+      {
+        "predicate": "occludes",
+        "tier": 1,
+        "confidence": 0.821,
+        "source": "node_003",
+        "target": "node_002"
       }
     ]
   }

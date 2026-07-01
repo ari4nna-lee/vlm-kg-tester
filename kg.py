@@ -46,16 +46,15 @@ except ImportError:
 
 from structure import (
     BBox, EdgePredicate, EdgeTier,
-    InstanceMask, KGEdge, KGNode, KGOutput,
+    InstanceMask, KGEdge, KGNode, KGOutput, NodeObservation,
     SemanticClass, SegmentationOutput,
+    TRAVERSABLE_CLASSES, DYNAMIC_CLASSES, TRUCK_PRIOR,
 )
 
 log = logging.getLogger(__name__)
 
-# Semantic classes considered traversable surface.
-_TRAVERSABLE = {SemanticClass.ROAD}
-# Classes considered dynamic (trigger Tier 2).
-_DYNAMIC = {SemanticClass.VEHICLE, SemanticClass.PERSON}
+_TRAVERSABLE = TRAVERSABLE_CLASSES
+_DYNAMIC = DYNAMIC_CLASSES
 
 FRAME_W = 1280
 FRAME_H = 720
@@ -429,27 +428,57 @@ class SemanticEdgeInferrer:
 # Node constructor
 # ---------------------------------------------------------------------------
 
-def _mask_to_node(mask: InstanceMask, frame_id: int, H_global: Optional[np.ndarray] = None) -> KGNode:
-    attrs = {
-        "confidence": mask.confidence,
-        "source_region_id": mask.source_region_id,
-    }
+def _mask_to_node(
+    mask: InstanceMask,
+    frame_id: int,
+    H_global: Optional[np.ndarray] = None,
+    timestamp: float = 0.0,
+) -> KGNode:
+    alpha = 0.6
+    prior = TRUCK_PRIOR.get(mask.semantic_class.value, 0.15)
+    initialized_priority = alpha * mask.priority + (1 - alpha) * prior
+
+    global_centroid = None
+    attrs: dict = {}
+
     if H_global is not None:
         from mosaic import MosaicTracker
-        cx, cy = mask.centroid  # normalized
+        cx, cy = mask.centroid
         gx, gy = MosaicTracker.project_point(cx * FRAME_W, cy * FRAME_H, H_global)
         bx1, by1, bx2, by2 = mask.bbox.to_xyxy()
         gbx1, gby1, gbx2, gby2 = MosaicTracker.project_bbox_xyxy(
-            bx1 * FRAME_W, by1 * FRAME_H, bx2 * FRAME_W, by2 * FRAME_H, H_global
+            bx1 * FRAME_W, by1 * FRAME_H,
+            bx2 * FRAME_W, by2 * FRAME_H,
+            H_global
         )
+        global_centroid = (gx, gy)
         attrs["global_pose"] = {
             "centroid": (gx, gy),
             "bbox_xyxy": (gbx1, gby1, gbx2, gby2),
         }
+
+    first_obs = NodeObservation(
+        frame_id=frame_id,
+        priority=initialized_priority,
+        centroid=mask.centroid,
+        confidence=mask.confidence,
+        global_centroid=global_centroid,
+        timestamp=timestamp,
+    )
+    attrs["observation_history"] = [first_obs]
+    attrs["source_region_id"] = mask.source_region_id
+
     return KGNode(
-        node_id=mask.node_id, label=mask.label, semantic_class=mask.semantic_class,
-        centroid=mask.centroid, bbox=mask.bbox, mask_area=mask.mask_area,
-        priority=mask.priority, track_id=mask.track_id, frame_id=frame_id,
+        node_id=mask.node_id,
+        label=mask.label,
+        semantic_class=mask.semantic_class,
+        centroid=mask.centroid,
+        bbox=mask.bbox,
+        mask_area=mask.mask_area,
+        priority=initialized_priority,
+        confidence=mask.confidence,
+        track_id=mask.track_id,
+        frame_id=frame_id,
         attributes=attrs,
     )
 
@@ -486,8 +515,9 @@ class KGStage:
         seg_output: SegmentationOutput,
         prev_seg_output: Optional[SegmentationOutput] = None,
         heatmap: Optional[np.ndarray] = None,
+        is_refine: bool = False,
         vlm_output = None,
-        H_global=None,
+        H_global: Optional[np.ndarray] = None,
     ) -> "KGRunResult":
         """
         Parameters
@@ -505,7 +535,7 @@ class KGStage:
         """
         t0 = time.perf_counter()
 
-        nodes = [_mask_to_node(m, seg_output.frame_id) for m in seg_output.masks]
+        nodes = [_mask_to_node(m, seg_output.frame_id, H_global) for m in seg_output.masks]
         edges: list[KGEdge] = []
 
         if self.config.enable_tier1:
@@ -545,8 +575,10 @@ class KGStage:
             edges=edges,
             frame_id=seg_output.frame_id,
         )
-
-        refined_prompts = self.get_refined_prompts(KGRunResult(output=kg_output, graph=G, traversability=T))
+        if is_refine:
+            refined_prompts = []
+        else:
+            refined_prompts = self.get_refined_prompts(KGRunResult(output=kg_output, graph=G, traversability=T))
 
         return KGRunResult(output=kg_output, graph=G, traversability=T, refined_prompts=refined_prompts)
     
@@ -554,11 +586,15 @@ class KGStage:
     def update_from_heatmap(self, G, heatmap):
         H, W = heatmap.shape
         for node_id, data in G.nodes(data=True):
-            cx, cy = data["centroid"]
-            ix, iy = int(cx * W), int(cy * H)
-            ix, iy = min(max(ix, 0), W - 1), min(max(iy, 0), H - 1)
+            centroid = data.get("centroid")
+            if centroid is None:
+                continue
+            x, y = centroid
+            ix, iy = int(x * W), int(y * H)
+            ix = min(max(ix, 0), W - 1)
+            iy = min(max(iy, 0), H - 1)
             heat_value = float(heatmap[iy, ix])
-            data["priority"] = 0.8 * data["priority"] + 0.2 * heat_value
+            data["priority"] = 0.8 * data.get("priority", 0.0) + 0.2 * heat_value
 
     def get_refined_prompts(
         self,
@@ -600,14 +636,15 @@ class KGStage:
         G = nx.DiGraph()
         for node in nodes:
             G.add_node(node.node_id, **{
-                "label": node.label,
+                "label":          node.label,
                 "semantic_class": node.semantic_class.value,
-                "centroid": node.centroid,
-                "priority": node.priority,
-                "track_id": node.track_id,
-                "mask_area": node.mask_area,
-                "frame_id": node.frame_id,
-                **node.attributes,   # includes global_pose now
+                "centroid":       node.centroid,
+                "priority":       node.priority,
+                "confidence":     node.confidence,    
+                "track_id":       node.track_id,
+                "mask_area":      node.mask_area,
+                "frame_id":       node.frame_id,
+                **node.attributes,
             })
         for edge in edges:
             G.add_edge(
@@ -621,16 +658,11 @@ class KGStage:
 
     @staticmethod
     def _traversability_subgraph(G: "nx.DiGraph") -> "nx.DiGraph":
-        """
-        Extract only traversable nodes and connected_to edges.
-        This subgraph is what path planners consume directly.
-        """
         traversable_nodes = [
             n for n, d in G.nodes(data=True)
-            if d.get("semantic_class") in {c.value for c in _TRAVERSABLE}
+            if d.get("semantic_class") in TRAVERSABLE_CLASSES
         ]
         T = G.subgraph(traversable_nodes).copy()
-        # Remove non-traversability edges.
         non_trav = [(u, v) for u, v, d in T.edges(data=True)
                     if d.get("predicate") != EdgePredicate.CONNECTED_TO.value]
         T.remove_edges_from(non_trav)
@@ -648,27 +680,24 @@ class KGRunResult:
     traversability: "nx.DiGraph"  # road-only connected_to subgraph
     refined_prompts: list[dict] = field(default_factory=list)
 
-def spatial_merge(global_graph: "nx.DiGraph", new_graph: "nx.DiGraph",
-                   dist_threshold: float = 60.0) -> "nx.DiGraph":
-    """
-    Merge new_graph's nodes into global_graph using global-coordinate
-    proximity + semantic class match, instead of node_id identity.
-    dist_threshold is in global pixel units (canvas space) — start around
-    1-2x typical object size in your mosaic and tune from there.
-    """
-    # index existing nodes by semantic class for cheap candidate lookup
+def spatial_merge(
+    global_graph: "nx.DiGraph",
+    new_graph: "nx.DiGraph",
+    dist_threshold: float = 60.0,
+    max_history: int = 20,
+) -> "nx.DiGraph":
     by_class: dict[str, list[str]] = {}
     for nid, d in global_graph.nodes(data=True):
         by_class.setdefault(d.get("semantic_class"), []).append(nid)
 
-    id_remap: dict[str, str] = {}  # new_graph node_id -> matched existing node_id
+    id_remap: dict[str, str] = {}
 
     for nid, d in new_graph.nodes(data=True):
         gp = d.get("global_pose")
         if gp is None:
-            # no global coords available (homography failed this frame) —
-            # fall back to old node_id-identity behavior for this node
             id_remap[nid] = nid
+            if nid not in global_graph:
+                global_graph.add_node(nid, **d)
             continue
 
         gx, gy = gp["centroid"]
@@ -686,11 +715,19 @@ def spatial_merge(global_graph: "nx.DiGraph", new_graph: "nx.DiGraph",
                 best_dist, best_id = dist, cand_id
 
         if best_id is not None:
-            # merge: update existing node's pose/priority, keep its identity
             existing = global_graph.nodes[best_id]
+            new_obs: list = d.get("observation_history", [])
+            history: list = existing.get("observation_history", [])
+            history.extend(new_obs)
+            if len(history) > max_history:
+                history = history[-max_history:]
+            existing["observation_history"] = history
+            recent_priorities = [o.priority for o in history[-5:]]
+            existing["priority"] = float(np.mean(recent_priorities))
+            n_obs = len(history)
+            existing["confidence"] = n_obs / (n_obs + 3.0)
             existing["centroid"] = d["centroid"]
             existing["global_pose"] = gp
-            existing["priority"] = max(existing["priority"], d["priority"])
             existing["frame_id"] = d["frame_id"]
             existing["_last_seen_track_id"] = d.get("track_id", -1)
             id_remap[nid] = best_id
@@ -700,6 +737,64 @@ def spatial_merge(global_graph: "nx.DiGraph", new_graph: "nx.DiGraph",
             id_remap[nid] = nid
 
     for u, v, ed in new_graph.edges(data=True):
-        global_graph.add_edge(id_remap[u], id_remap[v], **ed)
+        mapped_u = id_remap.get(u, u)
+        mapped_v = id_remap.get(v, v)
+        if mapped_u in global_graph and mapped_v in global_graph:
+            global_graph.add_edge(mapped_u, mapped_v, **ed)
 
     return global_graph
+
+_PROPAGATION_WEIGHTS: dict[str, float] = {
+    EdgePredicate.SPATIALLY_ADJACENT.value:   0.4,
+    EdgePredicate.CONNECTED_TO.value:         0.3,
+    EdgePredicate.CONTAINS.value:             0.35,
+    EdgePredicate.OCCLUDES.value:             0.1,
+    EdgePredicate.OCCLUDED_BY.value:          0.2,
+    EdgePredicate.MOVING_TOWARD.value:        0.25,
+    EdgePredicate.CO_MOVING_WITH.value:       0.3,
+    EdgePredicate.ON_TRAJECTORY_TOWARD.value: 0.2,
+    EdgePredicate.BLOCKS_ACCESS_TO.value:     0.15,
+    EdgePredicate.LANDMARK_OF.value:          0.1,
+    EdgePredicate.ANOMALOUS_IN.value:         0.35,
+    EdgePredicate.PRIORITY_RELATIVE_TO.value: 0.2,
+}
+
+_CLASS_SEARCH_BOOST: dict[str, float] = {
+    SemanticClass.VEHICLE.value:          0.0,
+    SemanticClass.LARGE_VEHICLE.value:    0.1,
+    SemanticClass.TRUCK.value:            0.2,
+    SemanticClass.PAVED_ROAD.value:       0.1,
+    SemanticClass.DIRT_ROAD.value:        0.08,
+    SemanticClass.PARKING_LOT.value:      0.1,
+    SemanticClass.LOADING_DOCK.value:     0.15,
+    SemanticClass.BUILDING.value:         0.05,
+    SemanticClass.DENSE_VEGETATION.value:-0.1,
+    SemanticClass.PERSON.value:           0.15,
+    SemanticClass.ANOMALY.value:          0.2,
+    SemanticClass.UNKNOWN.value:          0.0,
+}
+
+def propagate_priority(
+    G: "nx.DiGraph",
+    damping: float = 0.3,
+    iterations: int = 2,
+    confidence_weight: bool = True,
+) -> None:
+    for _ in range(iterations):
+        updates: dict[str, float] = {}
+        for node_id, data in G.nodes(data=True):
+            current_priority = data.get("priority", 0.0)
+            semantic_class = data.get("semantic_class", SemanticClass.UNKNOWN.value)
+            class_boost = _CLASS_SEARCH_BOOST.get(semantic_class, 0.0)
+            neighbor_boost = 0.0
+            for pred_id in G.predecessors(node_id):
+                edge_data = G.edges[pred_id, node_id]
+                predicate = edge_data.get("predicate", "")
+                weight = _PROPAGATION_WEIGHTS.get(predicate, 0.0)
+                if confidence_weight:
+                    weight *= edge_data.get("confidence", 1.0)
+                pred_priority = G.nodes[pred_id].get("priority", 0.0)
+                neighbor_boost += pred_priority * weight * damping
+            updates[node_id] = min(1.0, current_priority + neighbor_boost + class_boost)
+        for node_id, val in updates.items():
+            G.nodes[node_id]["priority"] = val

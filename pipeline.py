@@ -37,7 +37,7 @@ import numpy as np
 from vlm_reasoning import VLMReasoningPass, VLMConfig
 from prompt_encoder import PromptEncoder, EncoderConfig, EncodedPrompts
 from sam_stage import SAMStage, SAMConfig
-from kg import KGStage, KGConfig, KGRunResult, spatial_merge
+from kg import KGStage, KGConfig, KGRunResult, spatial_merge, propagate_priority
 from structure import VLMSceneOutput, SegmentationOutput
 from mosaic import MosaicConfig, MosaicTracker
 
@@ -51,13 +51,12 @@ log = logging.getLogger(__name__)
 
 import queue
 import threading
-import time
+import dataclasses
 
 from pathlib import Path
 import cv2
 import networkx as nx
 
-import os
 import json
 from networkx.readwrite import json_graph
 
@@ -122,6 +121,18 @@ class KGItem:
     prev_seg: object | None
     prev_heatmap: np.ndarray | None
     is_refine: bool = False
+
+class PipelineJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
+            return dataclasses.asdict(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        return super().default(obj)
 
 # ---------------------------------------------------------------------------
 # Pipeline
@@ -345,38 +356,30 @@ class Pipeline:
                     log.info("kg_worker shutting down")
                     return
 
-                # -------------------------
-                # unpack structured input
-                # -------------------------
                 fid = item.fid
                 frame = item.frame
                 vlm_output = item.vlm_output
                 seg_output = item.seg_output
                 encoded_prompts = item.encoded_prompts
                 prev_seg = item.prev_seg
-                H_global = self.mosaic.update(fid, frame)   # idempotent per fid, handles kg_refine re-delivery
-
-                log.info("kg_worker received frame %s", fid)
-
                 heatmap = item.heatmap
 
-                # -------------------------
-                # KG reasoning step
-                # -------------------------
+                H_global = self.mosaic.update(fid, frame)
+                log.info("kg_worker received frame %s", fid)
+
                 kg_result = self.kg.run(
                     seg_output, prev_seg_output=prev_seg, heatmap=heatmap,
                     vlm_output=vlm_output, H_global=H_global,
+                    is_refine=item.is_refine,
                 )
                 with self._graph_lock:
                     self._kg_graph = spatial_merge(self._kg_graph, kg_result.graph)
-                    log.info("kg_worker finished frame %s, setting latest_output", fid)
+                    propagate_priority(self._kg_graph)
+                    log.info("kg_worker finished frame %s", fid)
 
                 if heatmap is not None:
                     self.mosaic.accumulate_heatmap(fid, heatmap)
 
-                # -------------------------
-                # FEEDBACK LOOP (this is what you were missing)
-                # -------------------------
                 if kg_result.refined_prompts:
                     self.sam_refine_q.put({
                         "type": "kg_refine",
@@ -384,19 +387,16 @@ class Pipeline:
                         "frame": frame,
                         "prompts": kg_result.refined_prompts,
                     })
-                    log.info("kg_worker: queued %d prompts for frame %s", len(kg_result.refined_prompts), fid)
+                    log.info("kg_worker: queued %d refined prompts for frame %s", len(kg_result.refined_prompts), fid)
 
-                self.output_q.put((
-                    fid, frame, seg_output, kg_result, vlm_output, heatmap
-                ))
                 if not item.is_refine:
                     self.output_q.put((
                         fid, frame, seg_output, kg_result, vlm_output, heatmap
                     ))
-                    self.processed_frames += 1    # moved inside the gate
+                    self.processed_frames += 1
                     log.info("kg_worker: frame %s -> output_q", fid)
                 else:
-                    log.info("kg_worker: frame %s refine pass merged into graph, no output_q write", fid)
+                    log.info("kg_worker: frame %s refine merged into graph, skipping output_q", fid)
 
         except Exception as e:
             log.exception("kg_worker crashed: %s", e)
@@ -440,7 +440,7 @@ class Pipeline:
             
             log.info("WRITING JSON for frame %s", fid)
             with open(JSON_DIR / f"frame_{fid:05d}.json", "w") as f:
-                json.dump(frame_data, f, indent=2)
+                json.dump(frame_data, f, indent=2, cls=PipelineJSONEncoder)
 
             frame_viz = overlay_masks(frame, seg_output.masks)
 
@@ -511,20 +511,43 @@ feed_thread = threading.Thread(target=feed_frames, daemon=True)
 feed_thread.start()
 
 feed_thread.join()
-log.info("Feed thread done, Waiting for pipeline to drain...")
+log.info("Feed thread done, waiting for pipeline to drain...")
 
 for t in pipeline.threads:
     t.join()
 
+# --- global outputs ---
 global_canvas = pipeline.mosaic.get_canvas()
 if global_canvas is not None:
-    cv2.imwrite(str(OUTPUT_DIR / "global_mosaic.png"), cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR))
+    cv2.imwrite(
+        str(OUTPUT_DIR / "global_mosaic.png"),
+        cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR)
+    )
+    log.info("global_mosaic.png written")
 
-global_heat = pipeline.mosaic.get_global_heatmap()
-if global_heat is not None:
-    vis = cv2.normalize(global_heat, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+priority_map = pipeline.mosaic.get_priority_map(pipeline._kg_graph)
+if priority_map is not None:
+    vis = cv2.normalize(priority_map, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
     vis = cv2.applyColorMap(vis, cv2.COLORMAP_JET)
-    cv2.imwrite(str(OUTPUT_DIR / "global_heatmap.png"), vis)
+    cv2.imwrite(str(OUTPUT_DIR / "global_priority_map.png"), vis)
+    log.info("global_priority_map.png written")
+
+# --- search waypoints ---
+from search_planner import extract_search_waypoints
+with pipeline._graph_lock:
+    waypoints = extract_search_waypoints(pipeline._kg_graph, top_k=5)
+
+if global_canvas is not None and waypoints:
+    viz = cv2.cvtColor(global_canvas, cv2.COLOR_RGB2BGR)
+    for i, w in enumerate(waypoints):
+        cx = int(w.global_x - pipeline.mosaic._canvas_origin[0])
+        cy = int(w.global_y - pipeline.mosaic._canvas_origin[1])
+        cv2.circle(viz, (cx, cy), 20, (0, 0, 255), 3)
+        cv2.putText(viz, f"W{i+1} p={w.priority:.2f}",
+                    (cx + 5, cy - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5, (0, 0, 255), 1)
+    cv2.imwrite(str(OUTPUT_DIR / "global_mosaic_waypoints.png"), viz)
+    log.info("global_mosaic_waypoints.png written")
 
 cv2.destroyAllWindows()
 writer.release()

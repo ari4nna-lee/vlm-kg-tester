@@ -16,14 +16,66 @@ import numpy as np
 # ---------------------------------------------------------------------------
 
 class SemanticClass(str, Enum):
-    ROAD        = "road"
-    VEHICLE     = "vehicle"
-    BUILDING    = "building"
-    VEGETATION  = "vegetation"
-    PERSON      = "person"
-    ANOMALY     = "anomaly"
-    UNKNOWN     = "unknown"
+    PAVED_ROAD        = "paved_road"
+    DIRT_ROAD         = "dirt_road"
+    GRASSLAND         = "grassland"
+    DENSE_VEGETATION  = "dense_vegetation"
+    SPARSE_VEGETATION = "sparse_vegetation"
+    STEEP_SLOPE       = "steep_slope"
+    WATER             = "water"
+    BARE_EARTH        = "bare_earth"
+    BUILDING          = "building"
+    BUILDING_ROOF     = "building_roof"
+    PARKING_LOT       = "parking_lot"
+    LOADING_DOCK      = "loading_dock"
+    VEHICLE           = "vehicle"
+    LARGE_VEHICLE     = "large_vehicle"
+    TRUCK             = "truck"
+    CAR               = "car"
+    TRAILER           = "trailer"
+    PERSON            = "person"
+    ANOMALY           = "anomaly"
+    UNKNOWN           = "unknown"
 
+TRUCK_PRIOR: dict[str, float] = {
+    "paved_road":        0.85,
+    "dirt_road":         0.65,
+    "grassland":         0.30,
+    "parking_lot":       0.80,
+    "loading_dock":      0.90,
+    "bare_earth":        0.35,
+    "sparse_vegetation": 0.15,
+    "dense_vegetation":  0.02,
+    "building_roof":     0.01,
+    "building":          0.05,
+    "steep_slope":       0.01,
+    "water":             0.00,
+    "vehicle":           0.60,
+    "large_vehicle":     0.85,
+    "truck":             1.00,
+    "car":               0.20,
+    "trailer":           0.75,
+    "person":            0.25,
+    "anomaly":           0.40,
+    "unknown":           0.15,
+}
+
+TRAVERSABLE_CLASSES: set[str] = {
+    SemanticClass.PAVED_ROAD.value,
+    SemanticClass.DIRT_ROAD.value,
+    SemanticClass.GRASSLAND.value,
+    SemanticClass.BARE_EARTH.value,
+    SemanticClass.PARKING_LOT.value,
+}
+
+DYNAMIC_CLASSES: set[str] = {
+    SemanticClass.VEHICLE.value,
+    SemanticClass.LARGE_VEHICLE.value,
+    SemanticClass.TRUCK.value,
+    SemanticClass.CAR.value,
+    SemanticClass.TRAILER.value,
+    SemanticClass.PERSON.value,
+}
 
 class EdgeTier(int, Enum):
     SPATIAL   = 1   # geometric, every frame
@@ -70,6 +122,57 @@ TIER_PREDICATES: dict[EdgeTier, list[EdgePredicate]] = {
     ],
 }
 
+SEMANTIC_CLASS_ALIASES: dict[str, str] = {
+    "road":             "paved_road",
+    "vegetation":       "dense_vegetation",
+    "building":         "building",
+    "vehicle":          "vehicle",
+    "person":           "person",
+    "anomaly":          "anomaly",
+    "unknown":          "unknown",
+    "grass":            "grassland",
+    "dirt":             "bare_earth",
+    "dirt road":        "dirt_road",
+    "gravel":           "dirt_road",
+    "pavement":         "paved_road",
+    "street":           "paved_road",
+    "highway":          "paved_road",
+    "forest":           "dense_vegetation",
+    "trees":            "dense_vegetation",
+    "shrubs":           "sparse_vegetation",
+    "water":            "water",
+    "roof":             "building_roof",
+    "parking":          "parking_lot",
+    "parking lot":      "parking_lot",
+    "car":              "car",
+    "truck":            "truck",
+    "large vehicle":    "large_vehicle",
+    "trailer":          "trailer",
+}
+
+def resolve_semantic_class(raw: str) -> SemanticClass:
+    """
+    Resolve a raw VLM string to a SemanticClass, with alias fallback.
+    Returns SemanticClass.UNKNOWN rather than raising on unrecognized input.
+    """
+    s = raw.strip().lower()
+    # try direct match first
+    try:
+        return SemanticClass(s)
+    except ValueError:
+        pass
+    # try alias table
+    if s in SEMANTIC_CLASS_ALIASES:
+        try:
+            return SemanticClass(SEMANTIC_CLASS_ALIASES[s])
+        except ValueError:
+            pass
+    # give up gracefully
+    import logging
+    logging.getLogger(__name__).warning(
+        "resolve_semantic_class: unrecognized class %r, defaulting to UNKNOWN", raw
+    )
+    return SemanticClass.UNKNOWN
 
 # ---------------------------------------------------------------------------
 # Stage 1 output: VLM priority regions
@@ -166,11 +269,16 @@ class SegmentationOutput:
 # ---------------------------------------------------------------------------
 
 @dataclass
+class NodeObservation:
+    frame_id: int
+    priority: float
+    centroid: tuple[float, float]
+    confidence: float
+    global_centroid: Optional[tuple[float, float]] = None
+    timestamp: float = 0.0
+
+@dataclass
 class KGNode:
-    """
-    A node in the scene knowledge graph.
-    Constructed 1-to-1 from each InstanceMask.
-    """
     node_id: str
     label: str
     semantic_class: SemanticClass
@@ -178,6 +286,7 @@ class KGNode:
     bbox: BBox
     mask_area: float
     priority: float
+    confidence: float           
     track_id: int
     frame_id: int
     attributes: dict = field(default_factory=dict)

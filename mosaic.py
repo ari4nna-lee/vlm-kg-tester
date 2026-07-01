@@ -42,7 +42,7 @@ class MosaicConfig:
     build_canvas: bool = True
     canvas_pad: int = 2000           # extra pixels of slack before a resize
     canvas_blend_alpha: float = 0.5  # weight given to NEW frame on overlap
-
+    keyframe_interval = 5
 
 class MosaicTracker:
     def __init__(self, frame_hw: tuple[int, int], cfg: Optional[MosaicConfig] = None):
@@ -50,7 +50,7 @@ class MosaicTracker:
         self.frame_h, self.frame_w = frame_hw
 
         self._orb = cv2.ORB_create(self.cfg.orb_features)
-        self._bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+        self._bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
 
         self._lock = threading.Lock()
 
@@ -71,15 +71,14 @@ class MosaicTracker:
         self._heat_canvas: Optional[np.ndarray] = None  # accumulated heatmap (float32)
         self._heat_weight: Optional[np.ndarray] = None  # blend weight accumulator
 
+        self._keyframe_gray: Optional[np.ndarray] = None
+        self._keyframe_H: np.ndarray = np.eye(3, dtype=np.float64)
+
     # ------------------------------------------------------------------
     # Core: per-frame homography
     # ------------------------------------------------------------------
 
     def update(self, fid: int, frame_rgb: np.ndarray) -> np.ndarray:
-        """
-        Returns the 3x3 homography mapping this frame's pixel coords into
-        global canvas space. Idempotent per fid.
-        """
         with self._lock:
             if fid in self._fid_to_H:
                 return self._fid_to_H[fid]
@@ -87,19 +86,27 @@ class MosaicTracker:
             gray = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2GRAY)
 
             if self._prev_gray is None:
-                H_step = np.eye(3, dtype=np.float64)
+                H_global = np.eye(3, dtype=np.float64)
+                self._keyframe_gray = gray
+                self._keyframe_H = H_global.copy()
             else:
-                H_step = self._estimate_step(self._prev_gray, gray)
+                is_keyframe = (fid % self.cfg.keyframe_interval == 0)
+                if is_keyframe:
+                    self._keyframe_gray = gray
+                    self._keyframe_H = self._H_cumulative.copy()
 
-            # NOTE: only advance the chain forward when fids are increasing.
-            # If fids can arrive out of order across threads, fid ordering
-            # must be enforced by the caller (kg_worker processes kg_q
-            # sequentially per-frame for the *first* pass, which is what we
-            # chain on; refine passes hit the fid cache above and never
-            # reach here).
-            self._H_cumulative = self._H_cumulative @ H_step
-            H_global = self._H_cumulative.copy()
+                H_step = self._estimate_step(self._keyframe_gray, gray)
+                H_global = self._keyframe_H @ H_step
 
+                if not self._is_valid_homography(H_global):
+                    log.warning("mosaic: fid %s keyframe match failed, trying frame-to-frame", fid)
+                    H_step = self._estimate_step(self._prev_gray, gray)
+                    H_global = self._H_cumulative @ H_step
+                    if not self._is_valid_homography(H_global):
+                        log.warning("mosaic: fid %s both mathes failed, holding position", fid)
+                        H_global = self._H_cumulative.copy()
+
+            self._H_cumulative = H_global.copy()
             self._fid_to_H[fid] = H_global
             self._last_fid_seen = fid
             self._prev_gray = gray
@@ -117,18 +124,20 @@ class MosaicTracker:
             log.warning("mosaic: insufficient features, assuming no motion")
             return np.eye(3, dtype=np.float64)
 
-        matches = self._bf.match(des1, des2)
-        matches = sorted(matches, key=lambda m: m.distance)[: self.cfg.match_count]
-        if len(matches) < self.cfg.min_matches:
-            log.warning("mosaic: insufficient matches (%d), assuming no motion", len(matches))
+        knn = self._bf.knnMatch(des1, des2, k=2)
+        good = [m for m, n in knn if m.distance < 0.75 * n.distance]
+        good = sorted(good, key=lambda m: m.distance)[: self.cfg.match_count]
+
+        if len(good) < self.cfg.min_matches:
+            log.warning("mosaic: insufficient matches (%d), assuming no motion", len(good))
             return np.eye(3, dtype=np.float64)
 
-        pts1 = np.float32([kp1[m.queryIdx].pt for m in matches])
-        pts2 = np.float32([kp2[m.trainIdx].pt for m in matches])
+        pts1 = np.float32([kp1[m.queryIdx].pt for m in good])
+        pts2 = np.float32([kp2[m.trainIdx].pt for m in good])
 
         H, _ = cv2.findHomography(pts2, pts1, cv2.RANSAC, self.cfg.ransac_thresh)
-        if H is None:
-            log.warning("mosaic: findHomography failed, assuming no motion")
+        if not self._is_valid_homography(H):
+            log.warning("mosaic: rejected degenerate homography, assuming no motion")
             return np.eye(3, dtype=np.float64)
         return H
 
@@ -251,7 +260,67 @@ class MosaicTracker:
                 return None
             w = np.maximum(self._heat_weight, 1e-6)
             return self._heat_canvas / w
+        
+    def get_priority_map(
+        self,
+        kg_graph: "nx.DiGraph",
+        kg_weight: float = 0.6,
+        heatmap_weight: float = 0.4,
+    ) -> Optional[np.ndarray]:
+        with self._lock:
+            if self._canvas is None:
+                return None
+
+            h, w = self._canvas.shape[:2]
+            kg_layer = np.zeros((h, w), dtype=np.float32)
+
+            for node_id, data in kg_graph.nodes(data=True):
+                gp = data.get("global_pose")
+                if gp is None:
+                    continue
+                gx, gy = gp["centroid"]
+                cx = int(gx - self._canvas_origin[0])
+                cy = int(gy - self._canvas_origin[1])
+                if not (0 <= cx < w and 0 <= cy < h):
+                    continue
+                priority = float(data.get("priority", 0.0))
+                confidence = float(data.get("confidence", 1.0))
+                radius = max(10, int(data.get("mask_area", 0.01) * min(h, w)))
+                cv2.circle(kg_layer, (cx, cy), radius,
+                        float(priority * confidence), thickness=-1)
+
+            if kg_layer.max() > 0:
+                kg_layer = kg_layer / kg_layer.max()
+
+            heat = self.get_global_heatmap()
+            if heat is not None:
+                if heat.shape != (h, w):
+                    heat = cv2.resize(heat, (w, h))
+                if heat.max() > 0:
+                    heat = heat / heat.max()
+            else:
+                heat = np.zeros((h, w), dtype=np.float32)
+
+            return np.clip(
+                kg_weight * kg_layer + heatmap_weight * heat,
+                0.0, 1.0
+            ).astype(np.float32)
 
     def get_canvas(self) -> Optional[np.ndarray]:
         with self._lock:
             return None if self._canvas is None else self._canvas.copy()
+
+    @staticmethod
+    def _is_valid_homography(H: Optional[np.ndarray], max_translation: float = 400.0) -> bool:
+        if H is None:
+            return False
+        det = np.linalg.det(H[:2, :2])
+        if not (0.1 < abs(det) < 10.0):
+            return False
+        if abs(H[2, 0]) > 1e-3 or abs(H[2, 1]) > 5e-3:
+            return False
+        # reject implausibly large translations between frames
+        tx, ty = H[0, 2], H[1, 2]
+        if abs(tx) > max_translation or abs(ty) > max_translation:
+            return False
+        return True

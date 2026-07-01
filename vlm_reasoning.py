@@ -34,7 +34,7 @@ from PIL import Image
 import requests
 
 from structure import (
-    BBox, PriorityRegion, SemanticClass, VLMSceneOutput,
+    BBox, PriorityRegion, SemanticClass, VLMSceneOutput, resolve_semantic_class
 )
 
 log = logging.getLogger(__name__)
@@ -73,7 +73,10 @@ Return ONLY a single JSON object with two keys:
       "label": <short descriptive name>,
       "bbox": {{"x": <float 0-1>, "y": <float 0-1>, "w": <float 0-1>, "h": <float 0-1>}},
       "priority": <float 0-1>,
-      "semantic_class": <one of: road, vehicle, building, vegetation, person, anomaly>,
+      "semantic_class": <one of: paved_road, dirt_road, grassland, dense_vegetation, 
+            sparse_vegetation, bare_earth, water, steep_slope, building, building_roof, 
+            parking_lot, loading_dock, vehicle, large_vehicle, truck, car, trailer, 
+            person, anomaly, unknown>,
       "reason": <one sentence explaining why this region is high priority>
     }},
     ...
@@ -280,7 +283,7 @@ class VLMReasoningPass:
                 b = item["bbox"]
                 bbox = BBox(x=float(b["x"]), y=float(b["y"]),
                             w=float(b["w"]), h=float(b["h"]))
-                sem = SemanticClass(item.get("semantic_class", "unknown"))
+                sem = resolve_semantic_class(item.get("semantic_class", "unknown"))
                 region = PriorityRegion(
                     label=item["label"],
                     bbox=bbox,
